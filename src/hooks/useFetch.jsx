@@ -12,11 +12,9 @@ export default function useFetch(apiEndpoint) {
             try {
                 const token = localStorage.getItem('token');
                 const headers = {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 };
-                if (token) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL + apiEndpoint, {
                     method: 'GET',
                     headers: headers,
