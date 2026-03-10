@@ -17,7 +17,7 @@ export default function useFetch(apiEndpoint) {
                 if (token) {
                     headers['Authorization'] = `Bearer ${token}`;
                 }
-                const response = await fetch(import.meta.env.VITE_ + apiEndpoint, {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL + apiEndpoint, {
                     method: 'GET',
                     headers: headers,
                 });

@@ -11,7 +11,7 @@ export default function useFunction() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(import.meta.env.VITE_ + "/api/auth/signup", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -38,7 +38,7 @@ export default function useFunction() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(import.meta.env.VITE_ + "/api/auth/login", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
