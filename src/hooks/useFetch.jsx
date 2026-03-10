@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../utils/constant";
 
 export default function useFetch(apiEndpoint) {
     const [data, setData] = useState([]);
@@ -18,7 +17,7 @@ export default function useFetch(apiEndpoint) {
                 if (token) {
                     headers['Authorization'] = `Bearer ${token}`;
                 }
-                const response = await fetch(BACKEND_URL + apiEndpoint, {
+                const response = await fetch(import.meta.env.VITE_ + apiEndpoint, {
                     method: 'GET',
                     headers: headers,
                 });

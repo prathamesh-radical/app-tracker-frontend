@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { MyContext } from "../context/context";
-import { BACKEND_URL } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
@@ -12,7 +11,7 @@ export default function useFunction() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(BACKEND_URL + "/api/auth/signup", {
+            const response = await fetch(import.meta.env.VITE_ + "/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -39,7 +38,7 @@ export default function useFunction() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(BACKEND_URL + "/api/auth/login", {
+            const response = await fetch(import.meta.env.VITE_ + "/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
