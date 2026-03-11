@@ -11,8 +11,7 @@ export default function GuestEntryAppDetails() {
     const itemsPerPage = 100;
     const location = useLocation();
     const id = location.pathname.split('/')[3];
-    const appList = AppList();
-    const app = appList.find(a => a.id == id);
+    const app = AppList.find(a => a.id == id);
     const adminName = location.state?.userName || '-';
     const visitorData = location.state?.visitorData || [];
     const sortedData = visitorData?.slice().sort((a, b) => new Date(b.datetime) - new Date(a.datetime)) || [];

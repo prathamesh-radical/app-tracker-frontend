@@ -1,59 +1,58 @@
 import { useEffect, useState } from "react";
 
+const EXTRACT_MAP = {
+    '/api/debtors':                 (r) => r.debtors,
+    '/api/mechanic':                (r) => r.mechanic,
+    '/api/mechanic-data':           (r) => r.mechaniclist,
+    '/api/mechanic-services-data':  (r) => r.serviceslist,
+    '/api/money-collect':           (r) => r.moneycollect,
+    '/api/money-collect-data':      (r) => r.moneycollectlist,
+    '/api/guest-entries':           (r) => r.guestEntries,
+    '/api/guest-entries-data':      (r) => r.visitorslist,
+};
+
 export default function useFetch(apiEndpoint) {
-    const [data, setData] = useState([]);
-    const [error, setError] = useState(null);
+    const [data, setData]       = useState([]);
+    const [error, setError]     = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        // null endpoint = this app doesn't need this data
+        if (!apiEndpoint) return;
+
+        let cancelled = false;
+
         const fetchData = async () => {
             setLoading(true);
-
             try {
                 const token = localStorage.getItem('token');
-                const headers = {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                };
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL + apiEndpoint, {
                     method: 'GET',
-                    headers: headers,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
                 });
                 const result = await response.json();
 
-                if (!response.ok) throw new Error(result.message || `Failed to fetch data from ${apiEndpoint}`);
+                if (!response.ok) throw new Error(result.message || `Failed to fetch ${apiEndpoint}`);
 
-                let extractedData;
-                if (apiEndpoint === '/api/debtors') {
-                    extractedData = result.debtors;
-                } else if (apiEndpoint === '/api/mechanic') {
-                    extractedData = result.mechanic;
-                } else if (apiEndpoint === '/api/mechanic-data') {
-                    extractedData = result.mechaniclist;
-                } else if (apiEndpoint === '/api/mechanic-services-data') {
-                    extractedData = result.serviceslist;
-                } else if (apiEndpoint === '/api/money-collect') {
-                    extractedData = result.moneycollect;
-                } else if (apiEndpoint === '/api/money-collect-data') {
-                    extractedData = result.moneycollectlist;
-                } else if (apiEndpoint === '/api/guest-entries') {
-                    extractedData = result.guestEntries;
-                } else if (apiEndpoint === '/api/guest-entries-data') {
-                    extractedData = result.visitorslist;
-                } else {
-                    extractedData = result;
+                const extractor = EXTRACT_MAP[apiEndpoint];
+                const extracted = extractor ? extractor(result) : result;
+
+                if (!cancelled) {
+                    setData(extracted);
+                    setError(null);
                 }
-
-                setData(extractedData);
-                setError(null);
             } catch (err) {
-                setError(err.message);
+                if (!cancelled) setError(err.message);
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         };
 
         fetchData();
+        return () => { cancelled = true; };
     }, [apiEndpoint]);
 
     return { data, error, loading };

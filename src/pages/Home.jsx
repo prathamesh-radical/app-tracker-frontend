@@ -3,25 +3,21 @@ import { CiSearch } from "react-icons/ci";
 import "../styles/home.css";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import AppList from "../utils/AppList.jsx";
+import AppList from "../utils/AppList";
 
 export default function Home() {
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery]   = useState("");
     const navigate = useNavigate();
-    const appList = AppList();
 
-    // Filter apps based on search query
     const filteredAppList = useMemo(() => {
-        if (!searchQuery.trim()) {
-            return appList;
-        }
+        if (!searchQuery.trim()) return AppList;
         const query = searchQuery.toLowerCase();
-        return appList.filter((app) =>
+        return AppList.filter((app) =>
             app.appName.toLowerCase().includes(query) ||
             app.appId.toLowerCase().includes(query)
         );
-    }, [searchQuery, appList]);
+    }, [searchQuery]);
 
     return (
         <Box className="home-root">
@@ -55,34 +51,22 @@ export default function Home() {
                                 color: "#e2e8f0",
                                 backdropFilter: "blur(10px)",
                                 transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                                "&:hover": {
-                                    borderColor: "rgba(148, 163, 184, 0.6)",
-                                    backgroundColor: "rgba(15, 23, 42, 0.95)",
-                                },
-                                "&.Mui-focused": {
-                                    borderColor: "#3b82f6",
-                                    backgroundColor: "rgba(15, 23, 42, 0.98)",
-                                    boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-                                },
+                                "&:hover": { borderColor: "rgba(148, 163, 184, 0.6)", backgroundColor: "rgba(15, 23, 42, 0.95)" },
+                                "&.Mui-focused": { borderColor: "#3b82f6", backgroundColor: "rgba(15, 23, 42, 0.98)", boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" },
                             },
                             "& .MuiOutlinedInput-input": {
-                                padding: "15px 15px 15px 1px;",
+                                padding: "15px 15px 15px 1px",
                                 fontSize: "14px",
-                                "&::placeholder": {
-                                    color: "rgba(148, 163, 184, 0.6)",
-                                    opacity: 1,
-                                },
+                                "&::placeholder": { color: "rgba(148, 163, 184, 0.6)", opacity: 1 },
                             },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "rgba(148, 163, 184, 0.3)",
-                            },
+                            "& .MuiOutlinedInput-notchedOutline": { borderColor: "rgba(148, 163, 184, 0.3)" },
                         }}
                     />
 
                     <Card className="stat-card" elevation={0}>
                         <CardContent className="stat-card-content">
                             <Typography className="stat-label">Total Apps</Typography>
-                            <Typography className="stat-value">{filteredAppList?.length || 0}</Typography>
+                            <Typography className="stat-value">{filteredAppList.length}</Typography>
                         </CardContent>
                     </Card>
                 </Box>
@@ -91,7 +75,7 @@ export default function Home() {
             <Box className="app-grid">
                 {filteredAppList.map((app, index) => (
                     <Box
-                        key={index}
+                        key={app.id}
                         onClick={() => navigate(`/appdata/${app.id}`, { state: { appName: app.appName } })}
                         sx={{ cursor: "pointer", textDecoration: "none", height: "100%" }}
                     >
@@ -106,7 +90,6 @@ export default function Home() {
                                 <Box className="icon-container">
                                     <CardMedia component="img" image={app.src} alt={app.appName} className="app-media" />
                                 </Box>
-
                                 <CardContent className="card-content">
                                     <Typography component="div" className="app-name">{app.appName}</Typography>
                                     <Typography variant="body2" className="app-id">{app.appId}</Typography>

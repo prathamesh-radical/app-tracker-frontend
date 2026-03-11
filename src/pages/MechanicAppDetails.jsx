@@ -11,8 +11,7 @@ export default function MechanicAppDetails() {
     const itemsPerPage = 100;
     const location = useLocation();
     const id = location.pathname.split('/')[3];
-    const appList = AppList();
-    const app = appList.find(a => a.id == id);
+    const app = AppList.find(a => a.id == id);
     const adminName = location.state?.userName || '-';
     const usersData = location.state?.customersData || [];
     const currency = location.state?.currency || 'USD';

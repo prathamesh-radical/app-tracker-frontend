@@ -13,8 +13,7 @@ export default function SmartMoneyAppDetails() {
     const itemsPerPage = 100;
     const location = useLocation();
     const id = location.pathname.split('/')[3];
-    const appList = AppList();
-    const app = appList.find(a => a.id == id);
+    const app = AppList.find(a => a.id == id);
     const bankName = location.state?.bankName || '-';
     const bankData = location.state?.usersData || [];
     const currency = location.state?.currency || 'USD';
