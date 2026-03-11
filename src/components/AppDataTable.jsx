@@ -49,6 +49,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
     }
 
     if (app?.appName === 'Mechanic Invoice Manager') {
+        
         return (
             <TableContainer component={Paper} sx={tableContainerSx}>
                 <Table>
@@ -90,7 +91,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>{item.lastName ? item.lastName : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}><Chip label={item.email ? item.email : '-'} size="medium" sx={emailChipSx} /></TableCell>
                                     <TableCell sx={bodyCellSx}>
-                                        {filteredServices.length > 1 ? (
+                                        {filteredServices.length >= 1 ? (
                                             filteredServices?.map((service, idx) => (
                                                 <Box key={idx}>
                                                     {item?.currency ? (

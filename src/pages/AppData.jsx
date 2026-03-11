@@ -15,7 +15,7 @@ export default function AppData() {
     const appList = AppList();
     const app = appList.find(a => a.id == id);
     const { data, loading, error, userData, servicesData } = app?.appData?.[0] || {};
-
+    
     const sortedData = data?.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)) || [];
     const totalPages = Math.ceil((sortedData.length) / itemsPerPage);
     const startIndex = (page - 1) * itemsPerPage;
