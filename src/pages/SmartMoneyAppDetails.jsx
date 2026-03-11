@@ -5,10 +5,10 @@ import { useLocation } from "react-router-dom";
 import AppList from "../utils/AppList";
 import { useState } from "react";
 import {
-    adminCellSx, adminRowSx, bodyCellSx, bodyRowSx, dateStyle, emailChipSx, formatDate, headCellSx, headRowSx, idCellSx, tableContainerSx
+    adminCellSx, adminRowSx, bodyCellSx, bodyRowSx, dateStyle, emailChipSx, formatCurrency, formatDate, headCellSx, headRowSx, idCellSx, tableContainerSx
 } from "../utils/constant";
 
-export default function DebtorsAppDetails() {
+export default function SmartMoneyAppDetails() {
     const [page, setPage] = useState(1);
     const itemsPerPage = 100;
     const location = useLocation();
@@ -17,6 +17,7 @@ export default function DebtorsAppDetails() {
     const app = appList.find(a => a.id == id);
     const bankName = location.state?.bankName || '-';
     const bankData = location.state?.usersData || [];
+    const currency = location.state?.currency || 'USD';
     const sortedData = bankData?.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)) || [];
     const totalPages = Math.ceil((sortedData.length) / itemsPerPage);
     const startIndex = (page - 1) * itemsPerPage;
@@ -83,7 +84,13 @@ export default function DebtorsAppDetails() {
                                     </TableCell>
                                     <TableCell sx={bodyCellSx}>{item.location || '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.package_name || '-'}</TableCell>
-                                    <TableCell sx={bodyCellSx}>{item.package_amount || '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {currency !== null ? (
+                                            formatCurrency(item.package_amount, currency)
+                                        ) : (
+                                            item.package_amount
+                                        )}
+                                    </TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         <span style={dateStyle}>{formatDate(item.created_at)}</span>
                                     </TableCell>

@@ -132,6 +132,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             <TableCell sx={headCellSx}>Acronym</TableCell>
                             <TableCell sx={headCellSx}>Name</TableCell>
                             <TableCell sx={headCellSx}>Email</TableCell>
+                            <TableCell sx={headCellSx}>Currency</TableCell>
+                            <TableCell sx={headCellSx}>Country</TableCell>
                             <TableCell sx={headCellSx}>Entries</TableCell>
                             <TableCell sx={headCellSx}>Created At</TableCell>
                         </TableRow>
@@ -146,7 +148,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     sx={bodyRowSx}
                                     className="cursor-pointer"
                                     onClick={() => navigate(
-                                        `/appdata/smartmoney/${app.id}/${item.id}`, { state: { bankName: item.name, usersData: bankUsersData } }
+                                        `/appdata/smartmoney/${app.id}/${item.id}`, { state: { bankName: item.name, usersData: bankUsersData, currency: item.currency } }
                                     )}
                                 >
                                     <TableCell sx={idCellSx}>{adminId++}</TableCell>
@@ -164,6 +166,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={item.email ? item.email : '-'} size="medium" sx={emailChipSx} />
                                     </TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.country ? item.country : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={bankUsersData?.length || 0} size="medium" sx={countChipSx} />
                                     </TableCell>
@@ -190,6 +194,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             <TableCell sx={headCellSx}>Last Name</TableCell>
                             <TableCell sx={headCellSx}>Email</TableCell>
                             <TableCell sx={headCellSx}>Contact No.</TableCell>
+                            <TableCell sx={headCellSx}>Currency</TableCell>
+                            <TableCell sx={headCellSx}>Country</TableCell>
                             <TableCell sx={headCellSx}>Entries</TableCell>
                             <TableCell sx={headCellSx}>Created At</TableCell>
                         </TableRow>
@@ -215,6 +221,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                         <Chip label={item.email} size="medium" sx={emailChipSx} />
                                     </TableCell>
                                     <TableCell sx={bodyCellSx}>{item.phone_no}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.country ? item.country : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={visitorData.length || 0} size="medium" sx={countChipSx} />
                                     </TableCell>
