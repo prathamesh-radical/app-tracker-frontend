@@ -1,18 +1,14 @@
+import { useContext } from "react";
 import debtTrackerImage from "../assets/debttracker.png";
 import invoicemanager from "../assets/invoicemanager.png";
 import moneycollection from "../assets/moneycollection.jpg";
 import visitormanagement from "../assets/visitormanagement.png";
-import useFetch from "../hooks/useFetch";
+import { MyContext } from "../context/context";
 
 export default function AppList() {
-    const { data: debtorsData, loading: debtorsLoading, error: debtorsError } = useFetch('/api/debtors');
-    const { data: mechanicData, loading: mechanicLoading, error: mechanicError } = useFetch('/api/mechanic');
-    const { data: mechanicUserData, loading: mechanicUserDataLoading, error: mechanicUserDataError } = useFetch('/api/mechanic-data');
-    const { data: mechanicServicesData } = useFetch('/api/mechanic-services-data');
-    const { data: moneycollectData, loading: moneycollectLoading, error: moneycollectError } = useFetch('/api/money-collect');
-    const { data: moneycollectUserData, loading: moneycollectUserDataLoading, error: moneycollectUserDataError } = useFetch('/api/money-collect-data');
-    const { data: guestEntriesData, loading: guestEntriesLoading, error: guestEntriesError } = useFetch('/api/guest-entries');
-    const { data: guestEntriesUserData, loading: guestEntriesUserDataLoading, error: guestEntriesUserDataError } = useFetch('/api/guest-entries-data');
+    const { 
+        debtorsData, debtorsLoading, debtorsError, mechanicData, mechanicLoading, mechanicError, mechanicServicesData, moneycollectData, moneycollectLoading, moneycollectError, mechanicUserData, mechanicUserDataLoading, mechanicUserDataError, moneycollectUserData, moneycollectUserDataLoading, moneycollectUserDataError, guestEntriesData, guestEntriesLoading, guestEntriesError, guestEntriesUserData, guestEntriesUserDataLoading, guestEntriesUserDataError
+    } = useContext(MyContext);
 
     return [
         {
