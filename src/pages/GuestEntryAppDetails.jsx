@@ -62,6 +62,7 @@ export default function GuestEntryAppDetails() {
                                 <TableCell sx={headCellSx}>Address</TableCell>
                                 <TableCell sx={headCellSx}>Status</TableCell>
                                 <TableCell sx={headCellSx}>Vehicle Type</TableCell>
+                                <TableCell sx={headCellSx}>Vehicle No.</TableCell>
                                 <TableCell sx={headCellSx}>Apartment</TableCell>
                                 <TableCell sx={headCellSx}>Floor No.</TableCell>
                                 <TableCell sx={headCellSx}>Flat No.</TableCell>
@@ -79,6 +80,7 @@ export default function GuestEntryAppDetails() {
                                     <TableCell sx={bodyCellSx}>{item.address || '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.is_active === 1 ? 'Active' : 'Inactive'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.vehicle_type || '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.vehicle_no || '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.apartment_name || '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.floor_no || '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.flat_no || '-'}</TableCell>
