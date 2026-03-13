@@ -48,7 +48,7 @@ export default function GuestEntryAppDetails() {
                     <Table sx={{ minWidth: 1100 }}>
                         <TableHead>
                             <TableRow sx={adminRowSx}>
-                                <TableCell sx={adminCellSx} colSpan={12}>
+                                <TableCell sx={adminCellSx} colSpan={13}>
                                     Admin Name :- {adminName}
                                 </TableCell>
                             </TableRow>
