@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 export default function useFunction() {
-    const { registerFormData, loginFormData, setLoading, setToken, setIsAuthenticated, handleNull } = useContext(MyContext);
+    const { registerFormData, loginFormData, setLoading, setToken, setIsAuthenticated, handleNull, handleLogout } = useContext(MyContext);
     const navigate = useNavigate();
 
     async function handleRegister(e) {
@@ -62,14 +62,6 @@ export default function useFunction() {
         } finally {
             setLoading(false);
         }
-    }
-
-    function handleLogout() {
-        setToken(null);
-        setIsAuthenticated(false);
-        localStorage.removeItem('token');
-        toast.success("Logout successful!");
-        navigate("/login");
     }
 
     return { handleRegister, handleLogin, handleLogout };
