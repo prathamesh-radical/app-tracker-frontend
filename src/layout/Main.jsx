@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import Header from "../components/Header";
-import { MyContext } from "../context/Context";
+import { MyContext } from "../context/context";
 import '../styles/app.css';
 
 const Main = () => {
