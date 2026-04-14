@@ -3,7 +3,6 @@ import { MyContext } from "./context";
 import { jwtDecode } from "jwt-decode";
 import { toast } from 'react-toastify';
 
-// Pure helper — no React state involved
 function getValidToken() {
     const stored = localStorage.getItem('token');
     if (!stored) return null;
@@ -29,21 +28,11 @@ export const MyContextProvider = ({ children }) => {
     const [loginFormData, setLoginFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
 
-    // Initialise synchronously — no effect needed
     const [token, setToken] = useState(() => getValidToken());
     const [isAuthenticated, setIsAuthenticated] = useState(() => !!getValidToken());
 
-    // Holds a navigate fn injected by the first component that has Router access.
-    // Using a ref avoids re-renders when it is set.
     const navigateRef = useRef(null);
 
-    /**
-     * Call this once inside any component that lives under <Router>.
-     * e.g. in App.jsx:
-     *   const { registerNavigate } = useContext(MyContext);
-     *   const navigate = useNavigate();
-     *   useEffect(() => registerNavigate(navigate), [navigate, registerNavigate]);
-     */
     const registerNavigate = useCallback((navigateFn) => {
         navigateRef.current = navigateFn;
     }, []);
@@ -56,7 +45,6 @@ export const MyContextProvider = ({ children }) => {
         navigateRef.current?.("/login");
     }, []);
 
-    // Periodic expiry check — never called synchronously in the effect body
     useEffect(() => {
         const checkTokenExpiry = () => {
             const currentToken = localStorage.getItem('token');
@@ -84,11 +72,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const values = {
-        registerFormData, handleChange, loading, setLoading,
-        loginFormData, token, setToken,
-        isAuthenticated, setIsAuthenticated,
-        handleNull, handleLogout,
-        registerNavigate,
+        registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate,
     };
 
     return (

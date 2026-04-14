@@ -13,7 +13,7 @@ export default function AppData() {
     const { appid } = useParams();
     const appName = location.state?.appName;
 
-    const { app, data, loading, error, userData, servicesData } = useAppData(appid);
+    const { app, data, loading, error, userData, servicesData, secondaryLoading } = useAppData(appid);
 
     const sortedData = data?.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)) || [];
     const totalPages = Math.ceil(sortedData.length / itemsPerPage);
@@ -52,7 +52,7 @@ export default function AppData() {
 
             {/* ── Content ── */}
             <Box className={`appdata-content${loading || error || !data?.length ? " appdata-state-center" : ""}`}>
-                {loading ? (
+                {(loading || secondaryLoading) ? (
                     <CircularProgress size={60} color="secondary" />
 
                 ) : error ? (

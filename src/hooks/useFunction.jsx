@@ -27,8 +27,8 @@ export default function useFunction() {
             } else {
                 toast.error(data.message || "Registration failed.");
             }
-        } catch {
-            toast.error("An error occurred");
+        } catch (error) {
+            toast.error(error?.message || "An error occurred");
         } finally {
             setLoading(false);
         }
@@ -47,6 +47,7 @@ export default function useFunction() {
             });
             
             const data = await response.json();
+
             if (response.ok) {
                 toast.success(data.message || "Login successful!");
                 setToken(data.token);
@@ -57,8 +58,8 @@ export default function useFunction() {
             } else {
                 toast.error(data.message || "Login failed.");
             }
-        } catch {
-            toast.error("An error occurred");
+        } catch (error) {
+            toast.error(error?.message || "An error occurred");
         } finally {
             setLoading(false);
         }
