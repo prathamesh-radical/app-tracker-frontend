@@ -349,6 +349,7 @@
 .app-media {
     width: 26px !important;
     height: 26px !important;
+    border-radius: 6px;
     object-fit: contain;
     transition: transform 0.5s ease;
 }

@@ -104,3 +104,22 @@ export function formatCurrency(amount, currencyCode) {
 
     return currency(amount, { symbol, precision: 2 }).format();
 }
+
+export const getCombinedInitials = (name) => {
+    if (!name) return "?";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+};
+
+export const getInitials = (firstName, lastName) => {
+    // Agar dono fields empty hain
+    if (!firstName && !lastName) return "?";
+
+    const fInitial = firstName ? firstName.trim()[0] : "";
+    const lInitial = lastName ? lastName.trim()[0] : "";
+
+    return (fInitial + lInitial).toUpperCase() || "?";
+};

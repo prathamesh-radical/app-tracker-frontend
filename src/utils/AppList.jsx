@@ -2,6 +2,8 @@ import debtTrackerImage from "../assets/debttracker.png";
 import invoicemanager from "../assets/invoicemanager.png";
 import moneycollection from "../assets/moneycollection.jpg";
 import visitormanagement from "../assets/visitormanagement.png";
+import dancestudiomanager from "../assets/dancestudiomanager.jpg";
+import buddywalk from "../assets/buddywalk.png";
 
 const AppList = [
     {
@@ -42,6 +44,24 @@ const AppList = [
         endpoints: {
             main: '/api/guest-entries',
             userData: '/api/guest-entries-data',
+        },
+    },
+    {
+        id: 5,
+        appName: 'Dance Studio Management',
+        appId: 'com.peccular.dancestudiomanager',
+        src: dancestudiomanager,
+        endpoints: {
+            main: '/api/dance-studio-users',
+        },
+    },
+    {
+        id: 6,
+        appName: 'BuddyWalk Group steps Counter',
+        appId: 'com.radicalapp.buddywalk',
+        src: buddywalk,
+        endpoints: {
+            main: '/api/buddy-walk-steps',
         },
     },
 ];

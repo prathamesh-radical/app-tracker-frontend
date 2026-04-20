@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Box } from "@mui/material";
 import {
-    bodyCellSx, bodyRowSx, countChipSx, dateStyle, emailChipSx, formatCurrency, formatDate, headCellSx, headRowSx, idCellSx, tableContainerSx
+    bodyCellSx, bodyRowSx, countChipSx, dateStyle, emailChipSx, formatCurrency, formatDate, getCombinedInitials, getInitials, headCellSx, headRowSx, idCellSx, tableContainerSx
 } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                     <TableHead>
                         <TableRow sx={headRowSx}>
                             <TableCell sx={headCellSx}>#</TableCell>
+                            <TableCell sx={headCellSx}>Profile</TableCell>
                             <TableCell sx={headCellSx}>First Name</TableCell>
                             <TableCell sx={headCellSx}>Last Name</TableCell>
                             <TableCell sx={headCellSx}>Email</TableCell>
@@ -24,12 +25,47 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {currentData.map((item) => (
-                            <TableRow key={item.id} sx={bodyRowSx}>
-                                <TableCell sx={idCellSx}>{adminId++}</TableCell>
-                                <TableCell sx={bodyCellSx}>{item.firstname ? item.firstname : '-'}</TableCell>
-                                <TableCell sx={bodyCellSx}>{item.lastname ? item.lastname : '-'}</TableCell>
-                                <TableCell sx={bodyCellSx}>
+                        {currentData.map((item) => {
+                            const isUrl = (
+                                item.profile_url === '' || item.profile_url === null || item.profile_url === 'Null' || item.profile_url === undefined
+                            );
+
+                            return (
+                                <TableRow key={item.id} sx={bodyRowSx}>
+                                    <TableCell sx={idCellSx}>{adminId++}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {isUrl ? (
+                                            <Box
+                                                sx={{
+                                                    width: 40,
+                                                    height: 40,
+                                                    borderRadius: '50%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                                                    color: '#fff',
+                                                    fontSize: '14px',
+                                                    fontWeight: 'bold',
+                                                    textTransform: 'uppercase',
+                                                    border: '1px solid rgba(255,255,255,0.2)'
+                                                }}
+                                            >
+                                                {getInitials(item.firstname, item.lastname)}
+                                            </Box>
+                                        ) : (
+                                            <Box
+                                                component="img"
+                                                src={item.profile_url}
+                                                alt={item.name}
+                                                sx={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
+                                                onError={(e) => { e.target.style.display = 'none'; }} // Fallback if link breaks
+                                            />
+                                        )}
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.firstname ? item.firstname : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.lastname ? item.lastname : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
                                     <Chip label={item.email ? item.email : '-'} size="medium" sx={emailChipSx} />
                                 </TableCell>
                                 <TableCell sx={bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
@@ -41,7 +77,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <span style={dateStyle}>{formatDate(item.created_at)}</span>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -49,7 +86,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
     }
 
     if (app?.appName === 'Mechanic Invoice Manager') {
-        
+
         return (
             <TableContainer component={Paper} sx={tableContainerSx}>
                 <Table>
@@ -80,9 +117,11 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     className="cursor-pointer"
                                     onClick={() => navigate(
                                         `/appdata/mechanic/${app.id}/${item.id}`,
-                                        { state: {
-                                            userName: item.firstName + " " + item.lastName, customersData: customersData, currency: item.currency
-                                        } }
+                                        {
+                                            state: {
+                                                userName: item.firstName + " " + item.lastName, customersData: customersData, currency: item.currency
+                                            }
+                                        }
                                     )}
                                 >
                                     <TableCell sx={idCellSx}>{adminId++}</TableCell>
@@ -204,7 +243,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                     <TableBody>
                         {currentData.map((item) => {
                             const visitorData = userData?.filter(m => m.user_id === item.id);
-                            
+
                             return (
                                 <TableRow
                                     key={item.id}
@@ -230,6 +269,115 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>
                                         <span style={dateStyle}>{formatDate(item.date)}</span>
                                     </TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
+
+    if (app?.appName === 'Dance Studio Management') {
+        return (
+            <TableContainer component={Paper} sx={tableContainerSx}>
+                <Table>
+                    <TableHead>
+                        <TableRow sx={headRowSx}>
+                            <TableCell sx={headCellSx}>#</TableCell>
+                            <TableCell sx={headCellSx}>Name</TableCell>
+                            <TableCell sx={headCellSx}>Studio Name</TableCell>
+                            <TableCell sx={headCellSx}>Email</TableCell>
+                            <TableCell sx={headCellSx}>Phone No.</TableCell>
+                            <TableCell sx={headCellSx}>Currency</TableCell>
+                            <TableCell sx={headCellSx}>Country</TableCell>
+                            <TableCell sx={headCellSx}>Created At</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {currentData.map((item) => (
+                            <TableRow key={item.id} sx={bodyRowSx}>
+                                <TableCell sx={idCellSx}>{adminId++}</TableCell>
+                                <TableCell sx={bodyCellSx}>
+                                    {item.first_name + ' ' + item.last_name || '-'}
+                                </TableCell>
+                                <TableCell sx={bodyCellSx}>
+                                    {item.studio_name || '-'}
+                                </TableCell>
+                                <TableCell sx={bodyCellSx}>
+                                    {item.email}
+                                </TableCell>
+                                <TableCell sx={bodyCellSx}>{item.phone_number || '-'}</TableCell>
+                                <TableCell sx={bodyCellSx}>{item.currency || '-'}</TableCell>
+                                <TableCell sx={bodyCellSx}>{item.country_name || '-'}</TableCell>
+                                <TableCell sx={bodyCellSx}>
+                                    <span style={dateStyle}>{formatDate(item.created_at)}</span>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
+
+    if (app?.appName === 'BuddyWalk Group steps Counter') {
+        return (
+            <TableContainer component={Paper} sx={tableContainerSx}>
+                <Table>
+                    <TableHead>
+                        <TableRow sx={headRowSx}>
+                            <TableCell sx={headCellSx}>#</TableCell>
+                            <TableCell sx={headCellSx}>Profile</TableCell>
+                            <TableCell sx={headCellSx}>User</TableCell>
+                            <TableCell sx={headCellSx}>Email</TableCell>
+                            <TableCell sx={headCellSx}>Country</TableCell>
+                            <TableCell sx={headCellSx}>Gender</TableCell>
+                            <TableCell sx={headCellSx}>DOB</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {currentData.map((item) => {
+                            const isUrl = item.photo_url === '' || item.photo_url === null;
+
+                            return (
+                                <TableRow key={item.id} sx={bodyRowSx}>
+                                    <TableCell sx={idCellSx}>{adminId++}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {isUrl ? (
+                                            <Box
+                                                sx={{
+                                                    width: 40,
+                                                    height: 40,
+                                                    borderRadius: '50%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                                                    color: '#fff',
+                                                    fontSize: '14px',
+                                                    fontWeight: 'bold',
+                                                    textTransform: 'uppercase',
+                                                    border: '1px solid rgba(255,255,255,0.2)'
+                                                }}
+                                            >
+                                                {getCombinedInitials(item.name)}
+                                            </Box>
+                                        ) : (
+                                            <Box
+                                                component="img"
+                                                src={item.photo_url}
+                                                alt={item.name}
+                                                sx={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
+                                                onError={(e) => { e.target.style.display = 'none'; }} // Fallback if link breaks
+                                            />
+                                        )}
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.name}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.email}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.country}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.gender}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{formatDate(item.dob)}</TableCell>
                                 </TableRow>
                             );
                         })}
