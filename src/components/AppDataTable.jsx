@@ -334,6 +334,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             <TableCell sx={headCellSx}>Country</TableCell>
                             <TableCell sx={headCellSx}>No. of Grp</TableCell>
                             <TableCell sx={headCellSx}>No. of Members</TableCell>
+                            <TableCell sx={headCellSx}>Created At</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -366,13 +367,14 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>{item.name}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.email}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.country || '-'}</TableCell>
-
-                                    {/* Calculation Display */}
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={userGroups.length} size="medium" sx={countChipSx} />
                                     </TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={userMembers.length} size="medium" sx={countChipSx} />
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <span style={dateStyle}>{formatDate(item.created_at)}</span>
                                     </TableCell>
                                 </TableRow>
                             );
