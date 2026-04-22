@@ -11,6 +11,9 @@ const EXTRACT_MAP = {
     '/api/guest-entries-data':      (r) => r.visitorslist,
     '/api/dance-studio-users':         (r) => r.danceStudioList,
     '/api/buddy-walk-steps':         (r) => r.stepslist,
+    '/api/get-group-data':           (r) => r.grouplist,
+    '/api/get-group-member-data':    (r) => r.groupmemberlist,
+
 };
 
 export default function useFetch(apiEndpoint) {

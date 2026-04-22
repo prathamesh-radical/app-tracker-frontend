@@ -66,17 +66,17 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>{item.firstname ? item.firstname : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.lastname ? item.lastname : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>
-                                    <Chip label={item.email ? item.email : '-'} size="medium" sx={emailChipSx} />
-                                </TableCell>
-                                <TableCell sx={bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
-                                <TableCell sx={bodyCellSx}>{item.country ? item.country : '-'}</TableCell>
-                                <TableCell sx={bodyCellSx}>
-                                    <Chip label={item.entries ?? 0} size="medium" sx={countChipSx} />
-                                </TableCell>
-                                <TableCell sx={bodyCellSx}>
-                                    <span style={dateStyle}>{formatDate(item.created_at)}</span>
-                                </TableCell>
-                            </TableRow>
+                                        <Chip label={item.email ? item.email : '-'} size="medium" sx={emailChipSx} />
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.country ? item.country : '-'}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <Chip label={item.entries ?? 0} size="medium" sx={countChipSx} />
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <span style={dateStyle}>{formatDate(item.created_at)}</span>
+                                    </TableCell>
+                                </TableRow>
                             );
                         })}
                     </TableBody>
@@ -332,52 +332,48 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             <TableCell sx={headCellSx}>User</TableCell>
                             <TableCell sx={headCellSx}>Email</TableCell>
                             <TableCell sx={headCellSx}>Country</TableCell>
-                            <TableCell sx={headCellSx}>Gender</TableCell>
-                            <TableCell sx={headCellSx}>DOB</TableCell>
+                            <TableCell sx={headCellSx}>No. of Grp</TableCell>
+                            <TableCell sx={headCellSx}>No. of Members</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {currentData.map((item) => {
                             const isUrl = item.photo_url === '' || item.photo_url === null;
+                            const userGroups = userData?.filter(g => g.created_by === item.id) || [];
+                            const userMembers = servicesData?.filter(m => m.user_id === item.id) || [];
 
                             return (
                                 <TableRow key={item.id} sx={bodyRowSx}>
                                     <TableCell sx={idCellSx}>{adminId++}</TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         {isUrl ? (
-                                            <Box
-                                                sx={{
-                                                    width: 40,
-                                                    height: 40,
-                                                    borderRadius: '50%',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
-                                                    color: '#fff',
-                                                    fontSize: '14px',
-                                                    fontWeight: 'bold',
-                                                    textTransform: 'uppercase',
-                                                    border: '1px solid rgba(255,255,255,0.2)'
-                                                }}
-                                            >
+                                            <Box sx={{
+                                                width: 40, height: 40, borderRadius: '50%',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                                                color: '#fff', fontSize: '14px', fontWeight: 'bold',
+                                                textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.2)'
+                                            }}>
                                                 {getCombinedInitials(item.name)}
                                             </Box>
                                         ) : (
-                                            <Box
-                                                component="img"
-                                                src={item.photo_url}
-                                                alt={item.name}
+                                            <Box component="img" src={item.photo_url} alt={item.name}
                                                 sx={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
-                                                onError={(e) => { e.target.style.display = 'none'; }} // Fallback if link breaks
+                                                onError={(e) => { e.target.style.display = 'none'; }}
                                             />
                                         )}
                                     </TableCell>
                                     <TableCell sx={bodyCellSx}>{item.name}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.email}</TableCell>
-                                    <TableCell sx={bodyCellSx}>{item.country}</TableCell>
-                                    <TableCell sx={bodyCellSx}>{item.gender}</TableCell>
-                                    <TableCell sx={bodyCellSx}>{formatDate(item.dob)}</TableCell>
+                                    <TableCell sx={bodyCellSx}>{item.country || '-'}</TableCell>
+
+                                    {/* Calculation Display */}
+                                    <TableCell sx={bodyCellSx}>
+                                        <Chip label={userGroups.length} size="medium" sx={countChipSx} />
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <Chip label={userMembers.length} size="medium" sx={countChipSx} />
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}

@@ -62,6 +62,8 @@ const AppList = [
         src: buddywalk,
         endpoints: {
             main: '/api/buddy-walk-steps',
+            userData: '/api/get-group-data',
+            servicesData: '/api/get-group-member-data',
         },
     },
 ];
