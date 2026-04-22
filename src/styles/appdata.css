@@ -87,11 +87,7 @@
     text-align: left;
     margin-bottom: 10px !important;
     line-height: 1.2 !important;
-    /* Prevent very long app names from breaking layout */
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: min(60vw, 500px);
 }
 
 @media (min-width: 480px) {
