@@ -340,8 +340,15 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                     <TableBody>
                         {currentData.map((item) => {
                             const isUrl = item.photo_url === '' || item.photo_url === null;
-                            const userGroups = userData?.filter(g => g.created_by === item.id) || [];
-                            const userMembers = servicesData?.filter(m => m.user_id === item.id) || [];
+
+                            const userJoinings = servicesData?.filter(m => m.user_id === item.id) || [];
+                            const totalGroupsCount = userJoinings.length;
+
+                            const userGroupIds = userJoinings.map(m => m.group_id);
+
+                            const totalMembersCount = servicesData?.filter(m =>
+                                userGroupIds.includes(m.group_id)
+                            ).length || 0;
 
                             return (
                                 <TableRow key={item.id} sx={bodyRowSx}>
@@ -367,12 +374,17 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>{item.name}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.email}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.country || '-'}</TableCell>
+
+                                    {/* Total Groups (Created + Joined) */}
                                     <TableCell sx={bodyCellSx}>
-                                        <Chip label={userGroups.length} size="medium" sx={countChipSx} />
+                                        <Chip label={totalGroupsCount} size="medium" sx={countChipSx} />
                                     </TableCell>
+
+                                    {/* Total Members across all his groups */}
                                     <TableCell sx={bodyCellSx}>
-                                        <Chip label={userMembers.length} size="medium" sx={countChipSx} />
+                                        <Chip label={totalMembersCount} size="medium" sx={{ ...countChipSx, backgroundColor: 'rgba(168, 85, 247, 0.1)', color: '#c084fc' }} />
                                     </TableCell>
+
                                     <TableCell sx={bodyCellSx}>
                                         <span style={dateStyle}>{formatDate(item.created_at)}</span>
                                     </TableCell>
