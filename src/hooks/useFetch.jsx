@@ -9,12 +9,16 @@ const EXTRACT_MAP = {
     '/api/money-collect-data':      (r) => r.moneycollectlist,
     '/api/guest-entries':           (r) => r.guestEntries,
     '/api/guest-entries-data':      (r) => r.visitorslist,
-    '/api/dance-studio-users':         (r) => r.danceStudioList,
+    '/api/dance-studio-users':      (r) => r.danceStudioList,
     '/api/buddy-walk-steps':         (r) => r.stepslist,
     '/api/get-group-data':           (r) => r.grouplist,
     '/api/get-group-member-data':    (r) => r.groupmemberlist,
     '/api/user-steps':               (r) => r.steps,
-
+    '/api/debt-active-users':        (r) => r.debtactiveUsers,
+    '/api/mechanic-active-users':        (r) => r.mechanicactiveUsers,
+    '/api/smart-active-users':        (r) => r.smartactiveCount,
+    '/api/guest-active-users':        (r) => r.guestactiveUsers,
+    '/api/buddy-active-users':        (r) => r.buddyactiveCount,
 };
 
 export default function useFetch(apiEndpoint) {

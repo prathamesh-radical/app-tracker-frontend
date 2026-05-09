@@ -13,6 +13,7 @@ const AppList = [
         src: debtTrackerImage,
         endpoints: {
             main: '/api/debtors',
+            activeUsers: '/api/debt-active-users',
         },
     },
     {
@@ -24,6 +25,7 @@ const AppList = [
             main: '/api/mechanic',
             userData: '/api/mechanic-data',
             servicesData: '/api/mechanic-services-data',
+            activeUsers: '/api/mechanic-active-users',
         },
     },
     {
@@ -34,6 +36,7 @@ const AppList = [
         endpoints: {
             main: '/api/money-collect',
             userData: '/api/money-collect-data',
+            activeUsers: '/api/smart-active-users',
         },
     },
     {
@@ -44,6 +47,7 @@ const AppList = [
         endpoints: {
             main: '/api/guest-entries',
             userData: '/api/guest-entries-data',
+            activeUsers: '/api/guest-active-users',
         },
     },
     {
@@ -65,6 +69,7 @@ const AppList = [
             userData: '/api/get-group-data',
             servicesData: '/api/get-group-member-data',
             stepsData: '/api/user-steps',
+            activeUsers: '/api/buddy-active-users',
         },
     },
 ];

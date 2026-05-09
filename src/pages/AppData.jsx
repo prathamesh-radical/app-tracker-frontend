@@ -13,13 +13,14 @@ export default function AppData() {
     const { appid } = useParams();
     const appName = location.state?.appName;
 
-    const { app, data, loading, error, userData, servicesData, stepsData, secondaryLoading } = useAppData(appid);
+    const { app, data, loading, error, userData, servicesData, stepsData, activeCount, secondaryLoading } = useAppData(appid);
 
     const sortedData = data?.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)) || [];
     const totalPages = Math.ceil(sortedData.length / itemsPerPage);
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentData = sortedData.slice(startIndex, endIndex);
+    const isApp = app?.appName === 'Dance Studio Management';
 
     let adminId = startIndex + 1;
 
@@ -39,9 +40,25 @@ export default function AppData() {
                     </Box>
                 </Box>
 
+                {!isApp && (
+                    <Card className="stat-card" elevation={0}>
+                        <CardContent className="stat-card-content">
+                            <Typography className="stat-label">Active Users</Typography>
+                            <Typography className="stat-value">
+                                {loading
+                                    ? <CircularProgress size={20} color="secondary" />
+                                    : error
+                                        ? <MdOutlineErrorOutline color="red" />
+                                        : activeCount || 0
+                                }
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                )}
+
                 <Card className="stat-card" elevation={0}>
                     <CardContent className="stat-card-content">
-                        <Typography className="stat-label">Total Admins</Typography>
+                        <Typography className="stat-label">Total Users</Typography>
                         <Typography className="stat-value">
                             {loading
                                 ? <CircularProgress size={20} color="secondary" />
