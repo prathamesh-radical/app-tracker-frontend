@@ -8,6 +8,7 @@ export default function useAppData(appId) {
     const main     = useFetch(endpoints.main         ?? null);
     const user     = useFetch(endpoints.userData     ?? null);
     const services = useFetch(endpoints.servicesData ?? null);
+    const steps    = useFetch(endpoints.stepsData    ?? null); 
 
     if (!app) {
         return {
@@ -23,10 +24,12 @@ export default function useAppData(appId) {
 
     const needsUserData     = Boolean(endpoints.userData);
     const needsServicesData = Boolean(endpoints.servicesData);
+    const needsStepsData    = Boolean(endpoints.stepsData);
 
     const secondaryLoading =
         (needsUserData     && user.loading) ||
-        (needsServicesData && services.loading);
+        (needsServicesData && services.loading) ||
+        (needsStepsData    && steps.loading);
 
     return {
         app,
@@ -35,6 +38,7 @@ export default function useAppData(appId) {
         error:        main.error,
         userData:     needsUserData     ? user.data     : null,
         servicesData: needsServicesData ? services.data : null,
+        stepsData:    needsStepsData    ? steps.data    : null,
         secondaryLoading,
     };
 }

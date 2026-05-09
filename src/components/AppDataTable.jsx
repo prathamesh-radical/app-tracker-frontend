@@ -4,7 +4,7 @@ import {
 } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
 
-export default function AppDataTable({ app, adminId, Paper, currentData, userData, servicesData }) {
+export default function AppDataTable({ app, adminId, Paper, currentData, userData, servicesData, stepsData }) {
     const navigate = useNavigate();
 
     if (app?.appName === 'My Debt Tracker') {
@@ -334,11 +334,16 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             <TableCell sx={headCellSx}>Country</TableCell>
                             <TableCell sx={headCellSx}>No. of Grp</TableCell>
                             <TableCell sx={headCellSx}>No. of Members</TableCell>
+                            <TableCell sx={headCellSx}>Monthly Steps</TableCell>
                             <TableCell sx={headCellSx}>Created At</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {currentData.map((item) => {
+                            const now = new Date();
+                            const currentMonth = now.getMonth();
+                            const currentYear = now.getFullYear();
+
                             const isUrl = item.photo_url === '' || item.photo_url === null;
 
                             const userJoinings = servicesData?.filter(m => m.user_id === item.id) || [];
@@ -349,6 +354,17 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             const totalMembersCount = servicesData?.filter(m =>
                                 userGroupIds.includes(m.group_id)
                             ).length || 0;
+
+                            const userMonthlySteps = stepsData?.filter(s => {
+                                const stepDate = new Date(s.step_date);
+                                return (
+                                    s.user_id === item.id && 
+                                    stepDate.getMonth() === currentMonth && 
+                                    stepDate.getFullYear() === currentYear
+                                );
+                            }) || [];
+
+                            const totalSteps = userMonthlySteps.reduce((sum, current) => sum + (current.step_count || 0), 0);
 
                             return (
                                 <TableRow key={item.id} sx={bodyRowSx}>
@@ -374,17 +390,16 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     <TableCell sx={bodyCellSx}>{item.name}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.email}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.country || '-'}</TableCell>
-
-                                    {/* Total Groups (Created + Joined) */}
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={totalGroupsCount} size="medium" sx={countChipSx} />
                                     </TableCell>
-
-                                    {/* Total Members across all his groups */}
                                     <TableCell sx={bodyCellSx}>
                                         <Chip label={totalMembersCount} size="medium" sx={{ ...countChipSx, backgroundColor: 'rgba(168, 85, 247, 0.1)', color: '#c084fc' }} />
                                     </TableCell>
 
+                                    <TableCell sx={bodyCellSx}>
+                                        <Chip label={totalSteps} size="medium" sx={{ ...countChipSx, backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.2)' }} />
+                                    </TableCell>
                                     <TableCell sx={bodyCellSx}>
                                         <span style={dateStyle}>{formatDate(item.created_at)}</span>
                                     </TableCell>

@@ -13,6 +13,7 @@ const EXTRACT_MAP = {
     '/api/buddy-walk-steps':         (r) => r.stepslist,
     '/api/get-group-data':           (r) => r.grouplist,
     '/api/get-group-member-data':    (r) => r.groupmemberlist,
+    '/api/user-steps':               (r) => r.steps,
 
 };
 
@@ -22,7 +23,6 @@ export default function useFetch(apiEndpoint) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // null endpoint = this app doesn't need this data
         if (!apiEndpoint) return;
 
         let cancelled = false;

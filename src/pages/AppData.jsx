@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CircularProgress, Typography, Paper, Pagination } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, CircularProgress, Typography, Paper, Pagination } from "@mui/material";
 import "../styles/appdata.css";
 import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
@@ -13,26 +13,30 @@ export default function AppData() {
     const { appid } = useParams();
     const appName = location.state?.appName;
 
-    const { app, data, loading, error, userData, servicesData, secondaryLoading } = useAppData(appid);
+    const { app, data, loading, error, userData, servicesData, stepsData, secondaryLoading } = useAppData(appid);
 
     const sortedData = data?.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)) || [];
     const totalPages = Math.ceil(sortedData.length / itemsPerPage);
     const startIndex = (page - 1) * itemsPerPage;
-    const endIndex   = startIndex + itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
     const currentData = sortedData.slice(startIndex, endIndex);
 
     let adminId = startIndex + 1;
 
     return (
         <Box className="appdata-container">
-
             {/* ── Header ── */}
             <Box className="app-header-wrapper">
-                <Box sx={{ minWidth: 0, flex: "1 1 auto" }}>
-                    <Typography variant="h4" className="app-title">
-                        {appName ?? app?.appName}
-                    </Typography>
-                    <Box className="header-underline" />
+                <Box sx={{ minWidth: 0, flex: "1 1 auto", display: 'flex', flexDirection: 'row', gap: '20px' }}>
+                    <Box className="icon-container">
+                        <CardMedia component="img" image={app.src} alt={app.appName} className="app-media" />
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <Typography variant="h4" className="app-title">
+                            {appName ?? app?.appName}
+                        </Typography>
+                        <Box className="header-underline" />
+                    </Box>
                 </Box>
 
                 <Card className="stat-card" elevation={0}>
@@ -70,6 +74,7 @@ export default function AppData() {
                             currentData={currentData}
                             userData={userData}
                             servicesData={servicesData}
+                            stepsData={stepsData}
                         />
 
                         {totalPages > 1 && (

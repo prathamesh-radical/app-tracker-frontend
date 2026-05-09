@@ -1,5 +1,6 @@
-import { Box, Card, CardActionArea, CardContent, CardMedia, Typography, TextField, InputAdornment } from "@mui/material";
+import { Box, Card, CardActionArea, CardContent, CardMedia, Typography, TextField, InputAdornment, ListItemIcon } from "@mui/material";
 import { CiSearch } from "react-icons/ci";
+import { IoMdApps } from "react-icons/io";
 import "../styles/home.css";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import AppList from "../utils/AppList";
 
 export default function Home() {
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [searchQuery, setSearchQuery]   = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     const filteredAppList = useMemo(() => {
@@ -22,9 +23,32 @@ export default function Home() {
     return (
         <Box className="home-root">
             <Box className="home-header">
-                <Box sx={{ position: "relative", zIndex: 10 }}>
-                    <Typography variant="h4" className="section-title">Select an App</Typography>
-                    <Box className="section-underline" />
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    position: "relative",
+                    zIndex: 10,
+                    width: "100%",
+                    maxWidth: "400px",
+                    gap: { xs: "8px", sm: "12px" }
+                }}>
+                    <Box
+                        component={IoMdApps}
+                        sx={{
+                            color: "#fff",
+                            // Responsive Sizes:
+                            fontSize: {
+                                xs: "40px",  // Mobile
+                                sm: "50px",  // Tablet
+                                md: "60px"   // Desktop
+                            }
+                        }}
+                    />
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography variant="h4" className="section-title">Select an App</Typography>
+                        <Box className="section-underline" />
+                    </Box>
                 </Box>
 
                 <Box className="header-actions">
@@ -43,23 +67,37 @@ export default function Home() {
                         }}
                         sx={{
                             width: "100%",
-                            maxWidth: "300px",
+                            maxWidth: "400px",
                             "& .MuiOutlinedInput-root": {
                                 backgroundColor: "rgba(15, 23, 42, 0.8)",
-                                borderColor: "rgba(148, 163, 184, 0.3)",
                                 borderRadius: "10px",
                                 color: "#e2e8f0",
                                 backdropFilter: "blur(10px)",
                                 transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                                "&:hover": { borderColor: "rgba(148, 163, 184, 0.6)", backgroundColor: "rgba(15, 23, 42, 0.95)" },
-                                "&.Mui-focused": { borderColor: "#3b82f6", backgroundColor: "rgba(15, 23, 42, 0.98)", boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" },
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: "rgba(148, 163, 184, 0.3)",
+                                    transition: "border-color 0.3s ease"
+                                },
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: "rgba(59, 130, 246, 0.4)"
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: "#3b82f6",
+                                    borderWidth: "1px"
+                                },
+                                "&:hover": {
+                                    backgroundColor: "rgba(15, 23, 42, 0.95)"
+                                },
+                                "&.Mui-focused": {
+                                    backgroundColor: "rgba(15, 23, 42, 0.98)",
+                                    boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)"
+                                },
                             },
                             "& .MuiOutlinedInput-input": {
                                 padding: "15px 15px 15px 1px",
                                 fontSize: "14px",
                                 "&::placeholder": { color: "rgba(148, 163, 184, 0.6)", opacity: 1 },
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": { borderColor: "rgba(148, 163, 184, 0.3)" },
+                            }
                         }}
                     />
 

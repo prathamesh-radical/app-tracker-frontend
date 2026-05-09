@@ -64,6 +64,7 @@ const AppList = [
             main: '/api/buddy-walk-steps',
             userData: '/api/get-group-data',
             servicesData: '/api/get-group-member-data',
+            stepsData: '/api/user-steps',
         },
     },
 ];
