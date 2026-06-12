@@ -93,6 +93,7 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                     <TableHead>
                         <TableRow sx={headRowSx}>
                             <TableCell sx={headCellSx}>#</TableCell>
+                            <TableCell sx={headCellSx}>Profile</TableCell>
                             <TableCell sx={headCellSx}>Shop Name</TableCell>
                             <TableCell sx={headCellSx}>First Name</TableCell>
                             <TableCell sx={headCellSx}>Last Name</TableCell>
@@ -110,6 +111,12 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             const customersData = userData?.filter(m => m.admin_id === item.id);
                             const filteredServices = servicesData?.filter(s => s.admin_id === item.id);
 
+                            const isUrl = !item.profile_url ||
+                                item.profile_url === '' ||
+                                item.profile_url === null ||
+                                item.profile_url === 'Null' ||
+                                item.profile_url === undefined;
+
                             return (
                                 <TableRow
                                     key={item.id}
@@ -125,6 +132,36 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     )}
                                 >
                                     <TableCell sx={idCellSx}>{adminId++}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {isUrl ? (
+                                            <Box sx={{
+                                                width: 40, height: 40, borderRadius: '50%',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                                                color: '#fff', fontSize: '14px', fontWeight: 'bold',
+                                                textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.2)'
+                                            }}>
+                                                {getInitials(item.firstName, item.lastName)}
+                                            </Box>
+                                        ) : (
+                                            <Box sx={{ width: 40, height: 40, position: 'relative' }}>
+                                                <Box
+                                                    component="img"
+                                                    src={item.profile_url}
+                                                    alt={item.firstName || 'User'}
+                                                    referrerPolicy="no-referrer"
+                                                    sx={{
+                                                        width: 40,
+                                                        height: 40,
+                                                        borderRadius: '50%',
+                                                        objectFit: 'cover',
+                                                        display: 'block'
+                                                    }}
+                                                    onError={(e) => {e.target.style.display = 'none';}}
+                                                />
+                                            </Box>
+                                        )}
+                                    </TableCell>
                                     <TableCell sx={bodyCellSx}>{item.shop_name ? item.shop_name : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.firstName ? item.firstName : '-'}</TableCell>
                                     <TableCell sx={bodyCellSx}>{item.lastName ? item.lastName : '-'}</TableCell>
@@ -358,8 +395,8 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                             const userMonthlySteps = stepsData?.filter(s => {
                                 const stepDate = new Date(s.step_date);
                                 return (
-                                    s.user_id === item.id && 
-                                    stepDate.getMonth() === currentMonth && 
+                                    s.user_id === item.id &&
+                                    stepDate.getMonth() === currentMonth &&
                                     stepDate.getFullYear() === currentYear
                                 );
                             }) || [];
@@ -405,6 +442,61 @@ export default function AppDataTable({ app, adminId, Paper, currentData, userDat
                                     </TableCell>
                                 </TableRow>
                             );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
+
+    if (app?.appName === 'RG Mechanic Invoice Manager') {
+        return (
+            <TableContainer component={Paper} sx={tableContainerSx}>
+                <Table>
+                    <TableHead>
+                        <TableRow sx={headRowSx}>
+                            <TableCell sx={headCellSx}>#</TableCell>
+                            <TableCell sx={headCellSx}>Profile</TableCell>
+                            <TableCell sx={headCellSx}>Owner Name</TableCell>
+                            <TableCell sx={headCellSx}>Email</TableCell>
+                            <TableCell sx={headCellSx}>Created At</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {currentData.map((item) => {
+                            const isUrl = item.profile_photo_url === '' || item.profile_photo_url === null;
+                            return (
+                                <TableRow key={item.id} sx={bodyRowSx}>
+                                    <TableCell sx={idCellSx}>{adminId++}</TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {isUrl ? (
+                                            <Box sx={{
+                                                width: 40, height: 40, borderRadius: '50%',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                                                color: '#fff', fontSize: '14px', fontWeight: 'bold',
+                                                textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.2)'
+                                            }}>
+                                                {getCombinedInitials(item.name)}
+                                            </Box>
+                                        ) : (
+                                            <Box component="img" src={item.photo_url} alt={item.name}
+                                                sx={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
+                                                onError={(e) => { e.target.style.display = 'none'; }}
+                                            />
+                                        )}
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        {item.name ? item.name : 0}
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <Chip label={item.email || '-'} size="medium" sx={emailChipSx} />
+                                    </TableCell>
+                                    <TableCell sx={bodyCellSx}>
+                                        <span style={dateStyle}>{formatDate(item.created_at || item.date)}</span>
+                                    </TableCell>
+                                </TableRow>
+                            )
                         })}
                     </TableBody>
                 </Table>

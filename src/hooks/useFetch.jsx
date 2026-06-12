@@ -19,6 +19,8 @@ const EXTRACT_MAP = {
     '/api/smart-active-users':        (r) => r.smartactiveCount,
     '/api/guest-active-users':        (r) => r.guestactiveUsers,
     '/api/buddy-active-users':        (r) => r.buddyactiveCount,
+    '/api/get-rg-users':        (r) => r.rgmechanic,
+    '/api/rg-active-users':        (r) => r.rgmechanicactiveUsers,
 };
 
 export default function useFetch(apiEndpoint) {

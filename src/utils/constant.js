@@ -115,7 +115,6 @@ export const getCombinedInitials = (name) => {
 };
 
 export const getInitials = (firstName, lastName) => {
-    // Agar dono fields empty hain
     if (!firstName && !lastName) return "?";
 
     const fInitial = firstName ? firstName.trim()[0] : "";

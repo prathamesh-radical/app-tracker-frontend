@@ -4,6 +4,7 @@ import moneycollection from "../assets/moneycollection.jpg";
 import visitormanagement from "../assets/visitormanagement.png";
 import dancestudiomanager from "../assets/dancestudiomanager.jpg";
 import buddywalk from "../assets/buddywalk.png";
+import mechanic from "../assets/mechanic.png";
 
 const AppList = [
     {
@@ -70,6 +71,16 @@ const AppList = [
             servicesData: '/api/get-group-member-data',
             stepsData: '/api/user-steps',
             activeUsers: '/api/buddy-active-users',
+        },
+    },
+    {
+        id: 7,
+        appName: 'RG Mechanic Invoice Manager',
+        appId: 'com.radicalapp.mechanic',
+        src: mechanic,
+        endpoints: {
+            main: '/api/get-rg-users',
+            activeUsers: '/api/rg-active-users',
         },
     },
 ];
