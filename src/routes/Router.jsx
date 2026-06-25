@@ -1,13 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
 import AppData from "../pages/AppData";
-import MechanicAppDetails from "../pages/MechanicAppDetails";
-import SmartMoneyAppDetails from "../pages/SmartMoneyAppDetails";
-import GuestEntryAppDetails from "../pages/GuestEntryAppDetails";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import Home from "../pages/Home";
+import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Apps from "../pages/Apps";
 
 export const router = createBrowserRouter(
   [
@@ -18,11 +16,9 @@ export const router = createBrowserRouter(
         { path: "/", element: <Login /> },
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
-        { path: "/home", element: <ProtectedRoute><Home /></ProtectedRoute> },
+        { path: "/home", element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+        { path: "/apps", element: <ProtectedRoute><Apps /></ProtectedRoute> },
         { path: "/appdata/:appid", element: <ProtectedRoute><AppData /></ProtectedRoute> },
-        { path: "/appdata/mechanic/:appid/:userid", element: <ProtectedRoute><MechanicAppDetails /></ProtectedRoute> },
-        { path: "/appdata/smartmoney/:appid/:userid", element: <ProtectedRoute><SmartMoneyAppDetails /></ProtectedRoute> },
-        { path: "/appdata/guestentry/:appid/:userid", element: <ProtectedRoute><GuestEntryAppDetails /></ProtectedRoute> },
       ],
     },
   ],

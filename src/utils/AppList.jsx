@@ -1,17 +1,18 @@
 import debtTrackerImage from "../assets/debttracker.png";
-import invoicemanager from "../assets/invoicemanager.png";
+import invoiceImage from "../assets/invoice.png";
 import moneycollection from "../assets/moneycollection.jpg";
 import visitormanagement from "../assets/visitormanagement.png";
 import dancestudiomanager from "../assets/dancestudiomanager.jpg";
 import buddywalk from "../assets/buddywalk.png";
 import mechanic from "../assets/mechanic.png";
 
-const AppList = [
+const AppList = (debtorsData, mechanicData, smartMoneyData, visitorsData, danceData, buddyWalkData, rgMechanicData) => [
     {
         id: 1,
         appName: 'My Debt Tracker',
         appId: 'com.peccular.debttracker',
         src: debtTrackerImage,
+        totalLength: debtorsData?.length,
         endpoints: {
             main: '/api/debtors',
             activeUsers: '/api/debt-active-users',
@@ -21,7 +22,8 @@ const AppList = [
         id: 2,
         appName: 'Mechanic Invoice Manager',
         appId: 'com.peccular.mechanic',
-        src: invoicemanager,
+        src: invoiceImage,
+        totalLength: mechanicData?.length,
         endpoints: {
             main: '/api/mechanic',
             userData: '/api/mechanic-data',
@@ -34,6 +36,7 @@ const AppList = [
         appName: 'Smart Money Collection',
         appId: 'com.peccular.moneycollect',
         src: moneycollection,
+        totalLength: smartMoneyData?.length,
         endpoints: {
             main: '/api/money-collect',
             userData: '/api/money-collect-data',
@@ -45,6 +48,7 @@ const AppList = [
         appName: 'Entry Book Visitor Management',
         appId: 'com.peccular.entrybook',
         src: visitormanagement,
+        totalLength: visitorsData?.length,
         endpoints: {
             main: '/api/guest-entries',
             userData: '/api/guest-entries-data',
@@ -56,6 +60,7 @@ const AppList = [
         appName: 'Dance Studio Management',
         appId: 'com.peccular.dancestudiomanager',
         src: dancestudiomanager,
+        totalLength: danceData?.length,
         endpoints: {
             main: '/api/dance-studio-users',
         },
@@ -65,6 +70,7 @@ const AppList = [
         appName: 'BuddyWalk Group steps Counter',
         appId: 'com.radicalapp.buddywalk',
         src: buddywalk,
+        totalLength: buddyWalkData?.length,
         endpoints: {
             main: '/api/buddy-walk-steps',
             userData: '/api/get-group-data',
@@ -78,6 +84,7 @@ const AppList = [
         appName: 'RG Mechanic Invoice Manager',
         appId: 'com.radicalapp.mechanic',
         src: mechanic,
+        totalLength: rgMechanicData?.length,
         endpoints: {
             main: '/api/get-rg-users',
             activeUsers: '/api/rg-active-users',

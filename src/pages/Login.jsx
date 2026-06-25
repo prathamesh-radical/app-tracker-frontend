@@ -127,12 +127,6 @@ export default function Login() {
                                 ) : "Sign In"}
                             </button>
                         </Box>
-
-                        {/* Footer */}
-                        {/* <Typography className="footer-text">
-                            Don't have an account?{" "}
-                            <Link href="/register" underline="none" className="signup-link">Create one</Link>
-                        </Typography> */}
                     </CardContent>
                 </Card>
             </Box>

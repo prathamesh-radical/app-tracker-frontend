@@ -1,4 +1,11 @@
 import currency from 'currency.js';
+import debtTrackerImage from "../assets/debttracker.png";
+import invoiceImage from "../assets/invoice.png";
+import moneycollection from "../assets/moneycollection.jpg";
+import visitormanagement from "../assets/visitormanagement.png";
+import dancestudiomanager from "../assets/dancestudiomanager.jpg";
+import buddywalk from "../assets/buddywalk.png";
+import mechanic from "../assets/mechanic.png";
 
 export const tableContainerSx = {
     background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.5) 100%)',
@@ -99,8 +106,8 @@ export function formatCurrency(amount, currencyCode) {
         style: 'currency',
         currency: currencyCode,
     })
-    .formatToParts(0)
-    .find(part => part.type === 'currency')?.value || currencyCode;
+        .formatToParts(0)
+        .find(part => part.type === 'currency')?.value || currencyCode;
 
     return currency(amount, { symbol, precision: 2 }).format();
 }
@@ -114,11 +121,166 @@ export const getCombinedInitials = (name) => {
     return parts[0][0].toUpperCase();
 };
 
-export const getInitials = (firstName, lastName) => {
+export const getInitials = (user = {}) => {
+    const firstName = user.firstName || user.firstname || user?.first_name || "";
+    const lastName = user.lastName || user.lastname || user?.last_name ||  "";
+
     if (!firstName && !lastName) return "?";
 
-    const fInitial = firstName ? firstName.trim()[0] : "";
-    const lInitial = lastName ? lastName.trim()[0] : "";
+    const fInitial = firstName.trim()?.charAt(0) || "";
+    const lInitial = lastName.trim()?.charAt(0) || "";
 
     return (fInitial + lInitial).toUpperCase() || "?";
 };
+
+export const allApps = (
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicLoading, rgMechanicActiveLoading
+) => [
+    {
+        id: 1,
+        name: "My Debt Tracker",
+        packageName: "com.peccular.debttracker",
+        icon: debtTrackerImage,
+        publisher: "Peccular",
+        publisherColor: "blue",
+        stats: {
+            allUsers: debtorsData?.length,
+            activeUsers: debtorsActiveData?.length || 0,
+            premium: debtorsData?.filter(item => item?.is_premium === 1)?.length || 0,
+        },
+        mapping: {
+            dataKey: debtorsData,
+            loadingKey: debtorsLoading + debtorsActiveLoading,
+            activeCountKey: debtorsActiveData,
+            userDataKey: null,
+            serviceDataKey: null,
+            stepsDataKey: null,
+        }
+    },
+    {
+        id: 2,
+        name: "Mechanic Invoice Manager",
+        packageName: "com.peccular.mechanic",
+        icon: invoiceImage,
+        publisher: "Peccular",
+        publisherColor: "blue",
+        stats: {
+            allUsers: mechanicData?.length,
+            activeUsers: mechanicActiveData?.length || 0,
+            premium: mechanicData?.filter(item => item?.is_premium === 1)?.length || 0
+        },
+        mapping: {
+            dataKey: mechanicData,
+            loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading,
+            activeCountKey: mechanicActiveData,
+            userDataKey: mechanicUsersData,
+            serviceDataKey: mechanicServiceData,
+            stepsDataKey: null,
+        }
+    },
+    {
+        id: 3,
+        name: "Smart Money Collection",
+        packageName: "com.peccular.moneycollect",
+        icon: moneycollection,
+        publisher: "Peccular",
+        publisherColor: "blue",
+        stats: {
+            allUsers: smartMoneyData?.length,
+            activeUsers: smartActiveData?.length || 0,
+            premium: "-"
+        },
+        mapping: {
+            dataKey: smartMoneyData,
+            loadingKey: smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading,
+            activeCountKey: smartActiveData,
+            userDataKey: smartMoneyUsersData,
+            serviceDataKey: null,
+            stepsDataKey: null,
+        }
+    },
+    {
+        id: 4,
+        name: "Entry Book Visitor Manager",
+        packageName: "com.peccular.entrybook",
+        icon: visitormanagement,
+        publisher: "Peccular",
+        publisherColor: "blue",
+        stats: {
+            allUsers: visitorsData?.length,
+            activeUsers: visitorsActiveData?.length || 0,
+            premium: "-"
+        },
+        mapping: {
+            dataKey: visitorsData,
+            loadingKey: visitorsLoading + visitorsUserLoading + visitorsActiveLoading,
+            activeCountKey: visitorsActiveData,
+            userDataKey: visitorsUserData,
+            serviceDataKey: null,
+            stepsDataKey: null,
+        }
+    },
+    {
+        id: 5,
+        name: "Dance Studio Management",
+        packageName: "com.peccular.dancestudiomanager",
+        icon: dancestudiomanager,
+        publisher: "Peccular",
+        publisherColor: "blue",
+        stats: {
+            allUsers: danceData?.length || 0,
+            activeUsers: "-",
+            premium: "-"
+        },
+        mapping: {
+            dataKey: danceData,
+            loadingKey: danceLoading,
+            activeCountKey: null,
+            userDataKey: null,
+            serviceDataKey: null,
+            stepsDataKey: null,
+        }
+    },
+    {
+        id: 6,
+        name: "BuddyWalk Group Steps Counter",
+        packageName: "com.radicalapp.buddywalk",
+        icon: buddywalk,
+        publisher: "Radical Global",
+        publisherColor: "purple",
+        stats: {
+            allUsers: buddyWalkData?.length,
+            activeUsers: buddyActiveData?.length || 0,
+            premium: "-"
+        },
+        mapping: {
+            dataKey: buddyWalkData,
+            loadingKey: buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading,
+            activeCountKey: buddyActiveData,
+            userDataKey: buddyGroupData,
+            serviceDataKey: buddyGroupMemberData,
+            stepsDataKey: buddyStepsData,
+        }
+    },
+    {
+        id: 7,
+        name: "RG Mechanic Invoice Manager",
+        packageName: "com.radicalapp.mechanic",
+        icon: mechanic,
+        publisher: "Radical Global",
+        publisherColor: "purple",
+        stats: {
+            allUsers: rgMechanicData?.length,
+            activeUsers: rgMechanicActiveData?.length,
+            premium: "-"
+        },
+        mapping: {
+            dataKey: rgMechanicData,
+            loadingKey: rgMechanicLoading + rgMechanicActiveLoading,
+            activeCountKey: rgMechanicActiveData,
+            userDataKey: null,
+            serviceDataKey: null,
+            stepsDataKey: null,
+        }
+    }
+];

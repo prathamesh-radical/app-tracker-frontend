@@ -2,7 +2,7 @@ import useFetch from "./useFetch";
 import AppList from "../utils/AppList";
 
 export default function useAppData(appId) {
-    const app = AppList.find((a) => a.id == appId);
+    const app = AppList?.find((a) => a.id == appId);
     const endpoints = app?.endpoints ?? {};
 
     const main         = useFetch(endpoints.main         ?? null);

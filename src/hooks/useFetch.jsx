@@ -19,8 +19,8 @@ const EXTRACT_MAP = {
     '/api/smart-active-users':        (r) => r.smartactiveCount,
     '/api/guest-active-users':        (r) => r.guestactiveUsers,
     '/api/buddy-active-users':        (r) => r.buddyactiveCount,
-    '/api/get-rg-users':        (r) => r.rgmechanic,
-    '/api/rg-active-users':        (r) => r.rgmechanicactiveUsers,
+    '/api/get-rg-mechanic-users':        (r) => r.rgmechanic,
+    '/api/rg-mechanic-active-users':        (r) => r.rgmechanicactiveUsers,
 };
 
 export default function useFetch(apiEndpoint) {
@@ -61,7 +61,7 @@ export default function useFetch(apiEndpoint) {
                 if (!cancelled) setLoading(false);
             }
         };
-
+        
         fetchData();
         return () => { cancelled = true; };
     }, [apiEndpoint]);
