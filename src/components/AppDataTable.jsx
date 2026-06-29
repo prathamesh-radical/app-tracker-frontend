@@ -132,6 +132,16 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
         "com.radicalapp.mechanic"
     ].includes(packageName);
 
+    let tableCellHeading = 'Users';
+
+    if (packageName === "com.peccular.mechanic") {
+        tableCellHeading = 'Invoices';
+    } else if (packageName === "com.peccular.debttracker" || packageName === "com.peccular.entrybook") {
+        tableCellHeading = 'Entries';
+    } else {
+        tableCellHeading = 'Users';
+    }
+
     if (packageName === selectedData?.packageName) {
         return (
             <TableContainer component={Paper} sx={defaultTableSx.tableContainerSx}>
@@ -179,10 +189,8 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                                     <TableCell sx={defaultTableSx.headCellSx}>Monthly Steps</TableCell>
                                 </>
                             )}
-                            {packageName === "com.peccular.mechanic" ? (
-                                <TableCell sx={defaultTableSx.headCellSx}>Invoices</TableCell>
-                            ) : !hideUsersCount && (
-                                <TableCell sx={defaultTableSx.headCellSx}>Users</TableCell>
+                            {!hideUsersCount && (
+                                <TableCell sx={defaultTableSx.headCellSx}>{tableCellHeading}</TableCell>
                             )}
                             <TableCell sx={defaultTableSx.headCellSx}>Created At</TableCell>
                         </TableRow>
