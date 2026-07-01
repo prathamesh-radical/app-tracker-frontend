@@ -13,6 +13,7 @@ import {
     getCombinedInitials,
     getInitials,
 } from "../utils/constant";
+import { useNavigate } from "react-router-dom";
 
 const defaultTableSx = {
     tableContainerSx: {
@@ -104,6 +105,8 @@ const chipSx = {
 };
 
 export default function AppDataTable({ adminId, Paper, currentData, userData, servicesData, packageName, selectedData, stepsData }) {
+    const navigate = useNavigate();
+
     const ShowFullName = [
         "com.peccular.moneycollect",
         "com.radicalapp.buddywalk",
@@ -140,6 +143,21 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
         tableCellHeading = 'Entries';
     } else {
         tableCellHeading = 'Users';
+    }
+
+    function handleClick(filteredServices, currency, id) {
+        const stateData = {
+            filteredServices,
+            currency,
+            packageName,
+            selectedData
+        };
+
+        if (filteredServices?.length > 0 && packageName === "com.peccular.mechanic") {
+            navigate(`/appdata/com.peccular.mechanic/${id}`, {
+                state: stateData
+            });
+        }
     }
 
     if (packageName === selectedData?.packageName) {
@@ -236,7 +254,14 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                             const filteredServices = servicesData?.filter(s => s.admin_id === item.id);
 
                             return (
-                                <TableRow key={item.id} sx={defaultTableSx.bodyRowSx}>
+                                <TableRow
+                                    key={item.id}
+                                    sx={[defaultTableSx.bodyRowSx, {
+                                        cursor: (
+                                            filteredServices?.length > 0 && packageName === "com.peccular.mechanic") ? 'pointer' : 'default'
+                                    }]}
+                                    onClick={() => handleClick(filteredServices, item.currency, item?.id)}
+                                >
                                     <TableCell sx={defaultTableSx.idCellSx}>{adminId++}</TableCell>
                                     <TableCell sx={defaultTableSx.bodyCellSx}>
                                         {isUrl ? (

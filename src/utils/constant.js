@@ -6,6 +6,13 @@ import visitormanagement from "../assets/visitormanagement.png";
 import dancestudiomanager from "../assets/dancestudiomanager.jpg";
 import buddywalk from "../assets/buddywalk.png";
 import mechanic from "../assets/mechanic.png";
+import { HiUsers } from "react-icons/hi2";
+import { FaUserSecret } from "react-icons/fa6";
+import { GiQueenCrown } from "react-icons/gi";
+import { TbCrownOff } from "react-icons/tb";
+import { FaCheckCircle } from "react-icons/fa";
+import { MdDateRange } from "react-icons/md";
+import { MdOutlineErrorOutline } from "react-icons/md";
 
 export const tableContainerSx = {
     background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.5) 100%)',
@@ -123,7 +130,7 @@ export const getCombinedInitials = (name) => {
 
 export const getInitials = (user = {}) => {
     const firstName = user.firstName || user.firstname || user?.first_name || "";
-    const lastName = user.lastName || user.lastname || user?.last_name ||  "";
+    const lastName = user.lastName || user.lastname || user?.last_name || "";
 
     if (!firstName && !lastName) return "?";
 
@@ -136,151 +143,229 @@ export const getInitials = (user = {}) => {
 export const allApps = (
     debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicLoading, rgMechanicActiveLoading
 ) => [
-    {
-        id: 1,
-        name: "My Debt Tracker",
-        packageName: "com.peccular.debttracker",
-        icon: debtTrackerImage,
-        publisher: "Peccular",
-        publisherColor: "blue",
-        stats: {
-            allUsers: debtorsData?.length,
-            activeUsers: debtorsActiveData?.length || 0,
-            premium: debtorsData?.filter(item => item?.is_premium === 1)?.length || 0,
+        {
+            id: 1,
+            name: "My Debt Tracker",
+            packageName: "com.peccular.debttracker",
+            icon: debtTrackerImage,
+            publisher: "Peccular",
+            publisherColor: "blue",
+            stats: {
+                allUsers: debtorsData?.length,
+                activeUsers: debtorsActiveData?.length || 0,
+                premium: debtorsData?.filter(item => item?.is_premium === 1)?.length || 0,
+            },
+            mapping: {
+                dataKey: debtorsData,
+                loadingKey: debtorsLoading + debtorsActiveLoading,
+                activeCountKey: debtorsActiveData,
+                userDataKey: null,
+                serviceDataKey: null,
+                stepsDataKey: null,
+            }
         },
-        mapping: {
-            dataKey: debtorsData,
-            loadingKey: debtorsLoading + debtorsActiveLoading,
-            activeCountKey: debtorsActiveData,
-            userDataKey: null,
-            serviceDataKey: null,
-            stepsDataKey: null,
+        {
+            id: 2,
+            name: "Mechanic Invoice Manager",
+            packageName: "com.peccular.mechanic",
+            icon: invoiceImage,
+            publisher: "Peccular",
+            publisherColor: "blue",
+            stats: {
+                allUsers: mechanicData?.length,
+                activeUsers: mechanicActiveData?.length || 0,
+                premium: mechanicData?.filter(item => item?.subscription_status === 'premium_active')?.length || 0
+            },
+            mapping: {
+                dataKey: mechanicData,
+                loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading,
+                activeCountKey: mechanicActiveData,
+                userDataKey: mechanicUsersData,
+                serviceDataKey: mechanicServiceData,
+                stepsDataKey: null,
+            }
+        },
+        {
+            id: 3,
+            name: "Smart Money Collection",
+            packageName: "com.peccular.moneycollect",
+            icon: moneycollection,
+            publisher: "Peccular",
+            publisherColor: "blue",
+            stats: {
+                allUsers: smartMoneyData?.length,
+                activeUsers: smartActiveData?.length || 0,
+                premium: "-"
+            },
+            mapping: {
+                dataKey: smartMoneyData,
+                loadingKey: smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading,
+                activeCountKey: smartActiveData,
+                userDataKey: smartMoneyUsersData,
+                serviceDataKey: null,
+                stepsDataKey: null,
+            }
+        },
+        {
+            id: 4,
+            name: "Entry Book Visitor Manager",
+            packageName: "com.peccular.entrybook",
+            icon: visitormanagement,
+            publisher: "Peccular",
+            publisherColor: "blue",
+            stats: {
+                allUsers: visitorsData?.length,
+                activeUsers: visitorsActiveData?.length || 0,
+                premium: "-"
+            },
+            mapping: {
+                dataKey: visitorsData,
+                loadingKey: visitorsLoading + visitorsUserLoading + visitorsActiveLoading,
+                activeCountKey: visitorsActiveData,
+                userDataKey: visitorsUserData,
+                serviceDataKey: null,
+                stepsDataKey: null,
+            }
+        },
+        {
+            id: 5,
+            name: "Dance Studio Management",
+            packageName: "com.peccular.dancestudiomanager",
+            icon: dancestudiomanager,
+            publisher: "Peccular",
+            publisherColor: "blue",
+            stats: {
+                allUsers: danceData?.length || 0,
+                activeUsers: "-",
+                premium: "-"
+            },
+            mapping: {
+                dataKey: danceData,
+                loadingKey: danceLoading,
+                activeCountKey: null,
+                userDataKey: null,
+                serviceDataKey: null,
+                stepsDataKey: null,
+            }
+        },
+        {
+            id: 6,
+            name: "BuddyWalk Group Steps Counter",
+            packageName: "com.radicalapp.buddywalk",
+            icon: buddywalk,
+            publisher: "Radical Global",
+            publisherColor: "purple",
+            stats: {
+                allUsers: buddyWalkData?.length,
+                activeUsers: buddyActiveData?.length || 0,
+                premium: "-"
+            },
+            mapping: {
+                dataKey: buddyWalkData,
+                loadingKey: buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading,
+                activeCountKey: buddyActiveData,
+                userDataKey: buddyGroupData,
+                serviceDataKey: buddyGroupMemberData,
+                stepsDataKey: buddyStepsData,
+            }
+        },
+        {
+            id: 7,
+            name: "RG Mechanic Invoice Manager",
+            packageName: "com.radicalapp.mechanic",
+            icon: mechanic,
+            publisher: "Radical Global",
+            publisherColor: "purple",
+            stats: {
+                allUsers: rgMechanicData?.length,
+                activeUsers: rgMechanicActiveData?.length,
+                premium: "-"
+            },
+            mapping: {
+                dataKey: rgMechanicData,
+                loadingKey: rgMechanicLoading + rgMechanicActiveLoading,
+                activeCountKey: rgMechanicActiveData,
+                userDataKey: null,
+                serviceDataKey: null,
+                stepsDataKey: null,
+            }
         }
+    ];
+
+export const stats = (data, activeCountData, newUsersCount, trialUsersData, premiumUsersData, expiredUsersData) => [
+    {
+        id: 'totalUsers',
+        label: "Total Users",
+        text: 'Tap to view',
+        value: data?.length,
+        icon: HiUsers,
+        className: "total-users-icon"
     },
     {
-        id: 2,
-        name: "Mechanic Invoice Manager",
-        packageName: "com.peccular.mechanic",
-        icon: invoiceImage,
-        publisher: "Peccular",
-        publisherColor: "blue",
-        stats: {
-            allUsers: mechanicData?.length,
-            activeUsers: mechanicActiveData?.length || 0,
-            premium: mechanicData?.filter(item => item?.is_premium === 1)?.length || 0
-        },
-        mapping: {
-            dataKey: mechanicData,
-            loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading,
-            activeCountKey: mechanicActiveData,
-            userDataKey: mechanicUsersData,
-            serviceDataKey: mechanicServiceData,
-            stepsDataKey: null,
-        }
+        id: 'activeUsers',
+        label: "Active Users",
+        text: 'Tap to view',
+        value: activeCountData?.length || 0,
+        icon: HiUsers,
+        className: "active-users-icon"
     },
     {
-        id: 3,
-        name: "Smart Money Collection",
-        packageName: "com.peccular.moneycollect",
-        icon: moneycollection,
-        publisher: "Peccular",
-        publisherColor: "blue",
-        stats: {
-            allUsers: smartMoneyData?.length,
-            activeUsers: smartActiveData?.length || 0,
-            premium: "-"
-        },
-        mapping: {
-            dataKey: smartMoneyData,
-            loadingKey: smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading,
-            activeCountKey: smartActiveData,
-            userDataKey: smartMoneyUsersData,
-            serviceDataKey: null,
-            stepsDataKey: null,
-        }
+        id: 'newUsers',
+        label: "New Users",
+        text: 'Tap to view',
+        value: `${newUsersCount || 0} (Today)`,
+        icon: HiUsers,
+        className: "new-users-icon"
     },
     {
-        id: 4,
-        name: "Entry Book Visitor Manager",
-        packageName: "com.peccular.entrybook",
-        icon: visitormanagement,
-        publisher: "Peccular",
-        publisherColor: "blue",
-        stats: {
-            allUsers: visitorsData?.length,
-            activeUsers: visitorsActiveData?.length || 0,
-            premium: "-"
-        },
-        mapping: {
-            dataKey: visitorsData,
-            loadingKey: visitorsLoading + visitorsUserLoading + visitorsActiveLoading,
-            activeCountKey: visitorsActiveData,
-            userDataKey: visitorsUserData,
-            serviceDataKey: null,
-            stepsDataKey: null,
-        }
+        id: 'freeTrialUsers',
+        label: "Free Trial Users",
+        text: 'Tap to view',
+        value: trialUsersData?.length || 0,
+        icon: HiUsers,
+        className: "freetrial-users-icon"
     },
     {
-        id: 5,
-        name: "Dance Studio Management",
-        packageName: "com.peccular.dancestudiomanager",
-        icon: dancestudiomanager,
-        publisher: "Peccular",
-        publisherColor: "blue",
-        stats: {
-            allUsers: danceData?.length || 0,
-            activeUsers: "-",
-            premium: "-"
-        },
-        mapping: {
-            dataKey: danceData,
-            loadingKey: danceLoading,
-            activeCountKey: null,
-            userDataKey: null,
-            serviceDataKey: null,
-            stepsDataKey: null,
-        }
+        id: 'premiumUsers',
+        label: "Premium Users",
+        text: 'Tap to view',
+        value: premiumUsersData?.length || 0,
+        icon: GiQueenCrown,
+        className: "engagement-icon"
     },
     {
-        id: 6,
-        name: "BuddyWalk Group Steps Counter",
-        packageName: "com.radicalapp.buddywalk",
-        icon: buddywalk,
-        publisher: "Radical Global",
-        publisherColor: "purple",
-        stats: {
-            allUsers: buddyWalkData?.length,
-            activeUsers: buddyActiveData?.length || 0,
-            premium: "-"
-        },
-        mapping: {
-            dataKey: buddyWalkData,
-            loadingKey: buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading,
-            activeCountKey: buddyActiveData,
-            userDataKey: buddyGroupData,
-            serviceDataKey: buddyGroupMemberData,
-            stepsDataKey: buddyStepsData,
-        }
+        id: 'nonPremiumUsers',
+        label: "Premium Expired Users",
+        text: 'Tap to view',
+        value: expiredUsersData?.length || 0,
+        icon: TbCrownOff,
+        className: "updated-icon"
+    },
+];
+
+export const statsData = (totalServices, activeServices, inactiveServices) => [
+    {
+        id: 'totalServices',
+        icon: HiUsers,
+        label: 'Total Services',
+        value: totalServices,
+        text: 'Services',
+        className: 'total-users-icon'
     },
     {
-        id: 7,
-        name: "RG Mechanic Invoice Manager",
-        packageName: "com.radicalapp.mechanic",
-        icon: mechanic,
-        publisher: "Radical Global",
-        publisherColor: "purple",
-        stats: {
-            allUsers: rgMechanicData?.length,
-            activeUsers: rgMechanicActiveData?.length,
-            premium: "-"
-        },
-        mapping: {
-            dataKey: rgMechanicData,
-            loadingKey: rgMechanicLoading + rgMechanicActiveLoading,
-            activeCountKey: rgMechanicActiveData,
-            userDataKey: null,
-            serviceDataKey: null,
-            stepsDataKey: null,
-        }
-    }
+        id: 'activeServices',
+        icon: FaCheckCircle,
+        label: 'Active Services',
+        value: activeServices,
+        text: 'Active',
+        className: 'active-users-icon'
+    },
+    {
+        id: 'inactiveServices',
+        icon: MdOutlineErrorOutline,
+        label: 'Inactive Services',
+        value: inactiveServices,
+        text: 'Inactive',
+        className: 'engagement-icon'
+    },
 ];

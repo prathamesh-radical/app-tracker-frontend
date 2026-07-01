@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Apps from "../pages/Apps";
+import ServiceDataPage from "../pages/ServiceDataPage";
 
 export const router = createBrowserRouter(
   [
@@ -19,6 +20,7 @@ export const router = createBrowserRouter(
         { path: "/home", element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
         { path: "/apps", element: <ProtectedRoute><Apps /></ProtectedRoute> },
         { path: "/appdata/:appid", element: <ProtectedRoute><AppData /></ProtectedRoute> },
+        { path: "/appdata/:appid/:userid", element: <ProtectedRoute><ServiceDataPage /></ProtectedRoute> },
       ],
     },
   ],

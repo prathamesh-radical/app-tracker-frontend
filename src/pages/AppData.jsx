@@ -20,7 +20,7 @@ import { FaUserSecret } from "react-icons/fa6";
 import { GiQueenCrown } from "react-icons/gi";
 import { TbCrownOff } from "react-icons/tb";
 import "../styles/appdata.css";
-import { allApps } from "../utils/constant";
+import { allApps, stats } from "../utils/constant";
 import { MyContext } from "../context/context";
 
 export default function AppData() {
@@ -29,7 +29,7 @@ export default function AppData() {
     } = useContext(MyContext);
 
     const [page, setPage] = useState(1);
-    const [selectedStat, setSelectedStat] = useState('totalUsers'); // Track selected stat
+    const [selectedStat, setSelectedStat] = useState('totalUsers');
     const itemsPerPage = 100;
     const location = useLocation();
 
@@ -47,7 +47,7 @@ export default function AppData() {
             ? [...selectedData.mapping.dataKey].reverse()
             : [];
     }, [selectedData]);
-
+    console.log("data", data);
     const isLoading = useMemo(() => {
         return selectedData ? selectedData?.mapping?.loadingKey : false;
     }, [selectedData]);
@@ -84,12 +84,16 @@ export default function AppData() {
         }) || [];
     }, [data]);
 
-    const premiumUsersData = useMemo(() => {
-        return data?.filter(item => item?.is_premium === 1) || [];
+    const trialUsersData = useMemo(() => {
+        return data?.filter(item => item?.subscription_status === 'trial_active') || [];
     }, [data]);
 
-    const nonPremiumUsersData = useMemo(() => {
-        return data?.filter(item => item?.is_premium === 0) || [];
+    const premiumUsersData = useMemo(() => {
+        return data?.filter(item => item?.subscription_status === 'premium_active') || [];
+    }, [data]);
+
+    const expiredUsersData = useMemo(() => {
+        return data?.filter(item => item?.subscription_status === 'premium_expired') || [];
     }, [data]);
 
     const getFilteredData = () => {
@@ -100,10 +104,12 @@ export default function AppData() {
                 return activeCountData;
             case 'newUsers':
                 return newUsersData;
+            case 'freeTrialUsers':
+                return trialUsersData;
             case 'premiumUsers':
                 return premiumUsersData;
             case 'nonPremiumUsers':
-                return nonPremiumUsersData;
+                return expiredUsersData;
             default:
                 return data;
         }
@@ -120,49 +126,7 @@ export default function AppData() {
 
     const newUsersCount = newUsersData.length;
 
-    // Stats configuration
-    const stats = [
-        { 
-            id: 'totalUsers',
-            label: "Total Users", 
-            text: 'Tap to view', 
-            value: data?.length, 
-            icon: <HiUsers />, 
-            className: "total-users-icon" 
-        },
-        { 
-            id: 'activeUsers',
-            label: "Active Users", 
-            text: 'Tap to view', 
-            value: activeCountData?.length || 0, 
-            icon: <HiUsers />, 
-            className: "active-users-icon" 
-        },
-        { 
-            id: 'newUsers',
-            label: "New Users", 
-            text: 'Tap to view', 
-            value: `${newUsersCount || 0} (Today)`, 
-            icon: <HiUsers />, 
-            className: "new-users-icon" 
-        },
-        { 
-            id: 'premiumUsers',
-            label: "Premium Users", 
-            text: 'Tap to view', 
-            value: premiumUsersData?.length || 0, 
-            icon: <GiQueenCrown />, 
-            className: "engagement-icon" 
-        },
-        { 
-            id: 'nonPremiumUsers',
-            label: "Non Premium Users", 
-            text: 'Tap to view', 
-            value: nonPremiumUsersData?.length || 0, 
-            icon: <TbCrownOff />, 
-            className: "updated-icon" 
-        }
-    ];
+    const statsData = stats(data, activeCountData, newUsersCount, trialUsersData, premiumUsersData, expiredUsersData);
 
     return (
         <Box className="appdata-container">
@@ -192,17 +156,17 @@ export default function AppData() {
 
             {/* ── Stats Bar ── */}
             <Box className="stats-bar">
-                {stats.map((stat, index) => (
+                {statsData.map((stat, index) => (
                     <Box 
                         key={index} 
                         className={`appdata-stat-item ${selectedStat === stat.id ? 'appdata-stat-item-active' : ''}`}
                         onClick={() => {
                             setSelectedStat(stat.id);
-                            setPage(1); // Reset to first page when changing filter
+                            setPage(1);
                         }}
                     >
                         <Box className={`data-stat-icon ${stat.className}`}>
-                            {stat.icon}
+                            <stat.icon size={20} />
                         </Box>
                         <Box className="stat-content">
                             <Typography className="stat-label">{stat.label}</Typography>
