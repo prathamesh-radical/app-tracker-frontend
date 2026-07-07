@@ -21,6 +21,8 @@ const EXTRACT_MAP = {
     '/api/buddy-active-users':        (r) => r.buddyactiveCount,
     '/api/get-rg-mechanic-users':        (r) => r.rgmechanic,
     '/api/rg-mechanic-active-users':        (r) => r.rgmechanicactiveUsers,
+    '/api/rg-mechanic-services-data':        (r) => r.serviceslist,
+    '/api/rg-mechanic-invoices-data':        (r) => r.invoicelist,
 };
 
 export default function useFetch(apiEndpoint) {

@@ -127,7 +127,6 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
     const hideUsersCount = [
         "com.peccular.dancestudiomanager",
         "com.radicalapp.buddywalk",
-        "com.radicalapp.mechanic"
     ].includes(packageName);
 
     const hideUsersCurrency = [
@@ -137,7 +136,7 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
 
     let tableCellHeading = 'Users';
 
-    if (packageName === "com.peccular.mechanic") {
+    if (packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.mechanic") {
         tableCellHeading = 'Invoices';
     } else if (packageName === "com.peccular.debttracker" || packageName === "com.peccular.entrybook") {
         tableCellHeading = 'Entries';
@@ -188,7 +187,7 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                                 )
                             )}
                             <TableCell sx={defaultTableSx.headCellSx}>Email</TableCell>
-                            {packageName === "com.peccular.mechanic" && (
+                            {(packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.mechanic") && (
                                 <TableCell sx={defaultTableSx.headCellSx}>Services</TableCell>
                             )}
                             {!HidePhoneNumber && (
@@ -251,14 +250,15 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                                 );
                             }) || [];
                             const totalSteps = userMonthlySteps.reduce((sum, current) => sum + (current.step_count || 0), 0);
-                            const filteredServices = servicesData?.filter(s => s.admin_id === item.id);
-
+                            const filteredServices = servicesData?.filter(s => s.admin_id === item.id) || [];
+                            
                             return (
                                 <TableRow
                                     key={item.id}
                                     sx={[defaultTableSx.bodyRowSx, {
                                         cursor: (
-                                            filteredServices?.length > 0 && packageName === "com.peccular.mechanic") ? 'pointer' : 'default'
+                                            filteredServices?.length > 0 && packageName === "com.peccular.mechanic"
+                                        ) ? 'pointer' : 'default'
                                     }]}
                                     onClick={() => handleClick(filteredServices, item.currency, item?.id)}
                                 >
@@ -319,7 +319,7 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                                     <TableCell sx={defaultTableSx.bodyCellSx}>
                                         <Chip label={item.email ? item.email : '-'} size="small" sx={chipSx.email} />
                                     </TableCell>
-                                    {packageName === "com.peccular.mechanic" && (
+                                    {(packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.mechanic") && (
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip label={filteredServices?.length} size="small" sx={chipSx.count} />
                                         </TableCell>

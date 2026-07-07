@@ -47,8 +47,10 @@ export const MyContextProvider = ({ children }) => {
 
     const {data: rgMechanicData, loading: rgMechanicLoading} = useFetch('/api/get-rg-mechanic-users');
     const {data: rgMechanicActiveData, loading: rgMechanicActiveLoading} = useFetch('/api/rg-mechanic-active-users');
+    const {data: rgMechanicServiceData, loading: rgMechanicServiceLoading} = useFetch('/api/rg-mechanic-services-data');
+    const {data: rgMechanicInvoiceData, loading: rgMechanicInvoiceLoading} = useFetch('/api/rg-mechanic-invoices-data');``
 
-    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading;
+    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading;
 
     const [registerFormData, setRegisterFormData] = useState({
         email: "",
@@ -103,7 +105,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const values = {
-        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate,
+        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate,
     };
 
     return (

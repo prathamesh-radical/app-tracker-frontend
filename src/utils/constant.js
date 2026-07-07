@@ -141,7 +141,7 @@ export const getInitials = (user = {}) => {
 };
 
 export const allApps = (
-    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicLoading, rgMechanicActiveLoading
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
 ) => [
         {
             id: 1,
@@ -153,7 +153,7 @@ export const allApps = (
             stats: {
                 allUsers: debtorsData?.length,
                 activeUsers: debtorsActiveData?.length || 0,
-                premium: debtorsData?.filter(item => item?.is_premium === 1)?.length || 0,
+                premium: "-",
             },
             mapping: {
                 dataKey: debtorsData,
@@ -283,10 +283,10 @@ export const allApps = (
             },
             mapping: {
                 dataKey: rgMechanicData,
-                loadingKey: rgMechanicLoading + rgMechanicActiveLoading,
+                loadingKey: rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading,
                 activeCountKey: rgMechanicActiveData,
-                userDataKey: null,
-                serviceDataKey: null,
+                userDataKey: rgMechanicInvoiceData,
+                serviceDataKey: rgMechanicServiceData,
                 stepsDataKey: null,
             }
         }

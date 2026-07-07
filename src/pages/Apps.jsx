@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, Typography, Button, TextField, CircularProgress } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
 import { FiSearch, FiGrid, FiList } from "react-icons/fi";
 import { FiDownload, FiUsers, FiStar } from "react-icons/fi";
 import "../styles/apps.css";
@@ -10,7 +11,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 export default function Apps() {
     const {
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicLoading, rgMechanicActiveLoading, loader
+        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, loader
     } = useContext(MyContext);
     const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ export default function Apps() {
     const [viewMode, setViewMode] = useState("grid");
 
     const appList = allApps(
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicLoading, rgMechanicActiveLoading
+        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
     );
 
     const getFilteredApps = () => {
@@ -177,6 +178,7 @@ export default function Apps() {
                                             <Box className="apps-stat-icon">
                                                 <FiUsers size={14} color="#fff" />
                                             </Box>
+
                                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                 <Typography className="stat-label">Active Users</Typography>
                                                 <Typography className="data-stat-value">{app.stats.activeUsers}</Typography>
@@ -185,7 +187,11 @@ export default function Apps() {
 
                                         <Box className="data-stat">
                                             <Box className="apps-stat-icon">
-                                                <FiStar size={14} color="#fff" />
+                                                {app.stats.premium > 0 ? (
+                                                    <FaStar size={14} color="#fff" />
+                                                ) : (
+                                                    <FiStar size={14} color="#fff" />
+                                                )}
                                             </Box>
                                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                 <Typography className="stat-label">Premium Users</Typography>
