@@ -153,7 +153,9 @@ export const allApps = (
             stats: {
                 allUsers: debtorsData?.length,
                 activeUsers: debtorsActiveData?.length || 0,
+                freeTrial: "-",
                 premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: debtorsData,
@@ -174,7 +176,9 @@ export const allApps = (
             stats: {
                 allUsers: mechanicData?.length,
                 activeUsers: mechanicActiveData?.length || 0,
-                premium: mechanicData?.filter(item => item?.subscription_status === 'premium_active')?.length || 0
+                freeTrial: mechanicData?.filter(item => item?.subscription_status === 'trial_active')?.length || 0,
+                premium: mechanicData?.filter(item => item?.subscription_status === 'premium_active')?.length || 0,
+                expired: mechanicData?.filter(item => item?.subscription_status === 'premium_expired')?.length || 0,
             },
             mapping: {
                 dataKey: mechanicData,
@@ -195,7 +199,9 @@ export const allApps = (
             stats: {
                 allUsers: smartMoneyData?.length,
                 activeUsers: smartActiveData?.length || 0,
-                premium: "-"
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: smartMoneyData,
@@ -216,7 +222,9 @@ export const allApps = (
             stats: {
                 allUsers: visitorsData?.length,
                 activeUsers: visitorsActiveData?.length || 0,
-                premium: "-"
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: visitorsData,
@@ -237,7 +245,9 @@ export const allApps = (
             stats: {
                 allUsers: danceData?.length || 0,
                 activeUsers: "-",
-                premium: "-"
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: danceData,
@@ -258,7 +268,9 @@ export const allApps = (
             stats: {
                 allUsers: buddyWalkData?.length,
                 activeUsers: buddyActiveData?.length || 0,
-                premium: "-"
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: buddyWalkData,
@@ -279,7 +291,9 @@ export const allApps = (
             stats: {
                 allUsers: rgMechanicData?.length,
                 activeUsers: rgMechanicActiveData?.length,
-                premium: "-"
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
             },
             mapping: {
                 dataKey: rgMechanicData,

@@ -1,13 +1,14 @@
 import { Box, Card, CardContent, Typography, Button, TextField, CircularProgress } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaUserSecret } from "react-icons/fa";
 import { FiSearch, FiGrid, FiList } from "react-icons/fi";
-import { FiDownload, FiUsers, FiStar } from "react-icons/fi";
+import { FiDownload, FiUsers, FiStar, FiUserPlus } from "react-icons/fi";
 import "../styles/apps.css";
 import { MyContext } from "../context/context";
 import { allApps } from "../utils/constant";
 import { FaChevronRight } from "react-icons/fa";
+import { TbCrownOff } from "react-icons/tb";
 
 export default function Apps() {
     const {
@@ -25,6 +26,26 @@ export default function Apps() {
     const appList = allApps(
         debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
     );
+
+    const getNewUsersCount = useMemo(() => {
+        return (appData) => {
+            const dataKey = appData?.mapping?.dataKey || [];
+            const newUsers = dataKey.filter((user) => {
+                const userDate = user.createdAt || user.created_at || user?.date;
+                if (!userDate) return false;
+
+                const created = new Date(userDate);
+                const now = new Date();
+
+                return (
+                    created.getFullYear() === now.getFullYear() &&
+                    created.getMonth() === now.getMonth() &&
+                    created.getDate() === now.getDate()
+                );
+            });
+            return newUsers.length;
+        };
+    }, []);
 
     const getFilteredApps = () => {
         let filtered = appList;
@@ -140,68 +161,137 @@ export default function Apps() {
             ) : (
                 <Box className={`apps-container apps-view-${viewMode}`}>
                     {filteredApps.length > 0 ? (
-                        filteredApps.map((app) => (
-                            <Card
-                                key={app.id}
-                                className={`app-card app-card-${app.publisherColor}`}
-                                elevation={0}
-                                onClick={() => navigate(`/appdata/${app?.packageName}`)}
-                            >
-                                <CardContent className="app-card-content">
-                                    {/* App Icon & Info */}
-                                    <Box className="app-header-section">
-                                        <Box className={`app-icon app-icon-${app.publisherColor}`}>
-                                            <img src={app.icon} alt={app.name} className="app-icon-img" />
-                                        </Box>
-                                        <Box className="app-info">
-                                            <Typography className="app-name">{app.name}</Typography>
-                                            <Typography className="app-package">{app.packageName}</Typography>
-                                        </Box>
-                                        <Button className={`app-publisher-badge publisher-badge-${app.publisherColor}`}>
-                                            {app.publisher}
-                                        </Button>
-                                    </Box>
-
-                                    {/* Stats Section */}
-                                    <Box className="app-stats">
-                                        <Box className="data-stat">
-                                            <Box className="apps-stat-icon">
-                                                <FiDownload size={14} color="#fff" />
+                        filteredApps.map((app) => {
+                            const newUsersCount = getNewUsersCount(app);
+                            return (
+                                <Card
+                                    key={app.id}
+                                    className={`app-card app-card-${app.publisherColor}`}
+                                    elevation={0}
+                                    onClick={() => navigate(`/appdata/${app?.packageName}`)}
+                                >
+                                    <CardContent className="app-card-content">
+                                        {/* App Icon & Info */}
+                                        <Box className="app-header-section">
+                                            <Box className={`app-icon app-icon-${app.publisherColor}`}>
+                                                <img src={app.icon} alt={app.name} className="app-icon-img" />
                                             </Box>
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                                <Typography className="stat-label">All Users</Typography>
-                                                <Typography className="data-stat-value">{app.stats.allUsers}</Typography>
+                                            <Box className="app-info">
+                                                <Typography className="app-name">{app.name}</Typography>
+                                                <Typography className="app-package">{app.packageName}</Typography>
                                             </Box>
+                                            <Button className={`app-publisher-badge publisher-badge-${app.publisherColor}`}>
+                                                {app.publisher}
+                                            </Button>
                                         </Box>
 
-                                        <Box className="data-stat">
-                                            <Box className="apps-stat-icon">
-                                                <FiUsers size={14} color="#fff" />
-                                            </Box>
+                                        {viewMode === 'grid' ? (
+                                            <Box className="app-stats app-stats-grid">
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiDownload size={14} color="#fff" />
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">All Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.allUsers}</Typography>
+                                                    </Box>
+                                                </Box>
 
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                                <Typography className="stat-label">Active Users</Typography>
-                                                <Typography className="data-stat-value">{app.stats.activeUsers}</Typography>
-                                            </Box>
-                                        </Box>
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiUsers size={14} color="#fff" />
+                                                    </Box>
 
-                                        <Box className="data-stat">
-                                            <Box className="apps-stat-icon">
-                                                {app.stats.premium > 0 ? (
-                                                    <FaStar size={14} color="#fff" />
-                                                ) : (
-                                                    <FiStar size={14} color="#fff" />
-                                                )}
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">Active Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.activeUsers}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiUserPlus size={14} color="#fff" />
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">New Users</Typography>
+                                                        <Typography className="data-stat-value">{newUsersCount}</Typography>
+                                                    </Box>
+                                                </Box>
                                             </Box>
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                                <Typography className="stat-label">Premium Users</Typography>
-                                                <Typography className="data-stat-value">{app.stats.premium}</Typography>
+                                        ) : (
+                                            <Box className="app-stats app-stats-list">
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiDownload size={14} color="#fff" />
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">All Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.allUsers}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiUsers size={14} color="#fff" />
+                                                    </Box>
+
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">Active Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.activeUsers}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FiUserPlus size={14} color="#fff" />
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">New Users</Typography>
+                                                        <Typography className="data-stat-value">{newUsersCount}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <FaUserSecret size={14} color="#fff" />
+                                                    </Box>
+
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">Free Trial Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.freeTrial}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        {app.stats.premium > 0 ? (
+                                                            <FaStar size={14} color="#fff" />
+                                                        ) : (
+                                                            <FiStar size={14} color="#fff" />
+                                                        )}
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">Premium Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.premium}</Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                <Box className="data-stat">
+                                                    <Box className="apps-stat-icon">
+                                                        <TbCrownOff size={14} color="#fff" />
+                                                    </Box>
+
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        <Typography className="stat-label">Premium Expired Users</Typography>
+                                                        <Typography className="data-stat-value">{app.stats.expired}</Typography>
+                                                    </Box>
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        ))
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            );
+                        })
                     ) : (
                         <Box className="no-results">
                             <Typography className="no-results-text">No apps found</Typography>
