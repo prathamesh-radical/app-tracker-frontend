@@ -70,7 +70,7 @@ export default function AppData() {
 
     const newUsersData = useMemo(() => {
         return data?.filter((user) => {
-            const userDate = user.createdAt || user.created_at;
+            const userDate = user.createdAt || user.created_at || user?.date;
             if (!userDate) return false;
 
             const created = new Date(userDate);

@@ -178,7 +178,9 @@ export default function AppDataTable({ adminId, Paper, currentData, userData, se
                             )}
                             {packageName != "com.peccular.mechanic" && (
                                 ShowFullName ? (
-                                    <TableCell sx={defaultTableSx.headCellSx}>Full Name</TableCell>
+                                    <TableCell sx={defaultTableSx.headCellSx}>
+                                        {packageName != "com.peccular.moneycollect" ? "Bank Name" : "Full Name"}
+                                    </TableCell>
                                 ) : (
                                     <>
                                         <TableCell sx={defaultTableSx.headCellSx}>First Name</TableCell>
