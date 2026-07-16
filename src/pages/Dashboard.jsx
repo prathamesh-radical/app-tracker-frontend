@@ -59,13 +59,22 @@ export default function Home() {
     const filteredPeccularData = peccularData?.filter(item => item?.totalLength === highestPeccularLength);
     const filteredRadicalData = radicalData?.filter(item => item?.totalLength === highestRadicalLength);
     const topApp = allApps?.filter(item => item?.totalLength === overAllHighestLength);
-
+    console.log("topApp", topApp);
     const publishersData = publishers(
         peccularData, peccularTotalInstalls, peccularActiveUsers, radicalData, radicalTotalInstalls, radicalActiveUsers, filteredPeccularData, filteredRadicalData
     );
     const summaryStatsData = summaryStats(
         peccularData, radicalData, peccularTotalInstalls, radicalTotalInstalls, peccularActiveUsers, radicalActiveUsers, topApp
     );
+
+    const handleCardClick = (publisherName) => {
+        navigate(`/apps?publisher=${publisherName.toLowerCase()}`);
+    };
+
+    const handleTopAppClick = (e, packageName) => {
+        e.stopPropagation();
+        navigate(`/appdata/${packageName}`);
+    };
 
     return (
         <Box className="dashboard-root">
@@ -95,7 +104,7 @@ export default function Home() {
                                 elevation={0}
                                 onMouseEnter={() => setHoveredPublisher(index)}
                                 onMouseLeave={() => setHoveredPublisher(null)}
-                                onClick={() => navigate(`/apps?publisher=${publisher.name.toLowerCase()}`)}
+                                onClick={() => handleCardClick(publisher.name)}
                             >
                                 <CardContent className="publisher-card-content">
                                     {/* Publisher Header */}
@@ -166,7 +175,10 @@ export default function Home() {
                                     <Box className="card-divider" />
 
                                     {/* Top App Section */}
-                                    <Box className={`top-app-large top-app-${publisher.color}`}>
+                                    <Box
+                                        className={`top-app-large top-app-${publisher.color}`}
+                                        onClick={(e) => handleTopAppClick(e, publisher.topApp.packageName)}
+                                    >
                                         <Box className="top-app-icon-large">
                                             {publisher.topApp.icon}
                                         </Box>
@@ -176,6 +188,7 @@ export default function Home() {
                                                 {publisher.topApp.name}
                                             </Typography>
                                         </Box>
+                                        <FaChevronRight color="#fff" />
                                     </Box>
                                 </CardContent>
                             </Card>
@@ -188,11 +201,13 @@ export default function Home() {
                             return (
                                 <Card
                                     key={stat.id}
-                                    className={`summary-card ${stat?.id === 1 && "cursor-pointer"}`}
+                                    className={`summary-card ${(stat?.id === 1 || stat?.id === 4) && "cursor-pointer"}`}
                                     elevation={0}
                                     onClick={() => {
                                         if (stat.id === 1) {
                                             navigate(`/apps?publisher=all`);
+                                        } else if (stat?.id === 4) {
+                                            navigate(`/appdata/${stat?.appId}`);
                                         }
                                     }}
                                 >
@@ -205,7 +220,7 @@ export default function Home() {
                                             <Typography className="summary-value">{stat.value}</Typography>
                                             <Typography className="summary-description">{stat.description}</Typography>
                                         </Box>
-                                        {stat?.id === 1 && <FaChevronRight color="#fff" />}
+                                        {(stat?.id === 1 || stat?.id === 4) && <FaChevronRight color="#fff" />}
                                     </CardContent>
                                 </Card>
                             );

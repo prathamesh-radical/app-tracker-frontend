@@ -22,6 +22,7 @@ export const publishers = (
             },
             topApp: {
                 name: filteredPeccularData[0]?.appName,
+                packageName: filteredPeccularData[0]?.appId,
                 rating: 4.6,
                 icon: "⚡"
             }
@@ -41,6 +42,7 @@ export const publishers = (
             },
             topApp: {
                 name: filteredRadicalData[0]?.appName,
+                packageName: filteredRadicalData[0]?.appId,
                 rating: 4.7,
                 icon: "⚡"
             }
@@ -52,6 +54,7 @@ export const summaryStats = (
 ) => [
     {
         id: 1,
+        appId: null,
         title: "Total Apps",
         value: peccularData?.length + radicalData?.length,
         description: "All publishers",
@@ -61,6 +64,7 @@ export const summaryStats = (
     },
     {
         id: 2,
+        appId: null,
         title: "Total Users",
         value: peccularTotalInstalls + radicalTotalInstalls,
         description: "All apps",
@@ -70,6 +74,7 @@ export const summaryStats = (
     },
     {
         id: 3,
+        appId: null,
         title: "Active Users",
         value: peccularActiveUsers + radicalActiveUsers,
         description: "All apps",
@@ -79,6 +84,7 @@ export const summaryStats = (
     },
     {
         id: 4,
+        appId: topApp[0]?.appId,
         title: "Top App",
         value: topApp[0]?.appName,
         description: "All apps",
