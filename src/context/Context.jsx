@@ -61,6 +61,12 @@ export const MyContextProvider = ({ children }) => {
     const [loginFormData, setLoginFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
 
+    const [forgotFormData, setForgotFormData] = useState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
     const [token, setToken] = useState(() => getValidToken());
     const [isAuthenticated, setIsAuthenticated] = useState(() => !!getValidToken());
 
@@ -97,15 +103,17 @@ export const MyContextProvider = ({ children }) => {
     const handleChange = (field) => (e) => {
         setRegisterFormData((prev) => ({ ...prev, [field]: e.target.value }));
         setLoginFormData((prev) => ({ ...prev, [field]: e.target.value }));
+        setForgotFormData((prev) => ({ ...prev, [field]: e.target.value}));
     };
 
     function handleNull() {
         setRegisterFormData({ email: "", password: "", confirmPassword: "" });
         setLoginFormData({ email: "", password: "" });
+        setForgotFormData({ password: "", confirmPassword: "" })
     }
 
     const values = {
-        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate,
+        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData,
     };
 
     return (

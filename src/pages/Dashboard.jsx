@@ -59,7 +59,7 @@ export default function Home() {
     const filteredPeccularData = peccularData?.filter(item => item?.totalLength === highestPeccularLength);
     const filteredRadicalData = radicalData?.filter(item => item?.totalLength === highestRadicalLength);
     const topApp = allApps?.filter(item => item?.totalLength === overAllHighestLength);
-    console.log("topApp", topApp);
+
     const publishersData = publishers(
         peccularData, peccularTotalInstalls, peccularActiveUsers, radicalData, radicalTotalInstalls, radicalActiveUsers, filteredPeccularData, filteredRadicalData
     );

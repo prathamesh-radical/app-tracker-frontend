@@ -353,6 +353,17 @@
     animation: fadeInUp 0.3s ease both;
 }
 
+.card-forgot-btn {
+    text-align: right !important;
+    font-size: 12px !important;
+    color: #fff !important;
+    font-family: 'DM Sans', sans-serif !important;
+    background: linear-gradient(to right, #3b82f6, #06b6d4) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
 /* ── Submit button ── */
 .submit-btn {
     width: 100%;

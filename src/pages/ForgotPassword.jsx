@@ -6,11 +6,12 @@ import "../styles/login.css";
 import { MyContext } from "../context/context";
 import useFunction from "../hooks/useFunction";
 
-export default function Login() {
-    const { loginFormData: formData, handleChange, loading, isAuthenticated } = useContext(MyContext);
-    const { handleLogin } = useFunction();
+export default function ForgotPassword() {
+    const { forgotFormData: formData, handleChange, loading, isAuthenticated } = useContext(MyContext);
+    const { handleForgotPassword } = useFunction();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -60,8 +61,8 @@ export default function Login() {
                                 <MdApps size={22} color="#3b82f6" />
                             </Box>
                             <Box>
-                                <Typography className="card-title">Welcome Back</Typography>
-                                <Typography className="card-subtitle">Sign in to continue</Typography>
+                                <Typography className="card-title">Forgot Password</Typography>
+                                <Typography className="card-subtitle">Update your password</Typography>
                             </Box>
                         </Box>
 
@@ -70,11 +71,10 @@ export default function Login() {
                         {/* Form */}
                         <Box
                             component="form"
-                            onSubmit={handleLogin}
+                            onSubmit={handleForgotPassword}
                             className="login-form"
                             noValidate
                         >
-                            {/* Email */}
                             <Box className="field-wrap">
                                 <label className="field-label">Email Address</label>
                                 <Box className="input-box">
@@ -90,10 +90,8 @@ export default function Login() {
                                     />
                                 </Box>
                             </Box>
-
-                            {/* Password */}
                             <Box className="field-wrap">
-                                <label className="field-label">Password</label>
+                                <label className="field-label">New Password</label>
                                 <Box className="input-box">
                                     <MdOutlineLock size={17} className="input-icon" />
                                     <input
@@ -117,31 +115,40 @@ export default function Login() {
                                 </Box>
                             </Box>
 
-                            <Typography
-                                className="card-forgot-btn"
-                                style={{cursor: 'pointer'}}
-                                onClick={() => navigate('/forgot-password')}
-                            >
-                                Forgot Password
-                            </Typography>
+                            <Box className="field-wrap">
+                                <label className="field-label">Confirm Password</label>
+                                <Box className="input-box">
+                                    <MdOutlineLock size={17} className="input-icon" />
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        className="field-input"
+                                        placeholder="••••••••"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange("confirmPassword")}
+                                        required
+                                        autoComplete="current-password"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="eye-btn"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        tabIndex={-1}
+                                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showConfirmPassword ? <MdVisibilityOff size={17} /> : <MdVisibility size={17} />}
+                                    </button>
+                                </Box>
+                            </Box>
 
                             {/* Submit */}
                             <button type="submit" className="submit-btn" disabled={loading}>
                                 {loading ? (
                                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                                         <CircularProgress size={15} sx={{ color: "rgba(255,255,255,0.6)" }} />
-                                        <span>Signing in...</span>
+                                        <span>Loading...</span>
                                     </Box>
-                                ) : "Sign In"}
+                                ) : "Submit"}
                             </button>
-
-                            <Box className="card-footer">
-                                <Typography className="card-footer-text">Don`t have an account?</Typography>
-                                <Typography className="card-footer-btn" onClick={() => navigate('/register')}
-                                >
-                                    Sign Up
-                                </Typography>
-                            </Box>
                         </Box>
                     </CardContent>
                 </Card>

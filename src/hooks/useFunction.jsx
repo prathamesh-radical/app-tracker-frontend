@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 export default function useFunction() {
-    const { registerFormData, loginFormData, setLoading, setToken, setIsAuthenticated, handleNull, handleLogout } = useContext(MyContext);
+    const { registerFormData, loginFormData, forgotFormData, setLoading, setToken, setIsAuthenticated, handleNull, handleLogout } = useContext(MyContext);
     const navigate = useNavigate();
 
     async function handleRegister(e) {
@@ -18,7 +18,7 @@ export default function useFunction() {
                 },
                 body: JSON.stringify(registerFormData)
             });
-            
+
             const data = await response.json();
             if (response.ok) {
                 toast.success(data.message || "Registration successful! Please log in.");
@@ -45,7 +45,7 @@ export default function useFunction() {
                 },
                 body: JSON.stringify(loginFormData)
             });
-            
+
             const data = await response.json();
 
             if (response.ok) {
@@ -65,5 +65,32 @@ export default function useFunction() {
         }
     }
 
-    return { handleRegister, handleLogin, handleLogout };
+    async function handleForgotPassword(e) {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/auth/forgot", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(forgotFormData)
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                toast.success("Password updated successfully! Please log in.");
+                handleNull();
+                navigate("/login");
+            } else {
+                toast.error(data.message || "Password update failed.");
+            }
+        } catch (error) {
+            toast.error(error?.message || "An error occurred");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return { handleRegister, handleLogin, handleLogout, handleForgotPassword };
 }
