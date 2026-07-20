@@ -135,13 +135,13 @@ export default function Login() {
                                 ) : "Sign In"}
                             </button>
 
-                            <Box className="card-footer">
+                            {/* <Box className="card-footer">
                                 <Typography className="card-footer-text">Don`t have an account?</Typography>
                                 <Typography className="card-footer-btn" onClick={() => navigate('/register')}
                                 >
                                     Sign Up
                                 </Typography>
-                            </Box>
+                            </Box> */}
                         </Box>
                     </CardContent>
                 </Card>
