@@ -135,12 +135,8 @@ export default function ServiceDataTable({ currency, serviceId, Paper, currentDa
                     {currentData.map((service) => {
                         const serviceName = service?.service_name || service?.name || "-";
                         const serviceType = service?.service_type || service?.type || service?.category || "-";
-                        const price2w = (
-                            service?.vehicle_type === "2 Wheeler" || service?.vehicle_type === "Both"
-                        ) ? formatCurrency(service?.price_2w, currency) : "-";
-                        const price4w = (
-                            service?.vehicle_type === "4 Wheeler" || service?.vehicle_type === "Both"
-                        ) ? formatCurrency(service?.price_4w, currency) : "-";
+                        const price2w = service?.price_2w > 0 ? formatCurrency(service?.price_2w || 0, currency || 'USD') : "-";
+                        const price4w = service?.price_4w > 0 ? formatCurrency(service?.price_4w || 0, currency || 'USD') : "-";
                         const status = getServiceStatus(service);
                         const isActive = status === 'active';
                         const statusText = isActive ? "Active" : "Inactive";
