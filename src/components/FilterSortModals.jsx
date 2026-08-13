@@ -14,11 +14,13 @@ import {
     Typography,
     Chip,
     Stack,
-    Divider
+    Divider,
+    Collapse,
+    IconButton
 } from "@mui/material";
 import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
-// ── SORT MODAL ──
 export function SortModal({ open, onClose, onApplySort, currentSort }) {
     const [selectedSort, setSelectedSort] = useState(currentSort || 'newest');
 
@@ -38,14 +40,13 @@ export function SortModal({ open, onClose, onApplySort, currentSort }) {
         onClose();
     };
 
-    // ── RESET FUNCTION ──
     const handleReset = () => {
         setSelectedSort('newest');
     };
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle sx={{ fontWeight: 600, fontSize: '18px' }}>
+            <DialogTitle sx={{ fontWeight: 600, fontSize: '18px', marginTop: 9 }}>
                 Sort Options
             </DialogTitle>
             <Divider />
@@ -110,7 +111,6 @@ export function SortModal({ open, onClose, onApplySort, currentSort }) {
     );
 }
 
-// ── FILTER MODAL ──
 export function FilterModal({ open, onClose, onApplyFilter, data, currentFilters }) {
     const [filters, setFilters] = useState(
         currentFilters || {
@@ -122,7 +122,8 @@ export function FilterModal({ open, onClose, onApplyFilter, data, currentFilters
         }
     );
 
-    // Extract unique values from data
+    const [expandedSection, setExpandedSection] = useState(null);
+
     const getUniqueValues = (key) => {
         if (!data) return [];
         const values = data
@@ -153,6 +154,10 @@ export function FilterModal({ open, onClose, onApplyFilter, data, currentFilters
         }));
     };
 
+    const toggleSection = (section) => {
+        setExpandedSection(expandedSection === section ? null : section);
+    };
+
     const handleApply = () => {
         onApplyFilter(filters);
         onClose();
@@ -170,66 +175,124 @@ export function FilterModal({ open, onClose, onApplyFilter, data, currentFilters
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle sx={{ fontWeight: 600, fontSize: '18px' }}>
+            <DialogTitle sx={{
+                fontWeight: 600,
+                fontSize: '18px',
+                marginTop: (expandedSection === 'country' || expandedSection === 'currency') ? 9 : 0
+            }}>
                 Filter Options
             </DialogTitle>
             <Divider />
-            <DialogContent sx={{ py: 3 }}>
-                <Stack spacing={3}>
-                    {/* COUNTRY FILTER */}
+            <DialogContent sx={{ py: 2 }}>
+                <Stack spacing={1.5}>
+                    {/* COUNTRY FILTER - COLLAPSIBLE */}
                     <Box>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5 }}>
-                            Country
-                        </Typography>
-                        <FormGroup>
-                            {countries.length > 0 ? (
-                                countries.map((country) => (
-                                    <FormControlLabel
-                                        key={country}
-                                        control={
-                                            <Checkbox
-                                                checked={filters.country.includes(country)}
-                                                onChange={() => handleCountryChange(country)}
-                                            />
-                                        }
-                                        label={country}
-                                    />
-                                ))
-                            ) : (
-                                <Typography variant="caption" color="textSecondary">
-                                    No countries available
-                                </Typography>
-                            )}
-                        </FormGroup>
+                        <Box
+                            onClick={() => toggleSection('country')}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                backgroundColor: expandedSection === 'country' ? '#f5f5f5' : 'transparent',
+                                borderRadius: '6px',
+                                transition: 'background-color 0.2s',
+                                '&:hover': {
+                                    backgroundColor: '#fafafa'
+                                }
+                            }}
+                        >
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                                Country {filters.country.length > 0 && `(${filters.country.length})`}
+                            </Typography>
+                            <IconButton
+                                size="small"
+                                sx={{
+                                    transform: expandedSection === 'country' ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.3s',
+                                }}
+                            >
+                                <FaChevronDown />
+                            </IconButton>
+                        </Box>
+                        <Collapse in={expandedSection === 'country'}>
+                            <FormGroup sx={{ pl: 1 }}>
+                                {countries.length > 0 ? (
+                                    countries.map((country) => (
+                                        <FormControlLabel
+                                            key={country}
+                                            control={
+                                                <Checkbox
+                                                    checked={filters.country.includes(country)}
+                                                    onChange={() => handleCountryChange(country)}
+                                                />
+                                            }
+                                            label={country}
+                                        />
+                                    ))
+                                ) : (
+                                    <Typography variant="caption" color="textSecondary">
+                                        No countries available
+                                    </Typography>
+                                )}
+                            </FormGroup>
+                        </Collapse>
                     </Box>
 
                     <Divider />
 
-                    {/* CURRENCY FILTER */}
+                    {/* CURRENCY FILTER - COLLAPSIBLE */}
                     <Box>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5 }}>
-                            Currency
-                        </Typography>
-                        <FormGroup>
-                            {currencies.length > 0 ? (
-                                currencies.map((currency) => (
-                                    <FormControlLabel
-                                        key={currency}
-                                        control={
-                                            <Checkbox
-                                                checked={filters.currency.includes(currency)}
-                                                onChange={() => handleCurrencyChange(currency)}
-                                            />
-                                        }
-                                        label={currency}
-                                    />
-                                ))
-                            ) : (
-                                <Typography variant="caption" color="textSecondary">
-                                    No currencies available
-                                </Typography>
-                            )}
-                        </FormGroup>
+                        <Box
+                            onClick={() => toggleSection('currency')}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                cursor: 'pointer',
+                                backgroundColor: expandedSection === 'currency' ? '#f5f5f5' : 'transparent',
+                                borderRadius: '6px',
+                                transition: 'background-color 0.2s',
+                                '&:hover': {
+                                    backgroundColor: '#fafafa'
+                                }
+                            }}
+                        >
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                                Currency {filters.currency.length > 0 && `(${filters.currency.length})`}
+                            </Typography>
+                            <IconButton
+                                size="small"
+                                sx={{
+                                    transform: expandedSection === 'currency' ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.3s',
+                                }}
+                            >
+                                <FaChevronDown />
+                            </IconButton>
+                        </Box>
+                        <Collapse in={expandedSection === 'currency'}>
+                            <FormGroup sx={{ pl: 1 }}>
+                                {currencies.length > 0 ? (
+                                    currencies.map((currency) => (
+                                        <FormControlLabel
+                                            key={currency}
+                                            control={
+                                                <Checkbox
+                                                    checked={filters.currency.includes(currency)}
+                                                    onChange={() => handleCurrencyChange(currency)}
+                                                />
+                                            }
+                                            label={currency}
+                                        />
+                                    ))
+                                ) : (
+                                    <Typography variant="caption" color="textSecondary">
+                                        No currencies available
+                                    </Typography>
+                                )}
+                            </FormGroup>
+                        </Collapse>
                     </Box>
 
                     <Divider />

@@ -108,6 +108,19 @@ export function formatDate(dateStr) {
     const d = new Date(dateStr);
     return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+
+export const formatDateTime = (dateString) => {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString('en-GB', {
+        timeZone: 'UTC',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+};
 export function formatCurrency(amount, currencyCode) {
     const symbol = new Intl.NumberFormat('en', {
         style: 'currency',
