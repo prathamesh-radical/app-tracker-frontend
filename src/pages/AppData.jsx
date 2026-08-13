@@ -65,6 +65,12 @@ export default function AppData() {
             : [];
     }, [selectedData]);
 
+    const usersData = useMemo(() => {
+        return selectedData?.mapping?.userDataKey
+            ? [...selectedData.mapping.userDataKey].reverse()
+            : [];
+    }, [selectedData]);
+
     const isLoading = useMemo(() => {
         return selectedData ? selectedData?.mapping?.loadingKey : false;
     }, [selectedData]);
@@ -114,14 +120,14 @@ export default function AppData() {
     }, [data]);
     
     // ── ENRICH DATA WITH COUNTS ──
-    const enrichDataWithCounts = (dataToEnrich) => {
+    const enrichDataWithCounts = (dataToEnrich, usersData) => {
         return dataToEnrich.map(item => {
             let servicesCount = 0;
             let invoicesCount = 0;
 
             if (packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.mechanic") {
                 servicesCount = servicesData?.filter(s => s.admin_id === item.id)?.length || 0;
-                invoicesCount = servicesData?.filter(i => i.admin_id === item.id)?.length || 0;
+                invoicesCount = usersData?.filter(i => i.admin_id === item.id)?.length || 0;
             }
 
             return {
@@ -134,7 +140,7 @@ export default function AppData() {
 
     // ── SORTING LOGIC ──
     const applySorting = (dataToSort) => {
-        const enrichedData = enrichDataWithCounts(dataToSort);
+        const enrichedData = enrichDataWithCounts(dataToSort, usersData);
         const sorted = [...enrichedData];
         
         switch (currentSort) {
