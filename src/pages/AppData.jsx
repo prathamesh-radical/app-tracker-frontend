@@ -11,7 +11,9 @@ import {
     Button,
     InputAdornment,
     Chip,
-    Stack
+    Stack,
+    Menu,
+    MenuItem
 } from "@mui/material";
 import { useState, useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
@@ -23,10 +25,13 @@ import { HiUsers } from "react-icons/hi2";
 import { FaUserSecret } from "react-icons/fa6";
 import { GiQueenCrown } from "react-icons/gi";
 import { TbCrownOff } from "react-icons/tb";
+import { BiExport } from "react-icons/bi";
 import "../styles/appdata.css";
 import { allApps, stats } from "../utils/constant";
 import { MyContext } from "../context/context";
 import { FilterModal, SortModal } from "../components/FilterSortModals";
+import { exportToExcel, exportToCSV } from "../utils/exportUtils";
+import { exportToPDF } from "../utils/exportUtils";
 
 export default function AppData() {
     const {
@@ -38,6 +43,8 @@ export default function AppData() {
     const [sortModalOpen, setSortModalOpen] = useState(false);
     const [filterModalOpen, setFilterModalOpen] = useState(false);
     const [currentSort, setCurrentSort] = useState('newest');
+    const [exportAnchor, setExportAnchor] = useState(null);
+    const [isExporting, setIsExporting] = useState(false);
     const [currentFilters, setCurrentFilters] = useState({
         country: [],
         currency: [],
@@ -118,8 +125,7 @@ export default function AppData() {
     const expiredUsersData = useMemo(() => {
         return data?.filter(item => item?.subscription_status === 'premium_expired') || [];
     }, [data]);
-    
-    // ── ENRICH DATA WITH COUNTS ──
+
     const enrichDataWithCounts = (dataToEnrich, usersData) => {
         return dataToEnrich.map(item => {
             let servicesCount = 0;
@@ -138,11 +144,10 @@ export default function AppData() {
         });
     };
 
-    // ── SORTING LOGIC ──
     const applySorting = (dataToSort) => {
         const enrichedData = enrichDataWithCounts(dataToSort, usersData);
         const sorted = [...enrichedData];
-        
+
         switch (currentSort) {
             case 'newest':
                 return sorted.sort((a, b) => new Date(b.createdAt || b.created_at || b.date) - new Date(a.createdAt || a.created_at || a.date));
@@ -165,7 +170,6 @@ export default function AppData() {
         }
     };
 
-    // ── FILTERING LOGIC ──
     const applyFiltering = (dataToFilter) => {
         return dataToFilter.filter(item => {
             if (currentFilters.country.length > 0 && !currentFilters.country.includes(item.country)) {
@@ -236,10 +240,8 @@ export default function AppData() {
                 result = data;
         }
 
-        // Apply filters
         result = applyFiltering(result);
 
-        // Apply sorting
         result = applySorting(result);
 
         return result;
@@ -256,7 +258,6 @@ export default function AppData() {
     const statsData = stats(data, activeCountData, newUsersCount, trialUsersData, premiumUsersData, expiredUsersData);
     const slice = selectedData?.packageName === "com.peccular.mechanic" ? 6 : 3;
 
-    // ── GET SORT LABEL ──
     const getSortLabel = () => {
         const sortOptions = {
             'newest': 'Newest First',
@@ -271,19 +272,17 @@ export default function AppData() {
         return sortOptions[currentSort] || 'Newest First';
     };
 
-    // ── HANDLE SORT ──
     const handleApplySort = (sortOption) => {
         setCurrentSort(sortOption);
         setPage(1);
         setHasActiveSort(sortOption !== 'newest');
     };
 
-    // ── HANDLE FILTER ──
     const handleApplyFilter = (filters) => {
         setCurrentFilters(filters);
         setPage(1);
-        
-        const hasFilters = 
+
+        const hasFilters =
             filters.country.length > 0 ||
             filters.currency.length > 0 ||
             filters.servicesCount.min ||
@@ -292,8 +291,46 @@ export default function AppData() {
             filters.invoicesCount.max ||
             filters.createdDate.from ||
             filters.createdDate.to;
-        
+
         setHasActiveFilters(hasFilters);
+    };
+
+    const handleExportClick = (event) => {
+        setExportAnchor(event.currentTarget);
+    };
+
+    const handleExportClose = () => {
+        setExportAnchor(null);
+    };
+
+    const handleExportExcel = () => {
+        setIsExporting(true);
+        try {
+            exportToExcel(filteredData, servicesData, packageName, selectedData?.name, userData);
+        } finally {
+            setIsExporting(false);
+            handleExportClose();
+        }
+    };
+
+    const handleExportCSV = () => {
+        setIsExporting(true);
+        try {
+            exportToCSV(filteredData, servicesData, packageName, selectedData?.name, userData);
+        } finally {
+            setIsExporting(false);
+            handleExportClose();
+        }
+    };
+
+    const handleExportPDF = () => {
+        setIsExporting(true);
+        try {
+            exportToPDF(filteredData, servicesData, packageName, selectedData?.name, userData);
+        } finally {
+            setIsExporting(false);
+            handleExportClose();
+        }
     };
 
     return (
@@ -321,6 +358,32 @@ export default function AppData() {
                     </Box>
                 </Box>
                 <Box className="appdata-header-left">
+                    <Button
+                        variant="outlined"
+                        startIcon={<BiExport />}
+                        onClick={handleExportClick}
+                        disabled={isExporting || !filteredData?.length}
+                    >
+                        {isExporting ? 'Exporting...' : 'Export Data'}
+                    </Button>
+
+                    {/* Export Menu */}
+                    <Menu
+                        anchorEl={exportAnchor}
+                        open={Boolean(exportAnchor)}
+                        onClose={handleExportClose}
+                    >
+                        <MenuItem onClick={handleExportExcel} disabled={isExporting}>
+                            📊 Export as Excel
+                        </MenuItem>
+                        <MenuItem onClick={handleExportCSV} disabled={isExporting}>
+                            📋 Export as CSV
+                        </MenuItem>
+                        <MenuItem onClick={handleExportPDF} disabled={isExporting}>
+                            📄 Export as PDF
+                        </MenuItem>
+                    </Menu>
+
                     <Button
                         variant={hasActiveFilters ? "contained" : "outlined"}
                         startIcon={<CiFilter />}
