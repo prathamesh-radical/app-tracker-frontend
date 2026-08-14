@@ -1089,7 +1089,7 @@
     cursor: pointer;
 }
 
-.text-container: {
+.text-container {
     display: flex;
 }
 
