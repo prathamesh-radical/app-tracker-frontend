@@ -72,6 +72,12 @@
     animation: fadeInDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
+@media (max-width: 768px) {
+    .appdata-header {
+        display: block;
+    }
+}
+
 .appdata-header-left {
     display: flex;
     align-items: center;
@@ -79,9 +85,31 @@
     min-width: 0;
 }
 
+@media (max-width: 768px) {
+    .appdata-header-right {
+        margin-top: 20px;
+    }
+}
+
 @media (max-width: 480px) {
     .appdata-header-left {
         gap: 12px;
+    }
+}
+
+.header-btn-text {
+    display: block;
+}
+
+@media (max-width: 1024px) {
+    .header-btn-text-active {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-btn-text {
+        display: none;
     }
 }
 
@@ -143,12 +171,12 @@
 }
 
 /* ──────────────────────────────────────────────────────────────────── */
-/* STATS BAR - FULLY RESPONSIVE */
+/* STATS BAR - 6 COLUMNS DEFAULT, 3 COLUMNS ON 1024PX+ */
 /* ──────────────────────────────────────────────────────────────────── */
 
-.stats-bar {
+.appdata-stats-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
     gap: 12px;
     margin-bottom: 24px;
     position: relative;
@@ -157,31 +185,32 @@
     width: 100%;
 }
 
-@media (max-width: 1024px) {
-    .stats-bar {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
+/* Laptop 1024px aur upar: 3 columns */
+@media (max-width: 1440px) {
+    .appdata-stats-bar {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 }
 
 @media (max-width: 768px) {
-    .stats-bar {
-        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    .appdata-stats-bar {
+        grid-template-columns: repeat(6, 1fr);
         gap: 10px;
         margin-bottom: 20px;
     }
 }
 
 @media (max-width: 640px) {
-    .stats-bar {
-        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    .appdata-stats-bar {
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
         margin-bottom: 20px;
     }
 }
 
 @media (max-width: 480px) {
-    .stats-bar {
+    .appdata-stats-bar {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
         margin-bottom: 16px;
@@ -189,7 +218,7 @@
 }
 
 @media (max-width: 380px) {
-    .stats-bar {
+    .appdata-stats-bar {
         grid-template-columns: 1fr;
         gap: 8px;
     }
@@ -360,8 +389,6 @@
     border: 1px solid rgba(168, 85, 247, 0.6) !important;
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
 }
-
-/* Add yeh CSS rules directly apne appdata.css me: */
 
 .freetrial-users-icon {
     background: rgba(236, 72, 153, 0.15);
@@ -827,7 +854,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     .appdata-header,
-    .stats-bar .appdata-stat-item,
+    .appdata-stats-bar .appdata-stat-item,
     .search-controls-wrapper,
     .appdata-content,
     .pagination-container {

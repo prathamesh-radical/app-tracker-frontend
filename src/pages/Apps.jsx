@@ -87,7 +87,7 @@ export default function Apps() {
                     <Box className="apps-header-icon">
                         <FiGrid size={24} />
                     </Box>
-                    <Box>
+                    <Box className="apps-title-container">
                         <Typography className="apps-title">
                             Select an App
                         </Typography>
@@ -103,6 +103,15 @@ export default function Apps() {
                         <Typography className="apps-total-value">{appList.length}</Typography>
                     </Box>
                 </Box>
+            </Box>
+
+            <Box className="apps-title-wrapper">
+                <Typography className="apps-title">
+                    Select an App
+                </Typography>
+                <Typography className="apps-subtitle">
+                    Choose an app to view detailed analytics and performance insights.
+                </Typography>
             </Box>
 
             {/* Search & Controls Section */}

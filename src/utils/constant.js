@@ -346,7 +346,7 @@ export const stats = (data, activeCountData, newUsersCount, trialUsersData, prem
     },
     {
         id: 'freeTrialUsers',
-        label: "Free Trial Users",
+        label: "Trial Users",
         text: 'Tap to view',
         value: trialUsersData?.length || 0,
         icon: HiUsers,
@@ -362,7 +362,7 @@ export const stats = (data, activeCountData, newUsersCount, trialUsersData, prem
     },
     {
         id: 'nonPremiumUsers',
-        label: "Premium Expired Users",
+        label: "Expired Users",
         text: 'Tap to view',
         value: expiredUsersData?.length || 0,
         icon: TbCrownOff,

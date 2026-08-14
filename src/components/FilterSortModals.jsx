@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import '../styles/filtersort.css';
 
 export function SortModal({ open, onClose, onApplySort, currentSort }) {
     const [selectedSort, setSelectedSort] = useState(currentSort || 'newest');
@@ -94,11 +95,11 @@ export function SortModal({ open, onClose, onApplySort, currentSort }) {
                 </RadioGroup>
             </DialogContent>
             <Divider />
-            <DialogActions sx={{ p: 2 }}>
+            <DialogActions sx={{ p: 2 }} className="footer">
                 <Button onClick={handleReset} variant="text" color="error">
                     Reset Sort
                 </Button>
-                <Box sx={{ ml: 'auto' }}>
+                <Box sx={{ ml: 'auto' }} className="footer-bottom">
                     <Button onClick={onClose} variant="outlined">
                         Cancel
                     </Button>
@@ -408,11 +409,11 @@ export function FilterModal({ open, onClose, onApplyFilter, data, currentFilters
                 </Stack>
             </DialogContent>
             <Divider />
-            <DialogActions sx={{ p: 2 }}>
+            <DialogActions sx={{ p: 2 }} className="footer">
                 <Button onClick={handleReset} variant="text" color="error">
                     Reset Filters
                 </Button>
-                <Box sx={{ ml: 'auto' }}>
+                <Box sx={{ ml: 'auto' }} className="footer-bottom">
                     <Button onClick={onClose} variant="outlined">
                         Cancel
                     </Button>

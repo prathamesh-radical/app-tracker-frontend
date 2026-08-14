@@ -21,7 +21,7 @@ const defaultTableSx = {
         boxShadow: "none",
         border: "1px solid rgba(148, 163, 184, 0.1)",
         borderRadius: "12px",
-        overflow: "hidden",
+        overflow: "auto",
         "& .MuiTable-root": {
             borderCollapse: "collapse"
         }

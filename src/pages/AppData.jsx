@@ -357,14 +357,14 @@ export default function AppData() {
                         </Typography>
                     </Box>
                 </Box>
-                <Box className="appdata-header-left">
+                <Box className="appdata-header-left appdata-header-right">
                     <Button
-                        variant="outlined"
+                        variant={exportAnchor ? "contained" :"outlined"}
                         startIcon={<BiExport />}
                         onClick={handleExportClick}
                         disabled={isExporting || !filteredData?.length}
                     >
-                        {isExporting ? 'Exporting...' : 'Export Data'}
+                        <Typography className="header-btn-text">{isExporting ? 'Exporting...' : 'Export Data'}</Typography>
                     </Button>
 
                     {/* Export Menu */}
@@ -389,13 +389,16 @@ export default function AppData() {
                         startIcon={<CiFilter />}
                         onClick={() => setFilterModalOpen(true)}
                     >
-                        Filter
+                        <Typography className={(hasActiveFilters || hasActiveSort) ? "header-btn-text-active" : "header-btn-text"}>
+                            Filter
+                        </Typography>
                         {hasActiveFilters && (
                             <Chip
                                 label="Active"
                                 size="small"
                                 variant="filled"
-                                sx={{ ml: 1, height: '20px' }}
+                                color="#fff"
+                                sx={{ ml: 1, height: '20px', color: '#fff', backgroundColor: '#009900' }}
                             />
                         )}
                     </Button>
@@ -404,13 +407,16 @@ export default function AppData() {
                         startIcon={<IoFilter />}
                         onClick={() => setSortModalOpen(true)}
                     >
-                        Sort
+                        <Typography className={(hasActiveFilters || hasActiveSort) ? "header-btn-text-active" : "header-btn-text"}>
+                            Sort
+                        </Typography>
                         {hasActiveSort && (
                             <Chip
                                 label="Active"
                                 size="small"
                                 variant="filled"
-                                sx={{ ml: 1, height: '20px' }}
+                                color="#fff"
+                                sx={{ ml: 1, height: '20px', color: '#fff', backgroundColor: '#009900' }}
                             />
                         )}
                     </Button>
@@ -460,7 +466,7 @@ export default function AppData() {
             )}
 
             {/* ── Stats Bar ── */}
-            <Box className="stats-bar">
+            <Box className="appdata-stats-bar">
                 {statsData.slice(0, slice).map((stat, index) => (
                     <Box
                         key={index}
