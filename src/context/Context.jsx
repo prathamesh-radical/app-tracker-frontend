@@ -27,6 +27,7 @@ export const MyContextProvider = ({ children }) => {
     const {data: mechanicData, loading: mechanicLoading} = useFetch('/api/mechanic');
     const {data: mechanicUsersData, loading: mechanicUsersLoading} = useFetch('/api/mechanic-data');
     const {data: mechanicServiceData, loading: mechanicServiceLoading} = useFetch('/api/mechanic-services-data');
+    const {data: mechanicPremiumData, loading: mechanicPremiumLoading} = useFetch('/api/mechanic-premium-users');
     const {data: mechanicActiveData, loading: mechanicActiveLoading} = useFetch('/api/mechanic-active-users');
 
     const {data: smartMoneyData, loading: smartMoneyLoading} = useFetch('/api/money-collect');
@@ -50,7 +51,7 @@ export const MyContextProvider = ({ children }) => {
     const {data: rgMechanicServiceData, loading: rgMechanicServiceLoading} = useFetch('/api/rg-mechanic-services-data');
     const {data: rgMechanicInvoiceData, loading: rgMechanicInvoiceLoading} = useFetch('/api/rg-mechanic-invoices-data');``
 
-    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading;
+    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading + mechanicPremiumLoading;
 
     const [registerFormData, setRegisterFormData] = useState({
         email: "",
@@ -113,7 +114,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const values = {
-        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData,
+        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, debtorsLoading, debtorsActiveLoading, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceLoading, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, mechanicPremiumLoading, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData,
     };
 
     return (

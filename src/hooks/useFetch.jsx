@@ -23,6 +23,7 @@ const EXTRACT_MAP = {
     '/api/rg-mechanic-active-users':        (r) => r.rgmechanicactiveUsers,
     '/api/rg-mechanic-services-data':        (r) => r.serviceslist,
     '/api/rg-mechanic-invoices-data':        (r) => r.invoicelist,
+    '/api/mechanic-premium-users':        (r) => r.mechanicpremium,
 };
 
 export default function useFetch(apiEndpoint) {

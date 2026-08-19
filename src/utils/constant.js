@@ -98,6 +98,57 @@ export const countChipSx = {
     fontWeight: 600,
 };
 
+export const defaultTableSx = {
+    tableContainerSx: {
+        backgroundColor: "transparent",
+        boxShadow: "none",
+        border: "1px solid rgba(148, 163, 184, 0.1)",
+        borderRadius: "12px",
+        overflow: "auto",
+        "& .MuiTable-root": {
+            borderCollapse: "collapse"
+        }
+    },
+    headRowSx: {
+        backgroundColor: "rgba(15, 23, 42, 0.5)",
+        borderBottom: "1px solid rgba(148, 163, 184, 0.1)"
+    },
+    headCellSx: {
+        color: "rgba(148, 163, 184, 0.9)",
+        fontWeight: 600,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
+        padding: "16px 12px",
+        backgroundColor: "transparent",
+        borderBottom: "none"
+    },
+    bodyRowSx: {
+        borderBottom: "1px solid rgba(148, 163, 184, 0.08)",
+        transition: "background-color 0.2s ease",
+        "&:hover": {
+            backgroundColor: "rgba(59, 130, 246, 0.05)"
+        },
+        "&:last-child": {
+            borderBottom: "none"
+        }
+    },
+    bodyCellSx: {
+        color: "rgba(226, 232, 240, 0.9)",
+        fontSize: "14px",
+        padding: "14px 12px",
+        borderBottom: "none",
+        fontFamily: "'DM Sans', sans-serif"
+    },
+    idCellSx: {
+        color: "rgba(148, 163, 184, 0.7)",
+        fontWeight: 600,
+        width: "50px",
+        padding: "14px 12px",
+        borderBottom: 'none'
+    }
+};
+
 export const dateStyle = {
     color: '#64748b',
     fontSize: '0.88rem',
@@ -154,7 +205,7 @@ export const getInitials = (user = {}) => {
 };
 
 export const allApps = (
-    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, mechanicPremiumLoading, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
 ) => [
         {
             id: 1,
@@ -177,6 +228,7 @@ export const allApps = (
                 userDataKey: null,
                 serviceDataKey: null,
                 stepsDataKey: null,
+                premiumData: null,
             }
         },
         {
@@ -195,11 +247,12 @@ export const allApps = (
             },
             mapping: {
                 dataKey: mechanicData,
-                loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading,
+                loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + mechanicPremiumLoading,
                 activeCountKey: mechanicActiveData,
                 userDataKey: mechanicUsersData,
                 serviceDataKey: mechanicServiceData,
                 stepsDataKey: null,
+                premiumData: mechanicPremiumData,
             }
         },
         {
@@ -223,6 +276,7 @@ export const allApps = (
                 userDataKey: smartMoneyUsersData,
                 serviceDataKey: null,
                 stepsDataKey: null,
+                premiumData: null,
             }
         },
         {
@@ -246,6 +300,7 @@ export const allApps = (
                 userDataKey: visitorsUserData,
                 serviceDataKey: null,
                 stepsDataKey: null,
+                premiumData: null,
             }
         },
         {
@@ -269,6 +324,7 @@ export const allApps = (
                 userDataKey: null,
                 serviceDataKey: null,
                 stepsDataKey: null,
+                premiumData: null,
             }
         },
         {
@@ -292,6 +348,7 @@ export const allApps = (
                 userDataKey: buddyGroupData,
                 serviceDataKey: buddyGroupMemberData,
                 stepsDataKey: buddyStepsData,
+                premiumData: null,
             }
         },
         {
@@ -315,6 +372,7 @@ export const allApps = (
                 userDataKey: rgMechanicInvoiceData,
                 serviceDataKey: rgMechanicServiceData,
                 stepsDataKey: null,
+                premiumData: null,
             }
         }
     ];
