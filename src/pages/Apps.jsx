@@ -6,14 +6,11 @@ import { FiSearch, FiGrid, FiList } from "react-icons/fi";
 import { FiDownload, FiUsers, FiStar, FiUserPlus } from "react-icons/fi";
 import "../styles/apps.css";
 import { MyContext } from "../context/context";
-import { allApps } from "../utils/constant";
 import { FaChevronRight } from "react-icons/fa";
 import { TbCrownOff } from "react-icons/tb";
 
 export default function Apps() {
-    const {
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, loader
-    } = useContext(MyContext);
+    const { appList, loader } = useContext(MyContext);
     const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
@@ -22,10 +19,6 @@ export default function Apps() {
     const [searchQuery, setSearchQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState(() => publisherParam || "all");
     const [viewMode, setViewMode] = useState("grid");
-
-    const appList = allApps(
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
-    );
 
     const getNewUsersCount = useMemo(() => {
         return (appData) => {

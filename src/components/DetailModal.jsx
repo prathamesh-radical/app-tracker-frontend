@@ -1,5 +1,6 @@
 import { Modal, Paper as MuiPaper, Box, Button, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { defaultTableSx, formatDateTime } from "../utils/constant";
+import { getSubscriptionStatus } from "../utils/Subscriptionutils";
 
 const modalSx = {
     position: 'absolute',
@@ -72,25 +73,12 @@ export default function DetailModal({ open, selectedItem, onClose, premiumData }
                                     <TableCell sx={defaultTableSx.headCellSx}>Expiry Date</TableCell>
                                     <TableCell sx={defaultTableSx.headCellSx}>Renewal Date</TableCell>
                                     <TableCell sx={defaultTableSx.headCellSx}>Price</TableCell>
-                                    <TableCell sx={defaultTableSx.headCellSx}>Event Type</TableCell>
                                     <TableCell sx={defaultTableSx.headCellSx}>Status</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {uniqueData.map((item, index) => {
-                                    let status;
-
-                                    if (item?.subscription_status === "premium_active") {
-                                        status = "Active";
-                                    } else if (item?.subscription_status === "premium_expired" && item?.order_id != null) {
-                                        status = "Expired";
-                                    } else if (item?.subscription_status === "premium_expired" && item?.order_id === null) {
-                                        status = "Cancel";
-                                    } else if (item?.subscription_status === "trial_active") {
-                                        status = "Trial";
-                                    } else if (item?.subscription_status === "none") {
-                                        status = "Free";
-                                    }
+                                    const status = getSubscriptionStatus(item);
 
                                     return (
                                         <TableRow key={`${item.id}_${index}`} sx={{
@@ -108,15 +96,6 @@ export default function DetailModal({ open, selectedItem, onClose, premiumData }
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{formatDateTime(item.subscription_expiry_date)}</TableCell>
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{formatDateTime(item.subscription_renewal_date)}</TableCell>
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{item.formatted_price || '-'}</TableCell>
-                                            <TableCell sx={defaultTableSx.bodyCellSx}>
-                                                <Typography variant="caption" sx={{
-                                                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
-                                                    padding: '4px 8px',
-                                                    borderRadius: '4px'
-                                                }}>
-                                                    {item.event_type}
-                                                </Typography>
-                                            </TableCell>
                                             <TableCell sx={{
                                                 ...defaultTableSx.bodyCellSx,
                                                 color: getStatusColor(status),

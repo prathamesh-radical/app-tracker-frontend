@@ -117,7 +117,6 @@ export default function AppDataTable({
     }
 
     const handleViewClick = (item) => {
-        console.log("item", item);
         setSelectedItem(item);
         setOpenModal(true);
     };

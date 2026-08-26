@@ -205,7 +205,7 @@ export const getInitials = (user = {}) => {
 };
 
 export const allApps = (
-    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, mechanicPremiumLoading, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
 ) => [
         {
             id: 1,
@@ -454,3 +454,70 @@ export const statsData = (totalServices, activeServices, inactiveServices) => [
         className: 'engagement-icon'
     },
 ];
+
+export const parseSubscriptionDate = (date) => {
+    if (!date) return null;
+
+    const value = String(date).trim();
+
+    // Already contains timezone information
+    if (value.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(value)) {
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    // DB format: YYYY-MM-DD HH:mm:ss
+    // Treat it as UTC.
+    const normalized = value.includes(' ')
+        ? value.replace(' ', 'T')
+        : value;
+
+    const parsed = new Date(`${normalized}Z`);
+
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+export const getSubscriptionCategory = (item) => {
+    const now = new Date();
+
+    const trialStartedAt = parseSubscriptionDate(
+        item?.trial_started_at
+    );
+
+    const subscriptionStartDate = parseSubscriptionDate(
+        item?.subscription_start_date
+    );
+
+    const subscriptionExpiryDate = parseSubscriptionDate(
+        item?.subscription_expiry_date
+    );
+
+    if (!subscriptionExpiryDate) {
+        return null;
+    }
+
+    // Trial active
+    if (
+        trialStartedAt &&
+        trialStartedAt <= now &&
+        now <= subscriptionExpiryDate
+    ) {
+        return 'trial';
+    }
+
+    // Premium active
+    if (
+        subscriptionStartDate &&
+        subscriptionStartDate <= now &&
+        now <= subscriptionExpiryDate
+    ) {
+        return 'premium';
+    }
+
+    // Expired
+    if (subscriptionExpiryDate < now) {
+        return 'expired';
+    }
+
+    return null;
+};

@@ -27,16 +27,14 @@ import { GiQueenCrown } from "react-icons/gi";
 import { TbCrownOff } from "react-icons/tb";
 import { BiExport } from "react-icons/bi";
 import "../styles/appdata.css";
-import { allApps, stats } from "../utils/constant";
+import { getSubscriptionCategory, stats } from "../utils/constant";
 import { MyContext } from "../context/context";
 import { FilterModal, SortModal } from "../components/FilterSortModals";
 import { exportToExcel, exportToCSV } from "../utils/exportUtils";
 import { exportToPDF } from "../utils/exportUtils";
 
 export default function AppData() {
-    const {
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
-    } = useContext(MyContext);
+    const { appList } = useContext(MyContext);
 
     const [page, setPage] = useState(1);
     const [selectedStat, setSelectedStat] = useState('totalUsers');
@@ -57,10 +55,6 @@ export default function AppData() {
 
     const itemsPerPage = 100;
     const location = useLocation();
-
-    const appList = allApps(
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyData, mechanicPremiumLoading, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
-    );
 
     const packageName = location?.pathname?.split('/').pop();
     const currentPageData = appList?.filter(item => item.packageName === packageName);
@@ -121,15 +115,20 @@ export default function AppData() {
     }, [data]);
 
     const trialUsersData = useMemo(() => {
-        return data?.filter(item => item?.subscription_status === 'trial_active') || [];
+        return data?.filter(item => getSubscriptionCategory(item) === 'trial'
+        ) || [];
     }, [data]);
+
 
     const premiumUsersData = useMemo(() => {
-        return data?.filter(item => item?.subscription_status === 'premium_active') || [];
+        return data?.filter(item => getSubscriptionCategory(item) === 'premium'
+        ) || [];
     }, [data]);
 
+
     const expiredUsersData = useMemo(() => {
-        return data?.filter(item => item?.subscription_status === 'premium_expired') || [];
+        return data?.filter(item => getSubscriptionCategory(item) === 'expired'
+        ) || [];
     }, [data]);
 
     const enrichDataWithCounts = (dataToEnrich, usersData) => {
@@ -365,7 +364,7 @@ export default function AppData() {
                 </Box>
                 <Box className="appdata-header-left appdata-header-right">
                     <Button
-                        variant={exportAnchor ? "contained" :"outlined"}
+                        variant={exportAnchor ? "contained" : "outlined"}
                         startIcon={<BiExport />}
                         onClick={handleExportClick}
                         disabled={isExporting || !filteredData?.length}

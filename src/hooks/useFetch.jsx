@@ -5,6 +5,7 @@ const EXTRACT_MAP = {
     '/api/mechanic':                (r) => r.mechanic,
     '/api/mechanic-data':           (r) => r.mechaniclist,
     '/api/mechanic-services-data':  (r) => r.serviceslist,
+    '/api/mechanic-premium-users':        (r) => r.mechanicpremium,
     '/api/money-collect':           (r) => r.moneycollect,
     '/api/money-collect-data':      (r) => r.moneycollectlist,
     '/api/guest-entries':           (r) => r.guestEntries,
@@ -23,7 +24,6 @@ const EXTRACT_MAP = {
     '/api/rg-mechanic-active-users':        (r) => r.rgmechanicactiveUsers,
     '/api/rg-mechanic-services-data':        (r) => r.serviceslist,
     '/api/rg-mechanic-invoices-data':        (r) => r.invoicelist,
-    '/api/mechanic-premium-users':        (r) => r.mechanicpremium,
 };
 
 export default function useFetch(apiEndpoint) {
@@ -59,6 +59,7 @@ export default function useFetch(apiEndpoint) {
                     setError(null);
                 }
             } catch (err) {
+                console.log("err", err);
                 if (!cancelled) setError(err.message);
             } finally {
                 if (!cancelled) setLoading(false);
