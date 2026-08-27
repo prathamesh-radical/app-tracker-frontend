@@ -6,8 +6,8 @@ import { FiSearch, FiGrid, FiList } from "react-icons/fi";
 import { FiDownload, FiUsers, FiStar, FiUserPlus } from "react-icons/fi";
 import "../styles/apps.css";
 import { MyContext } from "../context/context";
-import { FaChevronRight } from "react-icons/fa";
 import { TbCrownOff } from "react-icons/tb";
+import { getSubscriptionCategory } from "../utils/constant";
 
 export default function Apps() {
     const { appList, loader } = useContext(MyContext);
@@ -19,6 +19,60 @@ export default function Apps() {
     const [searchQuery, setSearchQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState(() => publisherParam || "all");
     const [viewMode, setViewMode] = useState("grid");
+    const filteredAppList = appList[1]?.mapping;
+
+    const data = useMemo(() => {
+        return filteredAppList?.dataKey
+            ? [...filteredAppList.dataKey].reverse()
+            : [];
+    }, [filteredAppList]);
+
+    const premiumData = useMemo(() => {
+        return filteredAppList?.premiumData
+            ? [...filteredAppList.premiumData].reverse()
+            : [];
+    }, [filteredAppList]);
+
+    const trialUsersData = useMemo(() => {
+        return (
+            data?.filter(item => {
+                const filteredPremiumData = premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
+
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'trial'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
+
+    const premiumUsersData = useMemo(() => {
+        return (
+            data?.filter(item => {
+                const filteredPremiumData =
+                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
+
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'premium'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
+
+    const expiredUsersData = useMemo(() => {
+        return (
+            data?.filter(item => {
+                const filteredPremiumData =
+                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
+
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'expired'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
 
     const getNewUsersCount = useMemo(() => {
         return (appData) => {
@@ -165,6 +219,7 @@ export default function Apps() {
                     {filteredApps.length > 0 ? (
                         filteredApps.map((app) => {
                             const newUsersCount = getNewUsersCount(app);
+
                             return (
                                 <Card
                                     key={app.id}
@@ -260,7 +315,9 @@ export default function Apps() {
 
                                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                         <Typography className="stat-label">Free Trial Users</Typography>
-                                                        <Typography className="data-stat-value">{app.stats.freeTrial}</Typography>
+                                                        <Typography className="data-stat-value">
+                                                            {app?.id === 1 ? app.stats.freeTrial : trialUsersData?.length}
+                                                        </Typography>
                                                     </Box>
                                                 </Box>
 
@@ -274,7 +331,9 @@ export default function Apps() {
                                                     </Box>
                                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                         <Typography className="stat-label">Premium Users</Typography>
-                                                        <Typography className="data-stat-value">{app.stats.premium}</Typography>
+                                                        <Typography className="data-stat-value">
+                                                            {app?.id === 1 ? app.stats.premium : premiumUsersData?.length}
+                                                        </Typography>
                                                     </Box>
                                                 </Box>
 
@@ -285,7 +344,9 @@ export default function Apps() {
 
                                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                         <Typography className="stat-label">Premium Expired Users</Typography>
-                                                        <Typography className="data-stat-value">{app.stats.expired}</Typography>
+                                                        <Typography className="data-stat-value">
+                                                            {app?.id === 1 ? app.stats.expired : expiredUsersData?.length}
+                                                        </Typography>
                                                     </Box>
                                                 </Box>
                                             </Box>
