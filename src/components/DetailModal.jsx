@@ -36,7 +36,7 @@ const getStatusColor = (status) => {
 };
 
 export default function DetailModal({ open, selectedItem, onClose, premiumData }) {
-    const filteredPremiumData = premiumData?.filter(p => p?.admin_id === selectedItem?.id && p?.event_type != "unknown") || [];
+    const filteredPremiumData = premiumData?.filter(p => p?.admin_id === selectedItem?.id) || [];
 
     const uniqueData = Array.from(
         filteredPremiumData.reduce((map, item) => {
@@ -47,6 +47,7 @@ export default function DetailModal({ open, selectedItem, onClose, premiumData }
             return map;
         }, new Map()).values()
     ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    const filteredUniqueData = uniqueData?.filter(item => item?.order_id != null);
 
     return (
         <Modal
@@ -60,7 +61,7 @@ export default function DetailModal({ open, selectedItem, onClose, premiumData }
                     Subscription History - {selectedItem?.shop_name}
                 </Typography>
 
-                {uniqueData.length > 0 ? (
+                {filteredUniqueData.length > 0 ? (
                     <TableContainer sx={defaultTableSx.tableContainerSx}>
                         <Table size="small">
                             <TableHead>
@@ -77,7 +78,7 @@ export default function DetailModal({ open, selectedItem, onClose, premiumData }
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {uniqueData.map((item, index) => {
+                                {filteredUniqueData.map((item, index) => {
                                     const status = getSubscriptionStatus(item);
 
                                     return (

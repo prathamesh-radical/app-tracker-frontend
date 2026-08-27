@@ -31,8 +31,7 @@ export const exportToExcel = (data, servicesData, packageName, appName) => {
         XLSX.writeFile(workbook, filename);
 
     } catch (error) {
-        console.error('Export error:', error);
-        alert('Error exporting data. Please try again.');
+        alert('Error exporting data. Please try again.', error);
     }
 };
 
@@ -116,8 +115,7 @@ export const exportToCSV = (data, servicesData, packageName, appName) => {
         link.download = filename;
         link.click();
     } catch (error) {
-        console.error('CSV export error:', error);
-        alert('Error exporting CSV. Please try again.');
+        alert('Error exporting CSV. Please try again.', error);
     }
 };
 
@@ -242,7 +240,6 @@ export const exportToPDF = (data, servicesData, packageName, appName) => {
         doc.save(filename);
 
     } catch (error) {
-        console.error('PDF export error:', error);
-        alert('Error exporting PDF. Please try again.');
+        alert('Error exporting PDF. Please try again.', error);
     }
 };

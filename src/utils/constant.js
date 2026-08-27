@@ -247,7 +247,9 @@ export const allApps = (
             },
             mapping: {
                 dataKey: mechanicData,
-                loadingKey: mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + mechanicPremiumLoading,
+                loadingKey: (
+                    mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + mechanicPremiumLoading
+                ),
                 activeCountKey: mechanicActiveData,
                 userDataKey: mechanicUsersData,
                 serviceDataKey: mechanicServiceData,

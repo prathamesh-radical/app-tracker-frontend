@@ -1,30 +1,12 @@
 import {
-    Box,
-    Card,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    Typography,
-    Paper,
-    Pagination,
-    TextField,
-    Button,
-    InputAdornment,
-    Chip,
-    Stack,
-    Menu,
-    MenuItem
+    Box, CardMedia, CircularProgress, Typography, Paper, Pagination, Button, Chip, Stack, Menu, MenuItem
 } from "@mui/material";
 import { useState, useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { MdOutlineErrorOutline, MdSearch, MdFilterList, MdDownload } from "react-icons/md";
+import { MdOutlineErrorOutline } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
 import { IoFilter } from "react-icons/io5";
 import AppDataTable from "../components/AppDataTable";
-import { HiUsers } from "react-icons/hi2";
-import { FaUserSecret } from "react-icons/fa6";
-import { GiQueenCrown } from "react-icons/gi";
-import { TbCrownOff } from "react-icons/tb";
 import { BiExport } from "react-icons/bi";
 import "../styles/appdata.css";
 import { getSubscriptionCategory, stats } from "../utils/constant";
@@ -115,21 +97,46 @@ export default function AppData() {
     }, [data]);
 
     const trialUsersData = useMemo(() => {
-        return data?.filter(item => getSubscriptionCategory(item) === 'trial'
-        ) || [];
-    }, [data]);
+        return (
+            data?.filter(item => {
+                const filteredPremiumData =
+                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
 
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'trial'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
 
     const premiumUsersData = useMemo(() => {
-        return data?.filter(item => getSubscriptionCategory(item) === 'premium'
-        ) || [];
-    }, [data]);
+        return (
+            data?.filter(item => {
+                const filteredPremiumData =
+                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
 
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'premium'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
 
     const expiredUsersData = useMemo(() => {
-        return data?.filter(item => getSubscriptionCategory(item) === 'expired'
-        ) || [];
-    }, [data]);
+        return (
+            data?.filter(item => {
+                const filteredPremiumData =
+                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
+
+                return (
+                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
+                    getSubscriptionCategory(item) === 'expired'
+                );
+            }) || []
+        );
+    }, [data, premiumData]);
 
     const enrichDataWithCounts = (dataToEnrich, usersData) => {
         return dataToEnrich.map(item => {

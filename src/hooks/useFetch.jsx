@@ -59,7 +59,6 @@ export default function useFetch(apiEndpoint) {
                     setError(null);
                 }
             } catch (err) {
-                console.log("err", err);
                 if (!cancelled) setError(err.message);
             } finally {
                 if (!cancelled) setLoading(false);
