@@ -2,8 +2,23 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { MyContext } from "./context";
 import { jwtDecode } from "jwt-decode";
 import { toast } from 'react-toastify';
+import { getCountriesForCurrency } from "currency-country";
 import useFetch from "../hooks/useFetch";
 import { allApps } from "../utils/constant";
+
+const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+function getCountryFromCurrency(currency) {
+    if (!currency) return null;
+
+    const normalizedCurrency = String(currency).trim().toUpperCase();
+    const countryCodes = getCountriesForCurrency(normalizedCurrency);
+
+    return countryCodes
+        .map((countryCode) => countryNames.of(countryCode))
+        .filter(Boolean)
+        .join(", ") || null;
+}
 
 function getValidToken() {
     const stored = localStorage.getItem('token');
@@ -52,30 +67,24 @@ export const MyContextProvider = ({ children }) => {
     const { data: rgMechanicServiceData, loading: rgMechanicServiceLoading } = useFetch('/api/rg-mechanic-services-data');
     const { data: rgMechanicInvoiceData, loading: rgMechanicInvoiceLoading } = useFetch('/api/rg-mechanic-invoices-data');
 
-    // const filteredMechanicData = mechanicData?.filter(item => item?.subscription_order_id != null);
-    // const filteredMechanicPremiumData = mechanicPremiumData?.filter(item => item?.order_id != null);
+    const { data: MoneyLenderData, loading: MoneyLenderLoading } = useFetch('/api/money-lender');
+    const { data: MoneyLenderUsersData, loading: MoneyLenderUsersLoading } = useFetch('/api/money-lender-data');
+    const { data: MoneyLenderActiveData, loading: MoneyLenderActiveLoading } = useFetch('/api/money-lender-active-users');
+    const { data: MoneyLenderSettingsData, loading: MoneyLenderSettingsLoading } = useFetch('/api/money-lender-settings');
 
-    // const combinedSubscriptionData = [
-    //     ...(filteredMechanicData || []).map(item => ({
-    //         ...item,
-    //         order_id: item.subscription_order_id,
-    //     })),
+    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + MoneyLenderLoading + MoneyLenderUsersLoading + MoneyLenderActiveLoading + MoneyLenderSettingsLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading + mechanicPremiumLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading;
 
-    //     ...(filteredMechanicPremiumData || []),
-    // ];
+    const filteredMoneyLenderData = MoneyLenderData.map((lender) => {
+        const settings = MoneyLenderSettingsData.find(
+            (setting) => String(setting.user_id) === String(lender.id)
+        );
 
-    // const uniqueSubscriptionData = Array.from(
-    //     new Map(
-    //         combinedSubscriptionData.map(item => [
-    //             item.order_id,
-    //             item
-    //         ])
-    //     ).values()
-    // );
-
-    // const orderIds = uniqueSubscriptionData?.map(item => item?.order_id);
-
-    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading + mechanicPremiumLoading;
+        return {
+            ...lender,
+            currency: settings?.currency || null,
+            country: getCountryFromCurrency(settings?.currency),
+        };
+    });
 
     const [registerFormData, setRegisterFormData] = useState({
         email: "",
@@ -101,53 +110,13 @@ export const MyContextProvider = ({ children }) => {
         navigateRef.current = navigateFn;
     }, []);
 
-    // useEffect(() => {
-    //     const fetchAllSubscriptionsByOrderIds = async () => {
-    //         if (!orderIds || orderIds.length === 0) {
-    //             setSubscriptionLoading(false);
-    //             return;
-    //         }
-
-    //         try {
-    //             const jwtToken = localStorage.getItem('token');
-
-    //             const response = await fetch(
-    //                 `${import.meta.env.VITE_BACKEND_URL}/api/bulk-subscriptions`,
-    //                 {
-    //                     method: 'POST',
-    //                     headers: {
-    //                         Authorization: `Bearer ${jwtToken}`,
-    //                         'Content-Type': 'application/json',
-    //                     },
-    //                     body: JSON.stringify({
-    //                         orderIds: orderIds,
-    //                         packageName: 'com.peccular.mechanic',
-    //                     })
-    //                 }
-    //             );
-
-    //             const result = await response.json();
-
-    //             if (result.success) {
-    //                 setMechanicSubscriptionData(result);
-    //             }
-    //         } catch (err) {
-    //             toast.error('Failed to fetch subscription data', err);
-    //         } finally {
-    //             setSubscriptionLoading(false);
-    //         }
-    //     };
-
-    //     fetchAllSubscriptionsByOrderIds();
-    // }, [orderIds]);
-
     const handleLogout = useCallback(() => {
         setToken(null);
         setIsAuthenticated(false);
         localStorage.removeItem('token');
         toast.success("Session expired. Please log in again.");
         navigateRef.current?.("/login");
-    }, []);
+    }, [setToken, setIsAuthenticated]);
 
     useEffect(() => {
         const checkTokenExpiry = () => {
@@ -178,11 +147,11 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const appList = allApps(
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
+        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData
     );
 
     const values = {
-        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, smartMoneyData, smartMoneyUsersData, smartActiveData, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, debtorsLoading, debtorsActiveLoading, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceLoading, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, mechanicPremiumLoading, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData, appList
+        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderSettingsData, filteredMoneyLenderData, MoneyLenderSettingsLoading, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, debtorsLoading, debtorsActiveLoading, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceLoading, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, mechanicPremiumLoading, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData, appList, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading
     };
 
     return (

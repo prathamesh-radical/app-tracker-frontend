@@ -97,32 +97,13 @@ export default function AppData() {
     }, [data]);
 
     const trialUsersData = useMemo(() => {
-        return (
-            data?.filter(item => {
-                const filteredPremiumData =
-                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
-
-                return (
-                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
-                    getSubscriptionCategory(item) === 'trial'
-                );
-            }) || []
-        );
-    }, [data, premiumData]);
+        return data?.filter(item => item?.subscription_status === 'trial_active') || [];
+    }, [data]);
 
     const premiumUsersData = useMemo(() => {
-        return (
-            data?.filter(item => {
-                const filteredPremiumData =
-                    premiumData?.filter(pre => pre?.admin_id === item?.id) || [];
-
-                return (
-                    filteredPremiumData?.filter(premiumItem => premiumItem?.order_id)?.length > 0 &&
-                    getSubscriptionCategory(item) === 'premium'
-                );
-            }) || []
-        );
-    }, [data, premiumData]);
+        ;
+        return data?.filter(item => item?.subscription_status === 'premium_active') || [];
+    }, [data]);
 
     const expiredUsersData = useMemo(() => {
         return (

@@ -1,8 +1,6 @@
 import { MdGridView, MdElectricBolt } from "react-icons/md";
 import { IoDownloadOutline } from "react-icons/io5";
 import { FiUsers } from "react-icons/fi";
-import { FiStar } from "react-icons/fi";
-import { BiPackage } from "react-icons/bi";
 
 export const publishers = (
     peccularData, peccularTotalInstalls, peccularActiveUsers, radicalData, radicalTotalInstalls, radicalActiveUsers, filteredPeccularData, filteredRadicalData

@@ -5,8 +5,9 @@ import visitormanagement from "../assets/visitormanagement.png";
 import dancestudiomanager from "../assets/dancestudiomanager.jpg";
 import buddywalk from "../assets/buddywalk.png";
 import mechanic from "../assets/mechanic.png";
+import moneylender from "../assets/moneylender.png";
 
-const AppList = (debtorsData, mechanicData, smartMoneyData, visitorsData, danceData, buddyWalkData, rgMechanicData) => [
+const AppList = (debtorsData, mechanicData, smartMoneyData, visitorsData, danceData, buddyWalkData, rgMechanicData, MoneyLenderData) => [
     {
         id: 1,
         appName: 'My Debt Tracker',
@@ -88,6 +89,18 @@ const AppList = (debtorsData, mechanicData, smartMoneyData, visitorsData, danceD
         endpoints: {
             main: '/api/get-rg-users',
             activeUsers: '/api/rg-active-users',
+        },
+    },
+    {
+        id: 8,
+        appName: 'Money Lender Collect Manager',
+        appId: 'com.radicalapp.moneylender',
+        src: moneylender,
+        totalLength: MoneyLenderData?.length,
+        endpoints: {
+            main: '/api/money-lender',
+            userData: '/api/money-lender-data',
+            activeUsers: '/api/money-lender-active-users',
         },
     },
 ];

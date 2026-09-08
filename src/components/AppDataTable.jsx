@@ -70,6 +70,8 @@ export default function AppDataTable({
         "com.radicalapp.mechanic"
     ].includes(packageName);
 
+    const ShowMoneyLenderFullName = packageName === "com.radicalapp.moneylender";
+
     const ShowPhoneNumber = [
         "com.radicalapp.buddywalk",
     ].includes(packageName);
@@ -78,7 +80,8 @@ export default function AppDataTable({
         "com.peccular.debttracker",
         "com.peccular.moneycollect",
         "com.radicalapp.buddywalk",
-        "com.radicalapp.mechanic"
+        "com.radicalapp.mechanic",
+        "com.radicalapp.moneylender"
     ].includes(packageName);
 
     const hideUsersCount = [
@@ -145,15 +148,19 @@ export default function AppDataTable({
                                     <TableCell sx={defaultTableSx.headCellSx}>Acronym</TableCell>
                                 )}
                                 {packageName != "com.peccular.mechanic" && (
-                                    ShowFullName ? (
-                                        <TableCell sx={defaultTableSx.headCellSx}>
-                                            {packageName != "com.peccular.moneycollect" ? "Bank Name" : "Full Name"}
-                                        </TableCell>
+                                    ShowMoneyLenderFullName ? (
+                                        <TableCell sx={defaultTableSx.headCellSx}>Full Name</TableCell>
                                     ) : (
-                                        <>
-                                            <TableCell sx={defaultTableSx.headCellSx}>First Name</TableCell>
-                                            <TableCell sx={defaultTableSx.headCellSx}>Last Name</TableCell>
-                                        </>
+                                        ShowFullName ? (
+                                            <TableCell sx={defaultTableSx.headCellSx}>
+                                                {packageName != "com.peccular.moneycollect" ? "Bank Name" : "Full Name"}
+                                            </TableCell>
+                                        ) : (
+                                            <>
+                                                <TableCell sx={defaultTableSx.headCellSx}>First Name</TableCell>
+                                                <TableCell sx={defaultTableSx.headCellSx}>Last Name</TableCell>
+                                            </>
+                                        )
                                     )
                                 )}
                                 <TableCell sx={defaultTableSx.headCellSx}>Email</TableCell>
@@ -280,7 +287,9 @@ export default function AppDataTable({
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{item.studio_name || '-'}</TableCell>
                                         )}
                                         {packageName != "com.peccular.mechanic" && (
-                                            ShowFullName ? (
+                                            ShowMoneyLenderFullName ? (
+                                                <TableCell sx={defaultTableSx.bodyCellSx}>{item.name}</TableCell>
+                                            ) : ShowFullName ? (
                                                 <TableCell sx={defaultTableSx.bodyCellSx}>{item.name}</TableCell>
                                             ) : (
                                                 <>

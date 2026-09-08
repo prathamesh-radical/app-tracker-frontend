@@ -6,12 +6,11 @@ import visitormanagement from "../assets/visitormanagement.png";
 import dancestudiomanager from "../assets/dancestudiomanager.jpg";
 import buddywalk from "../assets/buddywalk.png";
 import mechanic from "../assets/mechanic.png";
+import moneylender from "../assets/moneylender.png";
 import { HiUsers } from "react-icons/hi2";
-import { FaUserSecret } from "react-icons/fa6";
 import { GiQueenCrown } from "react-icons/gi";
 import { TbCrownOff } from "react-icons/tb";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdDateRange } from "react-icons/md";
 import { MdOutlineErrorOutline } from "react-icons/md";
 
 export const tableContainerSx = {
@@ -205,7 +204,7 @@ export const getInitials = (user = {}) => {
 };
 
 export const allApps = (
-    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData
 ) => [
         {
             id: 1,
@@ -355,7 +354,7 @@ export const allApps = (
         },
         {
             id: 7,
-            name: "RG Mechanic Invoice Manager",
+            name: "Mechanic Invoice Manager",
             packageName: "com.radicalapp.mechanic",
             icon: mechanic,
             publisher: "Radical Global",
@@ -373,6 +372,30 @@ export const allApps = (
                 activeCountKey: rgMechanicActiveData,
                 userDataKey: rgMechanicInvoiceData,
                 serviceDataKey: rgMechanicServiceData,
+                stepsDataKey: null,
+                premiumData: null,
+            }
+        },
+        {
+            id: 8,
+            name: "Money Lender Collect Manager",
+            packageName: "com.radicalapp.moneylender",
+            icon: moneylender,
+            publisher: "Radical Global",
+            publisherColor: "purple",
+            stats: {
+                allUsers: MoneyLenderData?.length,
+                activeUsers: MoneyLenderActiveData?.length || 0,
+                freeTrial: "-",
+                premium: "-",
+                expired: "-",
+            },
+            mapping: {
+                dataKey: filteredMoneyLenderData,
+                loadingKey: MoneyLenderLoading + MoneyLenderUsersLoading + MoneyLenderActiveLoading + MoneyLenderSettingsLoading,
+                activeCountKey: MoneyLenderActiveData,
+                userDataKey: MoneyLenderUsersData,
+                serviceDataKey: null,
                 stepsDataKey: null,
                 premiumData: null,
             }
