@@ -173,7 +173,7 @@ export default function AppDataTable({
                                 {!hideUsersCurrency && (
                                     <TableCell sx={defaultTableSx.headCellSx}>Currency</TableCell>
                                 )}
-                                {packageName != "com.radicalapp.mechanic" && (
+                                {(packageName != "com.radicalapp.mechanic" && packageName != "com.radicalapp.moneylender") && (
                                     <TableCell sx={defaultTableSx.headCellSx}>Country</TableCell>
                                 )}
                                 {packageName === "com.radicalapp.buddywalk" && (
@@ -312,7 +312,7 @@ export default function AppDataTable({
                                         {!hideUsersCurrency && (
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
                                         )}
-                                        {packageName != "com.radicalapp.mechanic" && (
+                                        {(packageName != "com.radicalapp.mechanic" && packageName != "com.radicalapp.moneylender") && (
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{countryName}</TableCell>
                                         )}
                                         {packageName === "com.radicalapp.buddywalk" && (

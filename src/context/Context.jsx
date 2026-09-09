@@ -6,20 +6,6 @@ import { getCountriesForCurrency } from "currency-country";
 import useFetch from "../hooks/useFetch";
 import { allApps } from "../utils/constant";
 
-const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
-
-function getCountryFromCurrency(currency) {
-    if (!currency) return null;
-
-    const normalizedCurrency = String(currency).trim().toUpperCase();
-    const countryCodes = getCountriesForCurrency(normalizedCurrency);
-
-    return countryCodes
-        .map((countryCode) => countryNames.of(countryCode))
-        .filter(Boolean)
-        .join(", ") || null;
-}
-
 function getValidToken() {
     const stored = localStorage.getItem('token');
     if (!stored) return null;
@@ -82,7 +68,6 @@ export const MyContextProvider = ({ children }) => {
         return {
             ...lender,
             currency: settings?.currency || null,
-            country: getCountryFromCurrency(settings?.currency),
         };
     });
 
