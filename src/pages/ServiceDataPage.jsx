@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import ServiceDataTable from "../components/ServiceDataTable";
 import "../styles/servicedata.css";
-import { statsData } from "../utils/constant";
+import { moneyLenderStatsData, statsData } from "../utils/constant";
 
 export default function ServiceDataPage() {
     const location = useLocation();
@@ -35,8 +35,44 @@ export default function ServiceDataPage() {
     const totalServices = filteredServices?.length || 0;
     const activeServices = filteredServices?.filter(s => getServiceStatus(s) === 'active').length || 0;
     const inactiveServices = filteredServices?.filter(s => getServiceStatus(s) === 'inactive').length || 0;
+    const totalPrincipalAmount = filteredServices?.reduce(
+        (sum, service) => sum + (Number(service?.principal) || 0),
+        0
+    ) || 0;
+    const totalInterestAmount = filteredServices?.reduce(
+        (sum, service) => sum + (Number(service?.total_interest) || 0),
+        0
+    ) || 0;
+    const grandTotalAmount = filteredServices?.reduce(
+        (sum, service) => sum + (Number(service?.total_amount) || 0),
+        0
+    ) || 0;
+    const totalPaidamount = filteredServices?.reduce(
+        (sum, service) => sum + (Number(service?.paid_amount) || 0),
+        0
+    ) || 0;
+    const totalPendingamount = filteredServices?.reduce(
+        (sum, service) => sum + (Number(service?.remaining_amount) || 0),
+        0
+    ) || 0;
+    const formattedPrincipalAmount = totalPrincipalAmount.toFixed(2);
+    const formattedInterestAmount = totalInterestAmount.toFixed(2);
+    const formattedGrandTotalAmount = grandTotalAmount.toFixed(2);
+    const formattedTotalPaidAmount = totalPaidamount.toFixed(2);
+    const formattedTotalPendingAmount = totalPendingamount.toFixed(2);
 
-    const statisticsData = statsData(totalServices, activeServices, inactiveServices);
+    const statisticsData = selectedData?.name === "Money Lender Collect Manager" ? (
+        moneyLenderStatsData(
+            totalServices,
+            formattedPrincipalAmount,
+            formattedInterestAmount,
+            formattedGrandTotalAmount,
+            formattedTotalPaidAmount,
+            formattedTotalPendingAmount
+        )
+    ) : (
+        statsData(totalServices, activeServices, inactiveServices)
+    );
 
     const getFilteredData = () => {
         if (!filteredServices || filteredServices.length === 0) {
@@ -63,6 +99,13 @@ export default function ServiceDataPage() {
 
     let serviceId = startIndex + 1;
 
+    const handleStatsClick = (statId) => {
+        if (selectedData === "Money Lender Collect Manager") {
+            setSelectedStat(statId);
+            setPage(1);
+        }
+    }
+
     return (
         <Box className="servicedata-container">
             {/* ── Header Section ── */}
@@ -80,7 +123,11 @@ export default function ServiceDataPage() {
                     </Box>
                     <Box>
                         <Typography className="service-name">
-                            Services - {selectedData?.name}
+                            {selectedData?.name === "Money Lender Collect Manager" ? (
+                                `Records : ${selectedData?.name}`
+                            ) : (
+                                `Services : ${selectedData?.name}`
+                            )}
                         </Typography>
                         <Typography className="service-subtitle">
                             {packageName}
@@ -94,11 +141,12 @@ export default function ServiceDataPage() {
                 {statisticsData.map((stat, index) => (
                     <Box
                         key={index}
-                        className={`servicedata-stat-item ${selectedStat === stat.id ? 'servicedata-stat-item-active' : ''}`}
-                        onClick={() => {
-                            setSelectedStat(stat.id);
-                            setPage(1);
-                        }}
+                        className={`
+                            servicedata-stat-item
+                            ${selectedStat === stat.id ? 'servicedata-stat-item-active' : ''}
+                            
+                            `}
+                        onClick={() => handleStatsClick(stat.id)}
                     >
                         <Box className={`data-stat-icon ${stat.className}`}>
                             <stat.icon size={20} />

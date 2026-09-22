@@ -91,14 +91,16 @@ export default function AppDataTable({
 
     const hideUsersCurrency = [
         "com.radicalapp.buddywalk",
-        "com.radicalapp.mechanic"
+        "com.radicalapp.mechanic",
     ].includes(packageName);
 
     let tableCellHeading = 'Users';
 
     if (packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.mechanic") {
         tableCellHeading = 'Invoices';
-    } else if (packageName === "com.peccular.debttracker" || packageName === "com.peccular.entrybook") {
+    } else if (
+        packageName === "com.peccular.debttracker" || packageName === "com.peccular.entrybook" || packageName === "com.radicalapp.moneylender"
+    ) {
         tableCellHeading = 'Entries';
     } else {
         tableCellHeading = 'Users';
@@ -114,6 +116,12 @@ export default function AppDataTable({
 
         if (filteredServices?.length > 0 && packageName === "com.peccular.mechanic") {
             navigate(`/appdata/com.peccular.mechanic/${id}`, {
+                state: stateData
+            });
+        }
+
+        if (packageName === "com.radicalapp.moneylender") {
+            navigate(`/appdata/com.radicalapp.moneylender/${id}`, {
                 state: stateData
             });
         }
@@ -230,14 +238,20 @@ export default function AppDataTable({
                                     );
                                 }) || [];
                                 const totalSteps = userMonthlySteps.reduce((sum, current) => sum + (current.step_count || 0), 0);
-                                const filteredServices = servicesData?.filter(s => s.admin_id === item.id) || [];
+                                const filteredServices = servicesData?.filter((service) => {
+                                    const relatedId = packageName === "com.radicalapp.moneylender"
+                                        ? service.admin_id ?? service.bank_id ?? service.lender_id ?? service.user_id
+                                        : service.admin_id;
+                                    return relatedId != null && String(relatedId) === String(item.id);
+                                }) || [];
 
                                 return (
                                     <TableRow
                                         key={item.id}
                                         sx={[defaultTableSx.bodyRowSx, {
                                             cursor: (
-                                                filteredServices?.length > 0 && packageName === "com.peccular.mechanic"
+                                                packageName === "com.radicalapp.moneylender" ||
+                                                (filteredServices?.length > 0 && packageName === "com.peccular.mechanic")
                                             ) ? 'pointer' : 'default'
                                         }]}
                                         onClick={() => handleClick(filteredServices, item.currency, item?.id)}

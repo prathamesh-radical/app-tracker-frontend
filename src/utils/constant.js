@@ -10,7 +10,7 @@ import moneylender from "../assets/moneylender.png";
 import { HiUsers } from "react-icons/hi2";
 import { GiQueenCrown } from "react-icons/gi";
 import { TbCrownOff } from "react-icons/tb";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCalculator, FaCheckCircle, FaHourglassHalf, FaMoneyBillWave, FaMoneyCheckAlt, FaPercent, FaUsers } from "react-icons/fa";
 import { MdOutlineErrorOutline } from "react-icons/md";
 
 export const tableContainerSx = {
@@ -203,8 +203,10 @@ export const getInitials = (user = {}) => {
     return (fInitial + lInitial).toUpperCase() || "?";
 };
 
+const anyLoading = (...states) => states.some(Boolean);
+
 export const allApps = (
-    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData
+    debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData, MoneyLenderRecordsData, MoneyLenderRecordsLoading
 ) => [
         {
             id: 1,
@@ -222,7 +224,7 @@ export const allApps = (
             },
             mapping: {
                 dataKey: debtorsData,
-                loadingKey: debtorsLoading + debtorsActiveLoading,
+                loadingKey: anyLoading(debtorsLoading, debtorsActiveLoading),
                 activeCountKey: debtorsActiveData,
                 userDataKey: null,
                 serviceDataKey: null,
@@ -246,8 +248,12 @@ export const allApps = (
             },
             mapping: {
                 dataKey: mechanicData,
-                loadingKey: (
-                    mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + mechanicPremiumLoading
+                loadingKey: anyLoading(
+                    mechanicLoading,
+                    mechanicUsersLoading,
+                    mechanicServiceLoading,
+                    mechanicActiveLoading,
+                    mechanicPremiumLoading
                 ),
                 activeCountKey: mechanicActiveData,
                 userDataKey: mechanicUsersData,
@@ -272,7 +278,7 @@ export const allApps = (
             },
             mapping: {
                 dataKey: smartMoneyData,
-                loadingKey: smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading,
+                loadingKey: anyLoading(smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading),
                 activeCountKey: smartActiveData,
                 userDataKey: smartMoneyUsersData,
                 serviceDataKey: null,
@@ -296,7 +302,7 @@ export const allApps = (
             },
             mapping: {
                 dataKey: visitorsData,
-                loadingKey: visitorsLoading + visitorsUserLoading + visitorsActiveLoading,
+                loadingKey: anyLoading(visitorsLoading, visitorsUserLoading, visitorsActiveLoading),
                 activeCountKey: visitorsActiveData,
                 userDataKey: visitorsUserData,
                 serviceDataKey: null,
@@ -320,7 +326,7 @@ export const allApps = (
             },
             mapping: {
                 dataKey: danceData,
-                loadingKey: danceLoading,
+                loadingKey: Boolean(danceLoading),
                 activeCountKey: null,
                 userDataKey: null,
                 serviceDataKey: null,
@@ -344,7 +350,13 @@ export const allApps = (
             },
             mapping: {
                 dataKey: buddyWalkData,
-                loadingKey: buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading,
+                loadingKey: anyLoading(
+                    buddyWalkLoading,
+                    buddyGroupLoading,
+                    buddyGroupMemberLoading,
+                    buddyStepsLoading,
+                    buddyActiveLoading
+                ),
                 activeCountKey: buddyActiveData,
                 userDataKey: buddyGroupData,
                 serviceDataKey: buddyGroupMemberData,
@@ -368,7 +380,12 @@ export const allApps = (
             },
             mapping: {
                 dataKey: rgMechanicData,
-                loadingKey: rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading,
+                loadingKey: anyLoading(
+                    rgMechanicLoading,
+                    rgMechanicActiveLoading,
+                    rgMechanicServiceLoading,
+                    rgMechanicInvoiceLoading
+                ),
                 activeCountKey: rgMechanicActiveData,
                 userDataKey: rgMechanicInvoiceData,
                 serviceDataKey: rgMechanicServiceData,
@@ -392,10 +409,16 @@ export const allApps = (
             },
             mapping: {
                 dataKey: filteredMoneyLenderData,
-                loadingKey: MoneyLenderLoading + MoneyLenderUsersLoading + MoneyLenderActiveLoading + MoneyLenderSettingsLoading,
+                loadingKey: anyLoading(
+                    MoneyLenderLoading,
+                    MoneyLenderUsersLoading,
+                    MoneyLenderActiveLoading,
+                    MoneyLenderSettingsLoading,
+                    MoneyLenderRecordsLoading
+                ),
                 activeCountKey: MoneyLenderActiveData,
                 userDataKey: MoneyLenderUsersData,
-                serviceDataKey: null,
+                serviceDataKey: MoneyLenderRecordsData,
                 stepsDataKey: null,
                 premiumData: null,
             }
@@ -477,6 +500,53 @@ export const statsData = (totalServices, activeServices, inactiveServices) => [
         value: inactiveServices,
         text: 'Inactive',
         className: 'engagement-icon'
+    },
+];
+
+export const moneyLenderStatsData = (
+    totalServices, totalPrincipalAmount, totalInterestAmount, grandTotalAmount, totalPaidAmount, totalPendingAmount
+) => [
+    {
+        id: 'totalRecords',
+        icon: FaUsers,
+        label: 'Total Entries',
+        value: totalServices,
+        className: 'total-users-icon'
+    },
+    {
+        id: 'totalPrincipalAmount',
+        icon: FaMoneyBillWave,
+        label: 'Total Principal Amount',
+        value: totalPrincipalAmount,
+        className: 'active-users-icon'
+    },
+    {
+        id: 'totalInterestAmount',
+        icon: FaPercent,
+        label: 'Total Interest Amount',
+        value: totalInterestAmount,
+        className: 'new-users-icon'
+    },
+    {
+        id: 'grandTotalAmount',
+        icon: FaCalculator,
+        label: 'Grand Total Amount',
+        value: grandTotalAmount,
+        className: 'freetrial-users-icon'
+    },
+    {
+        id: 'totalPaidAmount',
+        icon: FaMoneyCheckAlt,
+        label: 'Total Paid Amount',
+        value: totalPaidAmount,
+        className: 'engagement-icon'
+    },
+    {
+        id: 'totalPendingAmount',
+        icon: FaHourglassHalf,
+        label: 'Total Pending Amount',
+        value: totalPendingAmount,
+        className: 'updated-icon'
     },
 ];
 

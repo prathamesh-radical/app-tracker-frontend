@@ -27,6 +27,7 @@ const EXTRACT_MAP = {
     '/api/money-lender':            (r) => r.moneylender,
     '/api/money-lender-data':       (r) => r.moneylenderlist,
     '/api/money-lender-active-users': (r) => r.moneylenderactiveCount,
+    '/api/money-lender-records': (r) => r.moneyrecords,
     '/api/money-lender-settings': (r) => r.moneylendersettings,
 };
 

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { MyContext } from "./context";
 import { jwtDecode } from "jwt-decode";
 import { toast } from 'react-toastify';
-import { getCountriesForCurrency } from "currency-country";
 import useFetch from "../hooks/useFetch";
 import { allApps } from "../utils/constant";
 
@@ -57,11 +56,41 @@ export const MyContextProvider = ({ children }) => {
     const { data: MoneyLenderUsersData, loading: MoneyLenderUsersLoading } = useFetch('/api/money-lender-data');
     const { data: MoneyLenderActiveData, loading: MoneyLenderActiveLoading } = useFetch('/api/money-lender-active-users');
     const { data: MoneyLenderSettingsData, loading: MoneyLenderSettingsLoading } = useFetch('/api/money-lender-settings');
+    const { data: MoneyLenderRecordsData, loading: MoneyLenderRecordsLoading } = useFetch('/api/money-lender-records');
 
-    const loader = debtorsLoading + debtorsActiveLoading + mechanicLoading + mechanicUsersLoading + mechanicServiceLoading + mechanicActiveLoading + MoneyLenderLoading + MoneyLenderUsersLoading + MoneyLenderActiveLoading + MoneyLenderSettingsLoading + visitorsLoading + visitorsUserLoading + visitorsActiveLoading + danceLoading + buddyWalkLoading + buddyGroupLoading + buddyGroupMemberLoading + buddyStepsLoading + buddyActiveLoading + rgMechanicLoading + rgMechanicActiveLoading + rgMechanicServiceLoading + rgMechanicInvoiceLoading + mechanicPremiumLoading + smartMoneyLoading + smartMoneyUsersLoading + smartActiveLoading;
+    const loader = [
+        debtorsLoading,
+        debtorsActiveLoading,
+        mechanicLoading,
+        mechanicUsersLoading,
+        mechanicServiceLoading,
+        mechanicActiveLoading,
+        MoneyLenderLoading,
+        MoneyLenderUsersLoading,
+        MoneyLenderActiveLoading,
+        MoneyLenderSettingsLoading,
+        MoneyLenderRecordsLoading,
+        visitorsLoading,
+        visitorsUserLoading,
+        visitorsActiveLoading,
+        danceLoading,
+        buddyWalkLoading,
+        buddyGroupLoading,
+        buddyGroupMemberLoading,
+        buddyStepsLoading,
+        buddyActiveLoading,
+        rgMechanicLoading,
+        rgMechanicActiveLoading,
+        rgMechanicServiceLoading,
+        rgMechanicInvoiceLoading,
+        mechanicPremiumLoading,
+        smartMoneyLoading,
+        smartMoneyUsersLoading,
+        smartActiveLoading,
+    ].some(Boolean);
 
-    const filteredMoneyLenderData = MoneyLenderData.map((lender) => {
-        const settings = MoneyLenderSettingsData.find(
+    const filteredMoneyLenderData = (MoneyLenderData || []).map((lender) => {
+        const settings = (MoneyLenderSettingsData || []).find(
             (setting) => String(setting.user_id) === String(lender.id)
         );
 
@@ -132,11 +161,11 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const appList = allApps(
-        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData
+        debtorsData, debtorsActiveData, debtorsLoading, debtorsActiveLoading, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, mechanicPremiumLoading, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, visitorsData, visitorsUserData, visitorsActiveData, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceData, danceLoading, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, MoneyLenderSettingsData, MoneyLenderSettingsLoading, filteredMoneyLenderData, MoneyLenderRecordsData, MoneyLenderRecordsLoading
     );
 
     const values = {
-        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderSettingsData, filteredMoneyLenderData, MoneyLenderSettingsLoading, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, debtorsLoading, debtorsActiveLoading, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceLoading, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, mechanicPremiumLoading, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData, appList, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading
+        debtorsData, debtorsActiveData, mechanicData, mechanicUsersData, mechanicServiceData, mechanicActiveData, mechanicPremiumData, MoneyLenderData, MoneyLenderUsersData, MoneyLenderActiveData, MoneyLenderSettingsData, filteredMoneyLenderData, MoneyLenderSettingsLoading, visitorsData, visitorsUserData, visitorsActiveData, danceData, buddyWalkData, buddyGroupData, buddyGroupMemberData, buddyStepsData, buddyActiveData, rgMechanicData, rgMechanicActiveData, rgMechanicServiceData, rgMechanicInvoiceData, debtorsLoading, debtorsActiveLoading, mechanicLoading, mechanicUsersLoading, mechanicServiceLoading, mechanicActiveLoading, MoneyLenderLoading, MoneyLenderUsersLoading, MoneyLenderActiveLoading, visitorsLoading, visitorsUserLoading, visitorsActiveLoading, danceLoading, buddyWalkLoading, buddyGroupLoading, buddyGroupMemberLoading, buddyStepsLoading, buddyActiveLoading, rgMechanicLoading, rgMechanicActiveLoading, rgMechanicServiceLoading, rgMechanicInvoiceLoading, mechanicPremiumLoading, loader, registerFormData, handleChange, loading, setLoading, loginFormData, token, setToken, isAuthenticated, setIsAuthenticated, handleNull, handleLogout, registerNavigate, forgotFormData, setForgotFormData, appList, smartMoneyData, smartMoneyUsersData, smartActiveData, smartMoneyLoading, smartMoneyUsersLoading, smartActiveLoading, MoneyLenderRecordsData, MoneyLenderRecordsLoading
     };
 
     return (

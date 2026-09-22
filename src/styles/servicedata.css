@@ -210,7 +210,6 @@
     transition: all 0.3s ease;
     min-height: 90px;
     box-sizing: border-box;
-    cursor: pointer;
 }
 
 @media (max-width: 768px) {
