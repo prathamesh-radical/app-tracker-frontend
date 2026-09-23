@@ -31,7 +31,7 @@ export default function ServiceDataPage() {
         }
         return 'active';
     };
-
+    
     const totalServices = filteredServices?.length || 0;
     const activeServices = filteredServices?.filter(s => getServiceStatus(s) === 'active').length || 0;
     const inactiveServices = filteredServices?.filter(s => getServiceStatus(s) === 'inactive').length || 0;
@@ -63,6 +63,7 @@ export default function ServiceDataPage() {
 
     const statisticsData = selectedData?.name === "Money Lender Collect Manager" ? (
         moneyLenderStatsData(
+            currency,
             totalServices,
             formattedPrincipalAmount,
             formattedInterestAmount,

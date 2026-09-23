@@ -504,7 +504,7 @@ export const statsData = (totalServices, activeServices, inactiveServices) => [
 ];
 
 export const moneyLenderStatsData = (
-    totalServices, totalPrincipalAmount, totalInterestAmount, grandTotalAmount, totalPaidAmount, totalPendingAmount
+    currency, totalServices, totalPrincipalAmount, totalInterestAmount, grandTotalAmount, totalPaidAmount, totalPendingAmount
 ) => [
     {
         id: 'totalRecords',
@@ -517,35 +517,35 @@ export const moneyLenderStatsData = (
         id: 'totalPrincipalAmount',
         icon: FaMoneyBillWave,
         label: 'Total Principal Amount',
-        value: totalPrincipalAmount,
+        value: formatCurrency(totalPrincipalAmount, currency),
         className: 'active-users-icon'
     },
     {
         id: 'totalInterestAmount',
         icon: FaPercent,
         label: 'Total Interest Amount',
-        value: totalInterestAmount,
+        value: formatCurrency(totalInterestAmount, currency),
         className: 'new-users-icon'
     },
     {
         id: 'grandTotalAmount',
         icon: FaCalculator,
         label: 'Grand Total Amount',
-        value: grandTotalAmount,
+        value: formatCurrency(grandTotalAmount, currency),
         className: 'freetrial-users-icon'
     },
     {
         id: 'totalPaidAmount',
         icon: FaMoneyCheckAlt,
         label: 'Total Paid Amount',
-        value: totalPaidAmount,
+        value: formatCurrency(totalPaidAmount, currency),
         className: 'engagement-icon'
     },
     {
         id: 'totalPendingAmount',
         icon: FaHourglassHalf,
         label: 'Total Pending Amount',
-        value: totalPendingAmount,
+        value: formatCurrency(totalPendingAmount, currency),
         className: 'updated-icon'
     },
 ];

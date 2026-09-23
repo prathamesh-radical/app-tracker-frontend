@@ -236,14 +236,14 @@ export default function ServiceDataTable({ currency, serviceId, Paper, currentDa
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.principal || "-"}
+                                                label={formatCurrency(service?.principal, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.interest_type || "-"}
+                                                label={formatCurrency(service?.interest, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
@@ -264,28 +264,28 @@ export default function ServiceDataTable({ currency, serviceId, Paper, currentDa
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.total_interest || "-"}
+                                                label={formatCurrency(service?.total_interest, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.total_amount || "-"}
+                                                label={formatCurrency(service?.total_amount, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.paid_amount || "-"}
+                                                label={formatCurrency(service?.paid_amount, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
                                         </TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
-                                                label={service?.remaining_amount || "-"}
+                                                label={formatCurrency(service?.remaining_amount, currency) || "-"}
                                                 size="small"
                                                 sx={chipSx.email}
                                             />
