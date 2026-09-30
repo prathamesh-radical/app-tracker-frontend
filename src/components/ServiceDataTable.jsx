@@ -128,75 +128,7 @@ export default function ServiceDataTable({ currency, serviceId, Paper, currentDa
     return (
         <TableContainer component={Paper} sx={defaultTableSx.tableContainerSx}>
             <Table>
-                {selectedData?.name === "Mechnaic Invoice Manager" ? (
-                    <>
-                        <TableHead>
-                            <TableRow sx={defaultTableSx.headRowSx}>
-                                <TableCell sx={defaultTableSx.headCellSx}>#</TableCell>
-                                <TableCell sx={defaultTableSx.headCellSx}>Service Name</TableCell>
-                                <TableCell sx={defaultTableSx.headCellSx}>Service Category</TableCell>
-                                <TableCell sx={defaultTableSx.headCellSx}>Price for 2W</TableCell>
-                                <TableCell sx={defaultTableSx.headCellSx}>Price for 4W</TableCell>
-                                <TableCell sx={defaultTableSx.headCellSx}>Status</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {currentData.map((service) => {
-                                const serviceName = service?.service_name || service?.name || "-";
-                                const serviceType = service?.service_type || service?.type || service?.category || "-";
-                                const price2w = service?.price_2w > 0 ? formatCurrency(service?.price_2w || 0, currency || 'USD') : "-";
-                                const price4w = service?.price_4w > 0 ? formatCurrency(service?.price_4w || 0, currency || 'USD') : "-";
-                                const status = getServiceStatus(service);
-                                const isActive = status === 'active';
-                                const statusText = isActive ? "Active" : "Inactive";
-
-                                return (
-                                    <TableRow
-                                        key={service.id}
-                                        sx={defaultTableSx.bodyRowSx}
-                                    >
-                                        <TableCell sx={defaultTableSx.idCellSx}>{serviceId++}</TableCell>
-                                        <TableCell sx={defaultTableSx.bodyCellSx}>
-                                            <Chip
-                                                label={serviceName}
-                                                size="small"
-                                                sx={chipSx.name}
-                                            />
-                                        </TableCell>
-                                        <TableCell sx={defaultTableSx.bodyCellSx}>
-                                            <Chip
-                                                label={serviceType}
-                                                size="small"
-                                                sx={chipSx.type}
-                                            />
-                                        </TableCell>
-                                        <TableCell sx={defaultTableSx.bodyCellSx}>
-                                            <Chip
-                                                label={price2w}
-                                                size="small"
-                                                sx={chipSx.price}
-                                            />
-                                        </TableCell>
-                                        <TableCell sx={defaultTableSx.bodyCellSx}>
-                                            <Chip
-                                                label={price4w}
-                                                size="small"
-                                                sx={chipSx.price}
-                                            />
-                                        </TableCell>
-                                        <TableCell sx={defaultTableSx.bodyCellSx}>
-                                            <Chip
-                                                label={statusText}
-                                                size="small"
-                                                sx={isActive ? chipSx.active : chipSx.inactive}
-                                            />
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </>
-                ) : (
+                {selectedData?.packageName === "com.radicalapp.moneylender" ? (
                     <>
                         <TableHead>
                             <TableRow sx={defaultTableSx.headRowSx}>
@@ -293,6 +225,74 @@ export default function ServiceDataTable({ currency, serviceId, Paper, currentDa
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
                                             <Chip
                                                 label={service?.status || "-"}
+                                                size="small"
+                                                sx={isActive ? chipSx.active : chipSx.inactive}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </>
+                ) : (
+                    <>
+                        <TableHead>
+                            <TableRow sx={defaultTableSx.headRowSx}>
+                                <TableCell sx={defaultTableSx.headCellSx}>#</TableCell>
+                                <TableCell sx={defaultTableSx.headCellSx}>Service Name</TableCell>
+                                <TableCell sx={defaultTableSx.headCellSx}>Service Category</TableCell>
+                                <TableCell sx={defaultTableSx.headCellSx}>Price for 2W</TableCell>
+                                <TableCell sx={defaultTableSx.headCellSx}>Price for 4W</TableCell>
+                                <TableCell sx={defaultTableSx.headCellSx}>Status</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {currentData.map((service) => {
+                                const serviceName = service?.service_name || service?.name || "-";
+                                const serviceType = service?.service_type || service?.type || service?.category || "-";
+                                const price2w = service?.price_2w > 0 ? formatCurrency(service?.price_2w || 0, currency || 'USD') : "-";
+                                const price4w = service?.price_4w > 0 ? formatCurrency(service?.price_4w || 0, currency || 'USD') : "-";
+                                const status = getServiceStatus(service);
+                                const isActive = status === 'active';
+                                const statusText = isActive ? "Active" : "Inactive";
+
+                                return (
+                                    <TableRow
+                                        key={service.id}
+                                        sx={defaultTableSx.bodyRowSx}
+                                    >
+                                        <TableCell sx={defaultTableSx.idCellSx}>{serviceId++}</TableCell>
+                                        <TableCell sx={defaultTableSx.bodyCellSx}>
+                                            <Chip
+                                                label={serviceName}
+                                                size="small"
+                                                sx={chipSx.name}
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={defaultTableSx.bodyCellSx}>
+                                            <Chip
+                                                label={serviceType}
+                                                size="small"
+                                                sx={chipSx.type}
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={defaultTableSx.bodyCellSx}>
+                                            <Chip
+                                                label={price2w}
+                                                size="small"
+                                                sx={chipSx.price}
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={defaultTableSx.bodyCellSx}>
+                                            <Chip
+                                                label={price4w}
+                                                size="small"
+                                                sx={chipSx.price}
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={defaultTableSx.bodyCellSx}>
+                                            <Chip
+                                                label={statusText}
                                                 size="small"
                                                 sx={isActive ? chipSx.active : chipSx.inactive}
                                             />
