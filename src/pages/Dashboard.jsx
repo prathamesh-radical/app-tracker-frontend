@@ -14,7 +14,7 @@ import { publishers, summaryStats } from "../utils/dashboardUtils";
 
 export default function Home() {
     const {
-        debtorsData, debtorsActiveData, mechanicData, mechanicActiveData, smartMoneyData, smartActiveData, visitorsData, visitorsActiveData, danceData, buddyWalkData, buddyActiveData, rgMechanicData, rgMechanicActiveData, loader
+        debtorsData, debtorsActiveData, mechanicData, mechanicActiveData, smartMoneyData, smartActiveData, visitorsData, visitorsActiveData, danceData, buddyWalkData, buddyActiveData, rgMechanicData, rgMechanicActiveData, loader, MoneyLenderData, MoneyLenderActiveData 
     } = useContext(MyContext);
     const [hoveredPublisher, setHoveredPublisher] = useState(null);
     const navigate = useNavigate();
@@ -27,8 +27,8 @@ export default function Home() {
     const peccularActiveUsers = (
         debtorsActiveData?.length + mechanicActiveData?.length + smartActiveData?.length + visitorsActiveData?.length
     );
-    const radicalTotalInstalls = buddyWalkData?.length + rgMechanicData?.length;
-    const radicalActiveUsers = buddyActiveData?.length + rgMechanicActiveData?.length;
+    const radicalTotalInstalls = buddyWalkData?.length + rgMechanicData?.length + MoneyLenderData?.length;
+    const radicalActiveUsers = buddyActiveData?.length + rgMechanicActiveData?.length + MoneyLenderActiveData?.length;
 
     const highestPeccularLength = Math.max(
         ...([
@@ -41,7 +41,7 @@ export default function Home() {
     );
 
     const highestRadicalLength = Math.max(
-        ...([buddyWalkData, rgMechanicData].map(item => item?.length || 0))
+        ...([buddyWalkData, rgMechanicData, MoneyLenderData].map(item => item?.length || 0))
     );
 
     const overAllHighestLength = Math.max(
