@@ -15,9 +15,24 @@ import {
     getCombinedInitials,
     getInitials,
 } from "../utils/constant";
+import { getCountriesForCurrency } from "currency-country";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DetailModal from "./DetailModal";
+
+const currencyCountryNames = new Intl.DisplayNames(["en"], { type: "region" });
+const representativeCountryByCurrency = { EUR: "DE" };
+
+function getCountryNameFromCurrency(currency) {
+    const currencyCode = typeof currency === "string" ? currency.trim().toUpperCase() : "";
+    const countryCodes = getCountriesForCurrency(currencyCode);
+    const countryCodeFromCurrency = currencyCode.slice(0, 2);
+    const countryCode = countryCodes.includes(countryCodeFromCurrency)
+        ? countryCodeFromCurrency
+        : representativeCountryByCurrency[currencyCode] || countryCodes[0];
+
+    return countryCode ? currencyCountryNames.of(countryCode) || countryCode : "";
+}
 
 const chipSx = {
     email: {
@@ -107,6 +122,10 @@ export default function AppDataTable({
     }
 
     function handleClick(filteredServices, currency, id) {
+        if (!filteredServices?.length) {
+            return;
+        }
+
         const stateData = {
             filteredServices,
             currency,
@@ -114,14 +133,8 @@ export default function AppDataTable({
             selectedData
         };
 
-        if (filteredServices?.length > 0 && packageName === "com.peccular.mechanic") {
-            navigate(`/appdata/com.peccular.mechanic/${id}`, {
-                state: stateData
-            });
-        }
-
-        if (packageName === "com.radicalapp.moneylender") {
-            navigate(`/appdata/com.radicalapp.moneylender/${id}`, {
+        if (packageName === "com.peccular.mechanic" || packageName === "com.radicalapp.moneylender") {
+            navigate(`/appdata/${packageName}/${id}`, {
                 state: stateData
             });
         }
@@ -181,7 +194,7 @@ export default function AppDataTable({
                                 {!hideUsersCurrency && (
                                     <TableCell sx={defaultTableSx.headCellSx}>Currency</TableCell>
                                 )}
-                                {(packageName != "com.radicalapp.mechanic" && packageName != "com.radicalapp.moneylender") && (
+                                {packageName != "com.radicalapp.mechanic" && (
                                     <TableCell sx={defaultTableSx.headCellSx}>Country</TableCell>
                                 )}
                                 {packageName === "com.radicalapp.buddywalk" && (
@@ -210,7 +223,8 @@ export default function AppDataTable({
                                 const contactNo = item?.contact || item.phone_number || item?.phone_number || item?.phone_no || "-";
                                 const totalLength = item.entries || customersData?.length || 0;
                                 const createdAt = item?.created_at || item?.date || "-";
-                                const countryName = item?.country || item?.country_name || "-";
+                                const countryName = item?.country || item?.country_name ||
+                                    getCountryNameFromCurrency(item?.currency) || "-";
 
                                 const isUrl = (
                                     !profileUrl || profileUrl === '' || profileUrl === null || profileUrl === 'Null' || profileUrl === undefined
@@ -244,17 +258,20 @@ export default function AppDataTable({
                                         : service.admin_id;
                                     return relatedId != null && String(relatedId) === String(item.id);
                                 }) || [];
+                                const isRowClickable = filteredServices.length > 0 && (
+                                    packageName === "com.peccular.mechanic" ||
+                                    packageName === "com.radicalapp.moneylender"
+                                );
 
                                 return (
                                     <TableRow
                                         key={item.id}
                                         sx={[defaultTableSx.bodyRowSx, {
-                                            cursor: (
-                                                packageName === "com.radicalapp.moneylender" ||
-                                                (filteredServices?.length > 0 && packageName === "com.peccular.mechanic")
-                                            ) ? 'pointer' : 'default'
+                                            cursor: isRowClickable ? 'pointer' : 'default'
                                         }]}
-                                        onClick={() => handleClick(filteredServices, item.currency, item?.id)}
+                                        onClick={isRowClickable
+                                            ? () => handleClick(filteredServices, item.currency, item?.id)
+                                            : undefined}
                                     >
                                         <TableCell sx={defaultTableSx.idCellSx}>{adminId++}</TableCell>
                                         <TableCell sx={defaultTableSx.bodyCellSx}>
@@ -326,7 +343,7 @@ export default function AppDataTable({
                                         {!hideUsersCurrency && (
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{item.currency ? item.currency : '-'}</TableCell>
                                         )}
-                                        {(packageName != "com.radicalapp.mechanic" && packageName != "com.radicalapp.moneylender") && (
+                                        {packageName != "com.radicalapp.mechanic" && (
                                             <TableCell sx={defaultTableSx.bodyCellSx}>{countryName}</TableCell>
                                         )}
                                         {packageName === "com.radicalapp.buddywalk" && (
